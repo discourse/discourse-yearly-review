@@ -302,7 +302,7 @@ module ::Jobs
     end
 
     def category_link_title(slug, id, name)
-      "<a class='hashtag' href='/c/#{slug}/#{id}'><h4>##{name}</h4></a> \r\r"
+      "<a class='hashtag' href='/c/#{slug}/#{id}'>##{name}</a>"
     end
   end
 end

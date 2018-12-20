@@ -41,3 +41,13 @@ after_initialize do
     mount ::YearlyReview::Engine, at: '/admin/plugins/yearly-review', constraints: AdminConstraint.new
   end
 end
+
+register_css <<CSS
+[data-review-topic="true"] table {
+    width: 75%;
+}
+[data-review-topic="true"] table th {
+    text-align: left;
+    width: 50%;
+}
+CSS

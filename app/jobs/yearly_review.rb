@@ -102,7 +102,7 @@ module ::Jobs
 
     def featured_badge_users(badge_name, start_date, end_date)
       sql = <<~SQL
-              SELECT
+        SELECT
         u.id AS user_id,
         username,
         uploaded_avatar_id,

@@ -1,0 +1,35 @@
+en:
+  site_settings:
+    yearly_review_enabled: "Enable the yearly review."
+  yearly_review:
+    report_being_created: "Your yearly review topic is being created. You'll receive a notification when it's ready to view."
+    title:
+      likes_given: "Likes Given"
+      topics_created: "Topics Created"
+      replies_created: "Replies Created"
+    action:
+      replies: "Replies"
+      topics: "Topics"
+      visits: "Visits"
+    report_created: "Your report is being created. You will be notified when it has been published."
+    user: "User"
+    topics: "Topics"
+    replies: "Replies"
+    visits: "Visits"
+    most_visits: "Most Visits"
+    most_likes_given: "Most Likes Given"
+    most_popular_topics: "Most Popular Topics"
+    most_liked_topics:
+      title: "Most Liked Topics"
+      action: "Likes"
+      type: "Topics"
+    most_replied_to_topics:
+      title: "Most Replied to Topics"
+      action: "Replies"
+      type: "topics"
+    most_liked_posts:
+      title: "Most Liked Posts"
+      action: "Likes"
+      type: "Posts"
+    featured_badge:
+      title: "Users Granted the %{badge_name} Badge"

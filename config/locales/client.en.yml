@@ -2,4 +2,4 @@ en:
   js:
     yearly_review:
       title: "Yearly Review"
-
+      report_created: "The review topic has been created!"

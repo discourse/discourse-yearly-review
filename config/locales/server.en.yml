@@ -33,3 +33,8 @@ en:
       type: "Posts"
     featured_badge:
       title: "Users Granted the %{badge_name} Badge"
+  system_messages:
+    review_topic_created:
+      title: "Review Topic Created"
+      subject_template: "The review topic has been created"
+      text_body_template: "View the review topic at %{topic_url}"

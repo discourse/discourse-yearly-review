@@ -1,18 +1,18 @@
 require_relative '../../app/helpers/yearly_review_helper'
 module ::Jobs
   class YearlyReview < ::Jobs::Base
-    def execute
-      render_review
+    def execute(args)
+      render_review(args[:review_user])
     end
 
-    def render_review
+    def render_review(review_user)
       review_title = SiteSetting.yearly_review_title
       review_categories = SiteSetting.yearly_review_categories.split('|').map {|x| x.to_i}
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_publish_category = SiteSetting.yearly_review_publish_category
       review_start = Time.parse("2018-01-01").beginning_of_day
       review_end = review_start.end_of_year
-      review_user = User.find(-3)
+      review_bot = User.find(-3)
 
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
@@ -50,7 +50,13 @@ module ::Jobs
         skip_validations: true
       }
 
-      PostCreator.create!(review_user, opts)
+      post = PostCreator.create!(review_bot, opts)
+      topic_url = "#{Discourse.base_url}/t/#{post.topic.slug}/#{post.topic.id}"
+      notify_user(review_user, topic_url)
+    end
+
+    def notify_user(review_user, topic_url)
+      SystemMessage.create(review_user, 'review_topic_created', topic_url: topic_url)
     end
 
     def most_topics(categories, start_date, end_date)

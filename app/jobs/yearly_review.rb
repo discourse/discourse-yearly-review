@@ -133,6 +133,7 @@ module ::Jobs
         ON u.id = ub.user_id
         WHERE b.name = '#{badge_name}'
         AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
+        AND u.id > 0
       SQL
 
       DB.query(sql)

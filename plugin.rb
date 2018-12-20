@@ -50,4 +50,7 @@ register_css <<CSS
     text-align: left;
     width: 50%;
 }
+[data-review-badges="true"] span {
+    white-space: pre;
+}
 CSS

@@ -27,12 +27,14 @@
   <% end %>
 </div>
 
+<div data-review-badges="true">
 <% if @featured_badge_users %>
   <h3><%= t("yearly_review.featured_badge.title", badge_name: SiteSetting.yearly_review_featured_badge) %></h3>
   <% @featured_badge_users.each do |user| %>
     <span><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %><%= raw(user_link(user.username)) %></span>
   <% end %>
 <% end %>
+</div>
 
 <h3><%= t('yearly_review.most_liked_topics.title') %></h3>
 <%= raw(@most_liked_topics.join("\r\r")) %>

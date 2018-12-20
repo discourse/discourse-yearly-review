@@ -28,7 +28,7 @@ after_initialize do
   require_dependency 'admin/admin_controller'
   class YearlyReview::YearlyReviewController < ::Admin::AdminController
     def create
-      Jobs::YearlyReview.new.execute
+      Jobs::YearlyReview.new.execute({review_user: current_user})
     end
   end
 

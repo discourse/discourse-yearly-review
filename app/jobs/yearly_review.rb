@@ -12,7 +12,7 @@ module ::Jobs
       review_publish_category = SiteSetting.yearly_review_publish_category
       review_start = Time.parse("2018-01-01").beginning_of_day
       review_end = review_start.end_of_year
-      review_user = User.find(-4)
+      review_user = User.find(-3)
 
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end

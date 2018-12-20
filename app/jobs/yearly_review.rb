@@ -6,8 +6,8 @@ module ::Jobs
     end
 
     def render_review(review_user)
-      review_title = SiteSetting.yearly_review_title
-      review_categories = SiteSetting.yearly_review_categories.split('|').map {|x| x.to_i}
+      review_title = SiteSetting.yearly_review_title.blank? ? '2018 in Review' : SiteSetting.yearly_review_title
+      review_categories = review_categories_from_settings
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_publish_category = SiteSetting.yearly_review_publish_category
       review_start = Time.parse("2018-01-01").beginning_of_day
@@ -22,7 +22,7 @@ module ::Jobs
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
-      featured_badge_users = featured_badge_users review_featured_badge, review_start, review_end
+      featured_badge_users = review_featured_badge.blank? ? nil : featured_badge_users(review_featured_badge, review_start, review_end)
 
       user_stats = [
         {key: 'topics_created', users: most_topics},
@@ -57,6 +57,14 @@ module ::Jobs
 
     def notify_user(review_user, topic_url)
       SystemMessage.create(review_user, 'review_topic_created', topic_url: topic_url)
+    end
+
+    def review_categories_from_settings
+      if SiteSetting.yearly_review_categories.blank?
+        Category.where(read_restricted: false).pluck(:id)
+      else
+        SiteSetting.yearly_review_categories.split('|').map {|x| x.to_i}
+      end
     end
 
     def most_topics(categories, start_date, end_date)

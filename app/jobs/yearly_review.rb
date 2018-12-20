@@ -17,6 +17,7 @@ module ::Jobs
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
       most_likes = most_likes_given review_start, review_end
+      # todo: use this!
       most_visits = most_visits review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
@@ -42,6 +43,7 @@ module ::Jobs
       output = view.render :template => "yearly_review", formats: :html, layout: false
 
       opts = {
+        # todo: remove the random string
         title: "#{review_title} - #{rand(100000)}",
         raw: output,
         category: review_publish_category,

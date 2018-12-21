@@ -7,6 +7,7 @@ en:
       likes_given: "Likes Given"
       topics_created: "Topics Created"
       replies_created: "Replies Created"
+      visits: "Visits"
     action:
       replies: "Replies"
       topics: "Topics"
@@ -16,7 +17,6 @@ en:
     topics: "Topics"
     replies: "Replies"
     visits: "Visits"
-    most_visits: "Most Visits"
     most_likes_given: "Most Likes Given"
     most_popular_topics: "Most Popular Topics"
     most_liked_topics:

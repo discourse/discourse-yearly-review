@@ -17,7 +17,6 @@ module ::Jobs
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
       most_likes = most_likes_given review_start, review_end
-      # todo: use this!
       most_visits = most_visits review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
@@ -25,9 +24,10 @@ module ::Jobs
       featured_badge_users = review_featured_badge.blank? ? nil : featured_badge_users(review_featured_badge, review_start, review_end)
 
       user_stats = [
-        {key: 'topics_created', users: most_topics},
-        {key: 'replies_created', users: most_replies},
-        {key: 'likes_given', users: most_likes},
+        { key: 'topics_created', users: most_topics },
+        { key: 'replies_created', users: most_replies },
+        { key: 'likes_given', users: most_likes },
+        { key: 'visits', users: most_visits }
       ]
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
@@ -209,7 +209,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT 5
+        LIMIT 3
       SQL
     end
 
@@ -239,7 +239,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT 5
+        LIMIT 3
       SQL
     end
 
@@ -266,7 +266,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT 5
+        LIMIT 3
       SQL
     end
 

@@ -37,4 +37,4 @@ en:
     review_topic_created:
       title: "Review Topic Created"
       subject_template: "The review topic has been created"
-      text_body_template: "View the review topic at %{topic_url}"
+      text_body_template: "View the topic at %{topic_url}"

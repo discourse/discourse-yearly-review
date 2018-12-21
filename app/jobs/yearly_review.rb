@@ -43,8 +43,7 @@ module ::Jobs
       output = view.render :template => "yearly_review", formats: :html, layout: false
 
       opts = {
-        # todo: remove the random string
-        title: "#{review_title} - #{rand(100000)}",
+        title: review_title,
         raw: output,
         category: review_publish_category,
         skip_validations: true

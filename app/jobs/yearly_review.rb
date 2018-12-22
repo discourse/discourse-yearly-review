@@ -1,4 +1,5 @@
 require_relative '../../app/helpers/yearly_review_helper'
+
 module ::Jobs
   class YearlyReview < ::Jobs::Base
     def execute(args)
@@ -21,14 +22,20 @@ module ::Jobs
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
-      featured_badge_users = review_featured_badge.blank? ? nil : featured_badge_users(review_featured_badge, review_start, review_end)
+      featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
-      user_stats = [
-        { key: 'topics_created', users: most_topics },
-        { key: 'replies_created', users: most_replies },
-        { key: 'likes_given', users: most_likes },
-        { key: 'visits', users: most_visits }
-      ]
+      # user_stats = [
+      #   { key: 'topics_created', users: most_topics },
+      #   { key: 'replies_created', users: most_replies },
+      #   { key: 'likes_given', users: most_likes },
+      #   { key: 'visits', users: most_visits }
+      # ]
+
+      user_stats = []
+      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
+      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
+      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
+      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,

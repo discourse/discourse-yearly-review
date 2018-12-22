@@ -9,7 +9,6 @@ add_admin_route 'yearly_review.title', 'yearly-review'
 
 after_initialize do
   SeedFu.fixture_paths << Rails.root.join("plugins", "discourse-yearly-review", "db", "fixtures").to_s
-
   require_dependency 'admin_constraint'
   ::ActionController::Base.prepend_view_path File.expand_path("../app/views/yearly-review", __FILE__)
 
@@ -44,5 +43,7 @@ end
 register_css <<CSS
 [data-review-users="true"] span {
     white-space: pre;
+    display: inline-block;
+    margin-bottom: 4px;
 }
 CSS

@@ -18,6 +18,7 @@ module ::Jobs
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
       most_likes = most_likes_given review_categories, review_start, review_end
+      most_likes_received = most_likes_received review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
@@ -28,6 +29,7 @@ module ::Jobs
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
       user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
       user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
+      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
       user_stats << { key: 'visits', users: most_visits } if most_visits.any?
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
@@ -154,6 +156,32 @@ module ::Jobs
         AND ua.action_type = 2
         AND t.category_id IN (#{categories.join(',')})
         GROUP BY ua.acting_user_id, u.username, u.uploaded_avatar_id
+        ORDER BY action_count DESC
+        LIMIT 15
+      SQL
+
+      DB.query(sql)
+    end
+
+    def most_likes_received(categories, start_date, end_date)
+      sql = <<~SQL
+        SELECT
+        u.username,
+        u.uploaded_avatar_id,
+        COUNT(p.user_id) AS action_count
+        FROM user_actions ua
+        JOIN topics t
+        ON t.id = ua.target_topic_id
+        JOIN posts p
+        ON p.id = ua.target_post_id
+        JOIN users u
+        ON u.id = p.user_id
+        WHERE u.id > 0
+        AND ua.created_at >= '#{start_date}'
+        AND ua.created_at <= '#{end_date}'
+        AND ua.action_type = 2
+        AND t.category_id IN (#{categories.join(',')})
+        GROUP BY u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT 15
       SQL

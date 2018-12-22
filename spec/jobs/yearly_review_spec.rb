@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-# todo: adding tests makes it clear that having the main code in a Job isn't ideal. It's possibly ok. Clean this up and add tests.
+# Todo: improve this.
 describe Jobs::YearlyReview do
   describe 'creating a topic' do
     let(:review_user) { Fabricate( :user, admin: true ) }

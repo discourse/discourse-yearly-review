@@ -26,14 +26,14 @@ if !user
     u.trust_level = TrustLevel[4]
   end
 
-  # TODO Pull the user avatar from that thread for now. In the future, pull it from a local file or from some central discobot repo.
-  if !Rails.env.test?
-    UserAvatar.import_url_for_user(
-      "https://cdn.discourse.org/dev/uploads/default/original/2X/e/edb63d57a720838a7ce6a68f02ba4618787f2299.png",
-      User.find(-3),
-      override_gravatar: true
-    )
-  end
+  # TODO I'm serving the avatar from my local WordPress site. The assumption is that it can be added to the Discourse CDN.
+  # if !Rails.env.test?
+  #   UserAvatar.import_url_for_user(
+  #     "http://localhost/wp-content/uploads/2018/12/discobot-party.png",
+  #     User.find(-3),
+  #     override_gravatar: true
+  #   )
+  # end
 end
 
 bot = User.find(-3)
@@ -46,7 +46,7 @@ bot.user_option.update!(
 
 if !bot.user_profile.bio_raw
   bot.user_profile.update!(
-    bio_raw: I18n.t('discourse_yearly_review.review_bot.bio')
+    bio_raw: I18n.t('yearly_review.review_bot.bio')
   )
 end
 

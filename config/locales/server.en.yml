@@ -1,10 +1,14 @@
 en:
   site_settings:
     yearly_review_enabled: "Enable the yearly review."
+    yearly_review_title: "The title for the review topic."
+    yearly_review_categories: "The categories to pull data from. If left blank will default to all public categories."
+    yearly_review_publish_category: "The category the review will be published in."
+    yearly_review_featured_badge: "Show users who have earned the badge during 2018."
   yearly_review:
-    report_being_created: "Your yearly review topic is being created. You'll receive a notification when it's ready to view."
     title:
       likes_given: "Likes Given"
+      likes_received: "Likes Received"
       topics_created: "Topics Created"
       replies_created: "Replies Created"
       visits: "Visits"
@@ -12,7 +16,6 @@ en:
       replies: "Replies"
       topics: "Topics"
       visits: "Visits"
-    report_created: "Your report is being created. You will be notified when it has been published."
     user: "User"
     topics: "Topics"
     replies: "Replies"
@@ -33,6 +36,8 @@ en:
       type: "Posts"
     featured_badge:
       title: "Users Granted the %{badge_name} Badge"
+    review_bot:
+      bio: "I'm just here to create review topics."
   system_messages:
     review_topic_created:
       title: "Review Topic Created"

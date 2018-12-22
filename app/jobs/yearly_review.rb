@@ -24,13 +24,6 @@ module ::Jobs
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
-      # user_stats = [
-      #   { key: 'topics_created', users: most_topics },
-      #   { key: 'replies_created', users: most_replies },
-      #   { key: 'likes_given', users: most_likes },
-      #   { key: 'visits', users: most_visits }
-      # ]
-
       user_stats = []
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
       user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
@@ -146,7 +139,6 @@ module ::Jobs
     end
 
     def most_visits(start_date, end_date)
-      # todo: add category filter
       sql = <<~SQL
         SELECT
         uv.user_id,

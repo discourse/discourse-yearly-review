@@ -11,7 +11,6 @@ after_initialize do
   SeedFu.fixture_paths << Rails.root.join("plugins", "discourse-yearly-review", "db", "fixtures").to_s
 
   require_dependency 'admin_constraint'
-  # Look at how this is done in the site_report plugin
   ::ActionController::Base.prepend_view_path File.expand_path("../app/views/yearly-review", __FILE__)
 
   module ::YearlyReview
@@ -43,14 +42,7 @@ after_initialize do
 end
 
 register_css <<CSS
-[data-review-topic="true"] table {
-    width: 75%;
-}
-[data-review-topic="true"] table th {
-    text-align: left;
-    width: 50%;
-}
-[data-review-badges="true"] span {
+[data-review-users="true"] span {
     white-space: pre;
 }
 CSS

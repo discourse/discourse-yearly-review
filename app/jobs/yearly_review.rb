@@ -17,7 +17,7 @@ module ::Jobs
 
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
-      most_likes = most_likes_given review_start, review_end
+      most_likes = most_likes_given review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
@@ -115,29 +115,6 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def featured_badge_users(badge_name, start_date, end_date)
-      sql = <<~SQL
-        SELECT
-        u.id AS user_id,
-        username,
-        uploaded_avatar_id,
-        b.name,
-        b.icon,
-        b.image,
-        b.id
-        FROM badges b
-        JOIN user_badges ub
-        ON ub.badge_id = b.id
-        JOIN users u
-        ON u.id = ub.user_id
-        WHERE b.name = '#{badge_name}'
-        AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
-        AND u.id > 0
-      SQL
-
-      DB.query(sql)
-    end
-
     def most_visits(start_date, end_date)
       sql = <<~SQL
         SELECT
@@ -159,8 +136,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_likes_given(start_date, end_date)
-      # todo: filter by category
+    def most_likes_given(categories, start_date, end_date)
       sql = <<~SQL
         SELECT
         ua.acting_user_id,
@@ -168,15 +144,41 @@ module ::Jobs
         u.uploaded_avatar_id,
         COUNT(ua.user_id) AS action_count
         FROM user_actions ua
+        JOIN topics t
+        ON t.id = ua.target_topic_id
         JOIN users u
         ON u.id = ua.acting_user_id
         WHERE u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
         AND ua.action_type = 2
+        AND t.category_id IN (#{categories.join(',')})
         GROUP BY ua.acting_user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT 15
+      SQL
+
+      DB.query(sql)
+    end
+
+    def featured_badge_users(badge_name, start_date, end_date)
+      sql = <<~SQL
+        SELECT
+        u.id AS user_id,
+        username,
+        uploaded_avatar_id,
+        b.name,
+        b.icon,
+        b.image,
+        b.id
+        FROM badges b
+        JOIN user_badges ub
+        ON ub.badge_id = b.id
+        JOIN users u
+        ON u.id = ub.user_id
+        WHERE b.name = '#{badge_name}'
+        AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
+        AND u.id > 0
       SQL
 
       DB.query(sql)

@@ -41,6 +41,13 @@ after_initialize do
 end
 
 register_css <<CSS
+[data-review-topic="true"] table {
+    width: 100%;
+}
+[data-review-topic="true"] table th {
+    text-align: left;
+    width: 50%;
+}
 [data-review-users="true"] span {
     white-space: pre;
     display: inline-block;

@@ -316,7 +316,7 @@ module ::Jobs
         DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id).each_with_index do |row, i|
           if row
             title = category_link_title(row.category_slug, row.category_id, row.category_name)
-            data << "<h4>#{title}</h4>" if i == 0
+            data << "<h3>#{title}</h3>" if i == 0
             data << topic_link(row.topic_slug, row.id, row.post_number)
           end
         end

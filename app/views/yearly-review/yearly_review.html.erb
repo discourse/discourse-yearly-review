@@ -31,7 +31,7 @@
 
 <% if @featured_badge_users.any? %>
   <div data-review-users="true">
-    <h2><%= t("yearly_review.featured_badge.title", badge_name: SiteSetting.yearly_review_featured_badge) %></h2>
+    <h2><%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %></h2>
     <% @featured_badge_users.each do |user| %>
       <span><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %><%= raw(user_link(user.username)) %></span>
     <% end %>
@@ -39,16 +39,16 @@
 <% end %>
 
 <% if @most_liked_topics.any? %>
-  <h2><%= t('yearly_review.most_liked_topics.title') %></h2>
+  <h2><%= t('yearly_review.title.most_liked_topics') %></h2>
   <%= raw(@most_liked_topics.join("\r\r")) %>
 <% end %>
 
 <% if @most_liked_posts.any? %>
-  <h2><%= t('yearly_review.most_liked_posts.title') %></h2>
+  <h2><%= t('yearly_review.title.most_liked_posts') %></h2>
   <%= raw(@most_liked_posts.join("\r\r")) %>
 <% end %>
 
 <% if @most_replied_to_topics.any? %>
-  <h2><%= t('yearly_review.most_replied_to_topics.title') %></h2>
+  <h2><%= t('yearly_review.title.most_replied_to_topics') %></h2>
   <%= raw(@most_replied_to_topics.join("\r\r")) %>
 <% end %>

@@ -38,6 +38,9 @@
   </div>
 <% end %>
 
+<!-- Todo: using `join` here instead of a loop to prevent whitespace from being added to the markup. -->
+<!-- Possibly links to topics should be displayed instead of oneboxes. -->
+<!-- Displaying this data in tables - one column for the link, one column for the count - works well on Discourse, but looks bad in emails. -->
 <% if @most_liked_topics.any? %>
   <h2><%= t('yearly_review.title.most_liked_topics') %></h2>
   <%= raw(@most_liked_topics.join("\r\r")) %>

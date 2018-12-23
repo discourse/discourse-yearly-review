@@ -23,6 +23,7 @@ module ::Jobs
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
+      # Todo: returning an empty array here seems a little weird.
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       user_stats = []
@@ -212,6 +213,7 @@ module ::Jobs
       DB.query(sql)
     end
 
+    # Todo: get rid of `NULL AS post_number` in category_topics queries.
     def likes_in_topic_sql
       <<~SQL
         SELECT

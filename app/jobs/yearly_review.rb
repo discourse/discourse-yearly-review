@@ -43,7 +43,7 @@ module ::Jobs
         include YearlyReviewHelper
       end
 
-      output = view.render :template => "yearly_review", formats: :html, layout: false
+      output = view.render template: "yearly_review", formats: :html, layout: false
 
       opts = {
         title: review_title,
@@ -65,7 +65,7 @@ module ::Jobs
       if SiteSetting.yearly_review_categories.blank?
         Category.where(read_restricted: false).pluck(:id)
       else
-        SiteSetting.yearly_review_categories.split('|').map {|x| x.to_i}
+        SiteSetting.yearly_review_categories.split('|').map { |x| x.to_i }
       end
     end
 
@@ -273,7 +273,6 @@ module ::Jobs
       SQL
     end
 
-
     def most_replied_to_topics_sql
       <<~SQL
         SELECT
@@ -300,15 +299,15 @@ module ::Jobs
       SQL
     end
 
-    def most_liked_topics cat_ids, start_date, end_date
+    def most_liked_topics(cat_ids, start_date, end_date)
       category_topics(start_date, end_date, cat_ids, likes_in_topic_sql)
     end
 
-    def most_liked_posts cat_ids, start_date, end_date
+    def most_liked_posts(cat_ids, start_date, end_date)
       category_topics(start_date, end_date, cat_ids, most_liked_posts_sql)
     end
 
-    def most_replied_to_topics cat_ids, start_date, end_date
+    def most_replied_to_topics(cat_ids, start_date, end_date)
       category_topics(start_date, end_date, cat_ids, most_replied_to_topics_sql)
     end
 

@@ -2,6 +2,6 @@ en:
   js:
     yearly_review:
       title: "Yearly Review"
-      report_created: "The review topic has been created!"
+      report_created: "You will receive a notification when the topic is published."
       settings_link_text: "Configure review topic settings"
       create_review_topic: "Create Review Topic"

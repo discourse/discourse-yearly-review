@@ -7,14 +7,16 @@ en:
     yearly_review_featured_badge: "Show users who have earned the badge during 2018."
   yearly_review:
     title:
-      likes_given: "Most Likes Given"
-      likes_received: "Most Likes Received"
       topics_created: "Most Topics Created"
       replies_created: "Most Replies Created"
+      likes_given: "Most Likes Given"
+      likes_received: "Most Likes Received"
       visits: "Most Visits"
     action:
-      replies: "Replies"
-      topics: "Topics"
+      topics_created: "Topics"
+      replies_created: "Replies"
+      likes_given: "Likes"
+      likes_received: "Likes"
       visits: "Visits"
     user: "User"
     topics: "Topics"

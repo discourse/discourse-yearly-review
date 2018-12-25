@@ -7,4 +7,8 @@ module YearlyReviewHelper
   def user_link(username)
     "<a class='mention' href='/u/#{username}'>@#{username}</a>"
   end
+
+  def class_from_key(key)
+    key.gsub('_', '-')
+  end
 end

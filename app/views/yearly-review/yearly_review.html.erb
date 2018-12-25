@@ -3,7 +3,7 @@
     <% @user_stats.each do |obj| %>
       <% if obj[:users] %>
         <h2><%= t("yearly_review.title.#{obj[:key]}") %></h2>
-        <table>
+        <table class="<%= class_from_key(obj[:key]) %>">
           <tr>
             <th>
               <%= t('yearly_review.user') %>
@@ -12,8 +12,8 @@
               <%= t("yearly_review.action.#{obj[:key]}") %>
             </th>
           </tr>
-          <% obj[:users].each do |user| %>
-            <tr>
+          <% obj[:users].each_with_index do |user, i| %>
+            <tr class="user-row-<%= i %>">
               <td>
                 <%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %>
                 <%= raw(user_link(user.username)) %>

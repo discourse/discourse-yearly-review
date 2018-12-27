@@ -65,7 +65,7 @@ module ::Jobs
       if SiteSetting.yearly_review_categories.blank?
         Category.where(read_restricted: false).pluck(:id)
       else
-        SiteSetting.yearly_review_categories.split('|').map { |x| x.to_i }
+        Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).pluck(:id)
       end
     end
 
@@ -235,7 +235,6 @@ module ::Jobs
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 2
         AND c.id = :cat_id
-        AND c.read_restricted = 'false'
         AND t.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id
         ORDER BY action_count DESC
@@ -264,7 +263,6 @@ module ::Jobs
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 2
         AND c.id = :cat_id
-        AND c.read_restricted = 'false'
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id
@@ -291,7 +289,6 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE p.created_at BETWEEN :start_date AND :end_date
         AND c.id = :cat_id
-        AND c.read_restricted = 'false'
         AND t.deleted_at IS NULL
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC

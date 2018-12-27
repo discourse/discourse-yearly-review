@@ -12,16 +12,23 @@ module ::Jobs
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
-      render_review(title)
+      raw = create_raw_topic
+
+      opts = {
+        title: title,
+        raw: raw,
+        category: SiteSetting.yearly_review_publish_category,
+        skip_validations: true
+      }
+
+      PostCreator.create!(Discourse.system_user, opts)
     end
 
-    def render_review(title)
+    def create_raw_topic
       review_categories = review_categories_from_settings
       review_featured_badge = SiteSetting.yearly_review_featured_badge
-      review_publish_category = SiteSetting.yearly_review_publish_category
       review_start = Time.parse("2018-01-01").beginning_of_day
       review_end = review_start.end_of_year
-      review_bot = User.find(-1)
 
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
@@ -51,17 +58,7 @@ module ::Jobs
         include YearlyReviewHelper
       end
 
-      output = view.render template: "yearly_review", formats: :html, layout: false
-
-      opts = {
-        title: title,
-        raw: output,
-        category: review_publish_category,
-        skip_validations: true
-      }
-
-      post = PostCreator.create!(review_bot, opts)
-      topic_url = "#{Discourse.base_url}/t/#{post.topic.slug}/#{post.topic.id}"
+      view.render template: "yearly_review", formats: :html, layout: false
     end
 
     def review_categories_from_settings

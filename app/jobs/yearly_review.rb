@@ -27,7 +27,7 @@ module ::Jobs
     def create_raw_topic
       review_categories = review_categories_from_settings
       review_featured_badge = SiteSetting.yearly_review_featured_badge
-      review_start = Time.parse("2018-01-01").beginning_of_day
+      review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
 
       most_topics = most_topics review_categories, review_start, review_end

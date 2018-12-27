@@ -2,8 +2,6 @@ plugins:
   yearly_review_enabled:
     default: true
     client: true
-  yearly_review_title:
-    default: "2018 in Review"
   yearly_review_categories:
     type: category_list
     default: ''

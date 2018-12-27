@@ -7,7 +7,6 @@ enabled_site_setting :yearly_review_enabled
 PLUGIN_NAME = 'yearly-review'.freeze
 
 after_initialize do
-  SeedFu.fixture_paths << Rails.root.join("plugins", "discourse-yearly-review", "db", "fixtures").to_s
   ::ActionController::Base.prepend_view_path File.expand_path("../app/views/yearly-review", __FILE__)
 
   [

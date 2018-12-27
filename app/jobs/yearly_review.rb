@@ -2,6 +2,9 @@ require_relative '../../app/helpers/yearly_review_helper'
 
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
+    MAX_USERS = 15
+    MAX_POSTS_PER_CATEGORY = 3
+
     every 1.day
     def execute(args)
       now = Time.now
@@ -86,7 +89,7 @@ module ::Jobs
         AND t.category_id IN (#{categories.join(',')})
         GROUP BY t.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
-        LIMIT 15
+        LIMIT #{MAX_USERS}
       SQL
 
       DB.query(sql)
@@ -112,7 +115,7 @@ module ::Jobs
         AND t.category_id IN (#{categories.join(',')})
         GROUP BY p.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
-        LIMIT 15
+        LIMIT #{MAX_USERS}
       SQL
 
       DB.query(sql)
@@ -133,7 +136,7 @@ module ::Jobs
         AND uv.visited_at <= '#{end_date}'
         GROUP BY uv.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
-        LIMIT 15
+        LIMIT #{MAX_USERS}
       SQL
 
       DB.query(sql)
@@ -158,7 +161,7 @@ module ::Jobs
         AND t.category_id IN (#{categories.join(',')})
         GROUP BY ua.acting_user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
-        LIMIT 15
+        LIMIT #{MAX_USERS}
       SQL
 
       DB.query(sql)
@@ -184,7 +187,7 @@ module ::Jobs
         AND t.category_id IN (#{categories.join(',')})
         GROUP BY u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
-        LIMIT 15
+        LIMIT #{MAX_USERS}
       SQL
 
       DB.query(sql)
@@ -238,7 +241,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT 3
+        LIMIT #{MAX_POSTS_PER_CATEGORY}
       SQL
     end
 
@@ -267,7 +270,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT 3
+        LIMIT #{MAX_POSTS_PER_CATEGORY}
       SQL
     end
 
@@ -292,7 +295,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT 3
+        LIMIT #{MAX_POSTS_PER_CATEGORY}
       SQL
     end
 

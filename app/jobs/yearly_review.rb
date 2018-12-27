@@ -41,7 +41,6 @@ module ::Jobs
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
-      # Todo: returning an empty array here seems a little weird.
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       user_stats = []
@@ -87,6 +86,7 @@ module ::Jobs
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
         AND t.category_id IN (#{categories.join(',')})
+        AND t.deleted_at IS NULL
         GROUP BY t.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
@@ -110,9 +110,11 @@ module ::Jobs
         WHERE t.archetype = 'regular'
         AND p.user_id > 0
         AND p.post_number > 1
+        AND p.post_type = 1
         AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
         AND t.category_id IN (#{categories.join(',')})
+        AND t.deleted_at IS NULL
         GROUP BY p.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
@@ -159,6 +161,7 @@ module ::Jobs
         AND ua.created_at <= '#{end_date}'
         AND ua.action_type = 2
         AND t.category_id IN (#{categories.join(',')})
+        AND t.deleted_at IS NULL
         GROUP BY ua.acting_user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
@@ -185,6 +188,7 @@ module ::Jobs
         AND ua.created_at <= '#{end_date}'
         AND ua.action_type = 2
         AND t.category_id IN (#{categories.join(',')})
+        AND t.deleted_at IS NULL
         GROUP BY u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
@@ -216,7 +220,6 @@ module ::Jobs
       DB.query(sql)
     end
 
-    # Todo: get rid of `NULL AS post_number` in category_topics queries.
     def likes_in_topic_sql
       <<~SQL
         SELECT
@@ -239,6 +242,7 @@ module ::Jobs
         AND pa.post_action_type_id = 2
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
+        AND p.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id
         ORDER BY action_count DESC
         LIMIT #{MAX_POSTS_PER_CATEGORY}
@@ -293,6 +297,8 @@ module ::Jobs
         WHERE p.created_at BETWEEN :start_date AND :end_date
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
+        AND p.deleted_at IS NULL
+        AND p.post_type = 1
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
         LIMIT #{MAX_POSTS_PER_CATEGORY}

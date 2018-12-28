@@ -57,3 +57,8 @@
   <h2><%= t('yearly_review.title.most_replied_to_topics') %></h2>
   <%= raw(@most_replied_to_topics.join("\r\r")) %>
 <% end %>
+
+<% if @most_bookmarked_topics.any? %>
+  <h2><%= t('yearly_review.title.most_bookmarked_topics') %></h2>
+  <%= raw(@most_bookmarked_topics.join("\r\r")) %>
+<% end %>

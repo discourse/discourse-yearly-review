@@ -48,11 +48,6 @@
   <%= raw(@most_liked_topics.join("\r\r")) %>
 <% end %>
 
-<% if @most_liked_posts.any? %>
-  <h2><%= t('yearly_review.title.most_liked_posts') %></h2>
-  <%= raw(@most_liked_posts.join("\r\r")) %>
-<% end %>
-
 <% if @most_replied_to_topics.any? %>
   <h2><%= t('yearly_review.title.most_replied_to_topics') %></h2>
   <%= raw(@most_replied_to_topics.join("\r\r")) %>

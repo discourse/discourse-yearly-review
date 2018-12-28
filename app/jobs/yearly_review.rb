@@ -41,7 +41,6 @@ module ::Jobs
       most_replied_to = most_replied_to review_categories, review_start, review_end
       most_popular_topics = most_popular_topics review_categories, review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
-      most_liked_posts = most_liked_posts review_categories, review_start, review_end
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
       most_bookmarked_topics = most_bookmarked_topics review_categories, review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
@@ -58,7 +57,6 @@ module ::Jobs
                                   user_stats: user_stats,
                                   most_popular_topics: most_popular_topics,
                                   most_liked_topics: most_liked_topics,
-                                  most_liked_posts: most_liked_posts,
                                   most_replied_to_topics: most_replied_to_topics,
                                   most_bookmarked_topics: most_bookmarked_topics,
                                   featured_badge_users: featured_badge_users)
@@ -275,36 +273,7 @@ module ::Jobs
       SQL
     end
 
-    def likes_in_topic_sql
-      <<~SQL
-        SELECT
-        t.id,
-        t.slug AS topic_slug,
-        t.title,
-        c.slug AS category_slug,
-        c.name AS category_name,
-        c.id AS category_id,
-        NULL AS post_number,
-        COUNT(*) AS action_count
-        FROM post_actions pa
-        JOIN posts p
-        ON p.id = pa.post_id
-        JOIN topics t
-        ON t.id = p.topic_id
-        JOIN categories c
-        ON c.id = t.category_id
-        WHERE pa.created_at BETWEEN :start_date AND :end_date
-        AND pa.post_action_type_id = 2
-        AND c.id = :cat_id
-        AND t.deleted_at IS NULL
-        AND p.deleted_at IS NULL
-        GROUP BY t.id, category_slug, category_name, c.id
-        ORDER BY action_count DESC
-        LIMIT #{MAX_POSTS_PER_CATEGORY}
-      SQL
-    end
-
-    def most_liked_posts_sql
+    def most_liked_topic_sql
       <<~SQL
         SELECT
         t.id,
@@ -325,6 +294,7 @@ module ::Jobs
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 2
         AND c.id = :cat_id
+        AND p.post_number = 1
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id
@@ -333,7 +303,7 @@ module ::Jobs
       SQL
     end
 
-    def most_replied_to_topics_sql
+    def most_replied_to_topic_sql
       <<~SQL
         SELECT
         t.id,
@@ -390,15 +360,11 @@ module ::Jobs
     end
 
     def most_liked_topics(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, likes_in_topic_sql)
-    end
-
-    def most_liked_posts(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, most_liked_posts_sql)
+      category_topics(start_date, end_date, cat_ids, most_liked_topic_sql)
     end
 
     def most_replied_to_topics(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, most_replied_to_topics_sql)
+      category_topics(start_date, end_date, cat_ids, most_replied_to_topic_sql)
     end
 
     def most_popular_topics(cat_ids, start_date, end_date)

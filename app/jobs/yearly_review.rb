@@ -38,6 +38,7 @@ module ::Jobs
       most_likes = most_likes_given review_categories, review_start, review_end
       most_likes_received = most_likes_received review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
+      most_popular_topics = most_popular_topics review_categories, review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
       most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
@@ -52,6 +53,7 @@ module ::Jobs
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
+                                  most_popular_topics: most_popular_topics,
                                   most_liked_topics: most_liked_topics,
                                   most_liked_posts: most_liked_posts,
                                   most_replied_to_topics: most_replied_to_topics,
@@ -220,6 +222,29 @@ module ::Jobs
       DB.query(sql)
     end
 
+    def most_popular_topic_sql
+      <<~SQL
+        SELECT
+        t.id,
+        t.slug AS topic_slug,
+        t.title,
+        c.slug AS category_slug,
+        c.name AS category_name,
+        c.id as category_id,
+        NULL AS post_number,
+        tt.yearly_score
+        FROM top_topics tt
+        JOIN topics t
+        ON t.id = tt.topic_id
+        JOIN categories c
+        ON c.id = t.category_id
+        WHERE t.deleted_at IS NULL
+        AND c.id = :cat_id
+        ORDER BY tt.yearly_score DESC
+        LIMIT #{MAX_POSTS_PER_CATEGORY}
+      SQL
+    end
+
     def likes_in_topic_sql
       <<~SQL
         SELECT
@@ -315,6 +340,10 @@ module ::Jobs
 
     def most_replied_to_topics(cat_ids, start_date, end_date)
       category_topics(start_date, end_date, cat_ids, most_replied_to_topics_sql)
+    end
+
+    def most_popular_topics(cat_ids, start_date, end_date)
+      category_topics(start_date, end_date, cat_ids, most_popular_topic_sql)
     end
 
     def category_topics(start_date, end_date, category_ids, sql)

@@ -13,6 +13,7 @@ en:
       likes_received: "Most Likes Received"
       visits: "Most Visits"
       featured_badge: "Users Granted the %{badge_name} Badge"
+      most_popular_topics: "Most Popular Topics"
       most_liked_topics: "Most Liked Topics"
       most_liked_posts: "Most Liked Posts"
       most_replied_to_topics: "Most Replied to Topics"
@@ -21,15 +22,8 @@ en:
       replies_created: "Replies"
       likes_given: "Likes"
       likes_received: "Likes"
-      visits: "Visits"
+      visits: "Days Visited"
     user: "User"
     topics: "Topics"
     replies: "Replies"
     visits: "Visits"
-    review_bot:
-      bio: "I'm just here to create review topics."
-  system_messages:
-    review_topic_created:
-      title: "Review Topic Created"
-      subject_template: "The review topic has been created"
-      text_body_template: "View the topic at %{topic_url}"

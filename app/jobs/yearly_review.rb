@@ -8,7 +8,7 @@ module ::Jobs
     every 1.day
     def execute(args)
       now = Time.now
-      title = I18n.t("yearly_review.topic_title", year: now.year)
+      title = I18n.t("yearly_review.topic_title", year: now.year - 1)
 
       unless args[:force]
         return unless now.month == 1 && now.day == 1

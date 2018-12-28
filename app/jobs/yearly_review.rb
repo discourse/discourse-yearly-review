@@ -38,6 +38,7 @@ module ::Jobs
       most_likes = most_likes_given review_categories, review_start, review_end
       most_likes_received = most_likes_received review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
+      most_replied_to = most_replied_to review_categories, review_start, review_end
       most_popular_topics = most_popular_topics review_categories, review_start, review_end
       most_liked_topics = most_liked_topics review_categories, review_start, review_end
       most_liked_posts = most_liked_posts review_categories, review_start, review_end
@@ -51,6 +52,7 @@ module ::Jobs
       user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
       user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
       user_stats << { key: 'visits', users: most_visits } if most_visits.any?
+      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
@@ -193,6 +195,32 @@ module ::Jobs
         AND ua.action_type = 2
         AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
+        GROUP BY u.username, u.uploaded_avatar_id
+        ORDER BY action_count DESC
+        LIMIT #{MAX_USERS}
+      SQL
+
+      DB.query(sql)
+    end
+
+    def most_replied_to(categories, start_date, end_date)
+      sql = <<~SQL
+        SELECT
+        u.username,
+        u.uploaded_avatar_id,
+        SUM(p.reply_count) AS action_count
+        FROM posts p
+        JOIN topics t
+        ON t.id = p.topic_id
+        JOIN users u
+        ON u.id = p.user_id
+        WHERE p.created_at >= '#{start_date}'
+        AND p.created_at <= '#{end_date}'
+        AND t.category_id IN (#{categories.join(',')})
+        AND t.deleted_at IS NULL
+        AND p.deleted_at IS NULL
+        AND p.post_type = 1
+        AND p.user_id > 0
         GROUP BY u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}

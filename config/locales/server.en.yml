@@ -12,6 +12,7 @@ en:
       likes_given: "Most Likes Given"
       likes_received: "Most Likes Received"
       visits: "Most Visits"
+      most_replied_to: "Most Replied to"
       featured_badge: "Users Granted the %{badge_name} Badge"
       most_popular_topics: "Most Popular Topics"
       most_liked_topics: "Most Liked Topics"
@@ -20,6 +21,7 @@ en:
       most_bookmarked_topics: "Most Bookmarked Topics"
     action:
       topics_created: "Topics"
+      most_replied_to: "Replies"
       replies_created: "Replies"
       likes_given: "Likes"
       likes_received: "Likes"

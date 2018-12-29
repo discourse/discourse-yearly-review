@@ -214,6 +214,7 @@ module ::Jobs
         ON u.id = p.user_id
         WHERE p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
+        AND p.reply_count > 0
         AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL

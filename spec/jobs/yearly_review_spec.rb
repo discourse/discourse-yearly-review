@@ -9,10 +9,10 @@ describe Jobs::YearlyReview do
         freeze_time DateTime.parse('2019-01-01')
         Fabricate(:topic, created_at: 1.month.ago)
       end
+
       it 'publishes a review topic' do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
-
         expect(topic.title).to eq(I18n.t('yearly_review.topic_title', year: 2018))
       end
     end
@@ -22,10 +22,10 @@ describe Jobs::YearlyReview do
         freeze_time DateTime.parse('2019-02-01')
         Fabricate(:topic, created_at: 2.months.ago, title: 'A topic from 2018')
       end
+
       it "doesn't publish a review topic" do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
-
         expect(topic.title).to eq('A topic from 2018')
       end
     end
@@ -35,6 +35,7 @@ describe Jobs::YearlyReview do
     before do
       freeze_time DateTime.parse('2019-01-01')
     end
+
     it 'only displays data from public categories' do
       review_category = Fabricate(:category)
       non_review_category = Fabricate(:category)
@@ -43,11 +44,9 @@ describe Jobs::YearlyReview do
       non_review_category.save
       Fabricate(:topic, category_id: non_review_category.id, user: reviewed_user, created_at: 1.month.ago)
       Fabricate(:topic, category_id: review_category.id, user: top_review_user, created_at: 1.month.ago)
-
       Jobs::YearlyReview.new.execute({})
       topic = Topic.last
       raw = Post.where(topic_id: topic.id).first.raw
-
       expect(raw).not_to have_tag('td', text: /@reviewed_user/)
       expect(raw).to have_tag('td', text: /@top_review_user/)
     end
@@ -68,7 +67,6 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-
         expect(raw).to have_tag('table.topics-created tr.user-row-0') { with_tag('td', text: /5/) }
         expect(raw).to have_tag('table.topics-created tr.user-row-1') { with_tag('td', text: /1/) }
       end
@@ -88,7 +86,6 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-
         expect(raw).to have_tag('table.replies-created tr.user-row-0') { with_tag('td', text: /5/) }
         expect(raw).to have_tag('table.replies-created tr.user-row-1') { with_tag('td', text: /1/) }
       end
@@ -119,7 +116,6 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-
         expect(raw).to have_tag('table.likes-given tr.user-row-0') { with_tag('td', text: /5/) }
         expect(raw).to have_tag('table.likes-given tr.user-row-0') { with_tag('td', text: /@top_review_user/) }
         expect(raw).to have_tag('table.likes-given tr.user-row-1') { with_tag('td', text: /1/) }
@@ -160,7 +156,6 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-
         expect(raw).to match(/the-most-liked-topic.+\r\r.+the-second-most-liked-topic/)
       end
     end
@@ -181,8 +176,6 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-        puts raw
-
         expect(raw).to match(/the-most-replied-to-topic.+\r\r.+the-second-most-replied-to-topic/)
       end
     end

@@ -259,7 +259,6 @@ module ::Jobs
         c.slug AS category_slug,
         c.name AS category_name,
         c.id as category_id,
-        NULL AS post_number,
         tt.yearly_score
         FROM top_topics tt
         JOIN topics t
@@ -277,7 +276,6 @@ module ::Jobs
       <<~SQL
         SELECT
         t.id,
-        p.post_number,
         t.slug AS topic_slug,
         t.title,
         c.slug AS category_slug,
@@ -307,7 +305,6 @@ module ::Jobs
       <<~SQL
         SELECT
         t.id,
-        NULL AS post_number,
         t.slug AS topic_slug,
         t.title,
         c.slug AS category_slug,
@@ -340,7 +337,6 @@ module ::Jobs
         c.slug AS category_slug,
         c.name AS category_name,
         c.id AS category_id,
-        NULL AS post_number,
         COUNT(*) AS action_count
         FROM post_actions pa
         JOIN posts p
@@ -383,16 +379,15 @@ module ::Jobs
           if row
             title = category_link_title(row.category_slug, row.category_id, row.category_name)
             data << "<h3>#{title}</h3>" if i == 0
-            data << topic_link(row.topic_slug, row.id, row.post_number)
+            data << topic_link(row.topic_slug, row.id)
           end
         end
       end
       data
     end
 
-    def topic_link(slug, topic_id, post_number = nil)
+    def topic_link(slug, topic_id)
       url = " #{Discourse.base_url}/t/#{slug}/#{topic_id}"
-      url += "/#{post_number}" if post_number
       url.strip
     end
 

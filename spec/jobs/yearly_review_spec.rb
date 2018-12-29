@@ -79,6 +79,26 @@ describe Jobs::YearlyReview do
       expect(raw).not_to have_tag('td', text: /@reviewed_user/)
       expect(raw).to have_tag('td', text: /@top_review_user/)
     end
+
+    context 'with 51 categories' do
+      before do
+        freeze_time DateTime.parse('2019-01-01')
+        51.times do
+          category = Fabricate(:category)
+          topic = Fabricate(:topic, category_id: category.id, created_at: 1.month.ago)
+          2.times do
+            Fabricate(:post, topic: topic)
+          end
+        end
+      end
+
+      it "doesn't display category headings" do
+        Jobs::YearlyReview.new.execute({})
+        topic = Topic.last
+        raw = Post.where(topic_id: topic.id).first.raw
+        expect(raw).not_to have_tag('h3')
+      end
+    end
   end
 
   describe 'user stats' do

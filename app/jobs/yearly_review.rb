@@ -3,7 +3,6 @@ require_relative '../../app/helpers/yearly_review_helper'
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
     MAX_USERS = 15
-    MAX_POSTS_PER_CATEGORY = 3
 
     every 1.day
     def execute(args)
@@ -268,9 +267,10 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.deleted_at IS NULL
-        AND c.id = :cat_id
+        AND t.created_at BETWEEN :start_date AND :end_date
+        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         ORDER BY tt.yearly_score DESC
-        LIMIT #{MAX_POSTS_PER_CATEGORY}
+        LIMIT :limit
       SQL
     end
 
@@ -293,13 +293,13 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 2
-        AND c.id = :cat_id
+        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         AND p.post_number = 1
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT #{MAX_POSTS_PER_CATEGORY}
+        LIMIT :limit
       SQL
     end
 
@@ -319,14 +319,14 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE p.created_at BETWEEN :start_date AND :end_date
-        AND c.id = :cat_id
+        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         AND p.post_type = 1
         AND t.posts_count > 1
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT #{MAX_POSTS_PER_CATEGORY}
+        LIMIT :limit
       SQL
     end
 
@@ -349,12 +349,12 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 3
-        AND c.id = :cat_id
+        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id
         ORDER BY action_count DESC
-        LIMIT #{MAX_POSTS_PER_CATEGORY}
+        LIMIT :limit
       SQL
     end
 
@@ -376,25 +376,31 @@ module ::Jobs
 
     def category_topics(start_date, end_date, category_ids, sql)
       data = []
-      category_ids.each do |cat_id|
-        DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id).each_with_index do |row, i|
+      num_cats = category_ids.length
+      exclude_categories = num_cats > 50
+      if exclude_categories
+        DB.query(sql, start_date: start_date, end_date: end_date, categories: category_ids, cat_id: nil, exclude_categories: true, limit: 10).each do |row|
           if row
-            title = category_link_title(row.category_slug, row.category_id, row.category_name)
-            data << "<h3>#{title}</h3>" if i == 0
             data << topic_link(row.topic_slug, row.id)
           end
         end
+      else
+        category_ids.each do |cat_id|
+          limit = num_cats > 30 ? 2 : 3
+          DB.query(sql, start_date: start_date, end_date: end_date, categories: category_ids, cat_id: cat_id, exclude_categories: false, limit: limit).each_with_index do |row, i|
+            if row
+              data << "<h3>#{row.category_name}</h3>" if i == 0
+              data << topic_link(row.topic_slug, row.id)
+            end
+          end
+        end
       end
+
       data
     end
 
     def topic_link(slug, topic_id)
-      url = " #{Discourse.base_url}/t/#{slug}/#{topic_id}"
-      url.strip
-    end
-
-    def category_link_title(slug, id, name)
-      "<a class='hashtag' href='/c/#{slug}/#{id}'>##{name}</a>"
+      "#{Discourse.base_url}/t/#{slug}/#{topic_id}"
     end
   end
 end

@@ -5,7 +5,7 @@ en:
     yearly_review_publish_category: "The category the review will be published in."
     yearly_review_featured_badge: "Show users who have earned the badge during 2018."
   yearly_review:
-    topic_title: "%{year} in Review"
+    topic_title: "%{year}: The Year in Review"
     title:
       topics_created: "Most Topics Created"
       replies_created: "Most Replies Created"

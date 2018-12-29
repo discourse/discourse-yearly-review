@@ -119,6 +119,7 @@ module ::Jobs
         AND p.created_at <= '#{end_date}'
         AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
+        AND p.deleted_at IS NULL
         GROUP BY p.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
@@ -179,14 +180,12 @@ module ::Jobs
         SELECT
         u.username,
         u.uploaded_avatar_id,
-        COUNT(p.user_id) AS action_count
+        COUNT(ua.user_id) AS action_count
         FROM user_actions ua
         JOIN topics t
         ON t.id = ua.target_topic_id
-        JOIN posts p
-        ON p.id = ua.target_post_id
         JOIN users u
-        ON u.id = p.user_id
+        ON u.id = ua.user_id
         WHERE u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'

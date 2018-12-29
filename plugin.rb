@@ -1,7 +1,8 @@
 # name: discourse-yearly-review
-# about: creates a yearly review post
+# about: Creates an automated Year in Review summary topic
 # version: 0.1
-# Authors Simon Cossar
+# author: Simon Cossar
+# url: https://github.com/discourse/discourse-yearly-review
 
 enabled_site_setting :yearly_review_enabled
 PLUGIN_NAME = 'yearly-review'.freeze

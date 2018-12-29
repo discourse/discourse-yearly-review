@@ -11,6 +11,7 @@ module ::Jobs
       title = I18n.t("yearly_review.topic_title", year: now.year - 1)
 
       unless args[:force]
+        return unless SiteSetting.yearly_review_enabled
         return unless now.month == 1 && now.day < 8
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end

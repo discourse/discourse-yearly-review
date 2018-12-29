@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 describe Jobs::YearlyReview do
+  SiteSetting.yearly_review_enabled = true
   let(:top_review_user) { Fabricate(:user, username: 'top_review_user') }
   let(:reviewed_user) { Fabricate(:user, username: 'reviewed_user') }
   describe 'publishing the topic' do

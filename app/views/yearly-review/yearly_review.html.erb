@@ -40,20 +40,20 @@
 
 <% if @most_popular_topics.any? %>
   <h2><%= t('yearly_review.title.most_popular_topics') %></h2>
-  <%= raw(@most_popular_topics.join("\r\r")) %>
+  <%= raw("\r\r") + raw(@most_popular_topics.join("\r\r")) %>
 <% end %>
 
 <% if @most_liked_topics.any? %>
   <h2><%= t('yearly_review.title.most_liked_topics') %></h2>
-  <%= raw(@most_liked_topics.join("\r\r")) %>
+  <%= raw("\r\r") + raw(@most_liked_topics.join("\r\r")) %>
 <% end %>
 
 <% if @most_replied_to_topics.any? %>
   <h2><%= t('yearly_review.title.most_replied_to_topics') %></h2>
-  <%= raw(@most_replied_to_topics.join("\r\r")) %>
+  <%= raw("\r\r") + raw(@most_replied_to_topics.join("\r\r")) %>
 <% end %>
 
 <% if @most_bookmarked_topics.any? %>
   <h2><%= t('yearly_review.title.most_bookmarked_topics') %></h2>
-  <%= raw(@most_bookmarked_topics.join("\r\r")) %>
+  <%= raw("\r\r") + raw(@most_bookmarked_topics.join("\r\r")) %>
 <% end %>

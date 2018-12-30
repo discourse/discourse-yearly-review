@@ -178,6 +178,29 @@ describe Jobs::YearlyReview do
     end
   end
 
+  describe 'featured badge' do
+    let(:admin) { Fabricate(:user, admin: true) }
+    let(:badge) { Fabricate(:badge) }
+    before do
+      SiteSetting.yearly_review_featured_badge = badge.name
+      freeze_time DateTime.parse('2019-01-01')
+      101.times do
+        user = Fabricate(:user)
+        UserBadge.create!(badge_id: badge.id,
+                          user_id: user.id,
+                          granted_at: 1.month.ago,
+                          granted_by_id: admin.id)
+      end
+    end
+
+    it "it should only display the first 100 users" do
+      Jobs::YearlyReview.new.execute({})
+      topic = Topic.last
+      raw = Post.where(topic_id: topic.id).first.raw
+      expect(raw).to have_tag('a', text: /And 1 more/)
+    end
+  end
+
   describe 'topic stats' do
     before do
       freeze_time DateTime.parse('2019-01-01')

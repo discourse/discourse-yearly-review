@@ -30,3 +30,4 @@ en:
     topics: "Topics"
     replies: "Replies"
     visits: "Visits"
+    more_badge_users: "And %{more} more..."

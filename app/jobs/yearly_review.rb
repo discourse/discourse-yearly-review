@@ -3,6 +3,7 @@ require_relative '../../app/helpers/yearly_review_helper'
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
     MAX_USERS = 15
+    MAX_BADGE_USERS = 100
 
     every 1.day
     def execute(args)
@@ -236,7 +237,8 @@ module ::Jobs
         b.name,
         b.icon,
         b.image,
-        b.id
+        b.id,
+        ((COUNT(*) OVER()) - #{MAX_BADGE_USERS}) AS more_users
         FROM badges b
         JOIN user_badges ub
         ON ub.badge_id = b.id
@@ -245,6 +247,8 @@ module ::Jobs
         WHERE b.name = '#{badge_name}'
         AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
         AND u.id > 0
+        ORDER BY ub.granted_at DESC
+        LIMIT #{MAX_BADGE_USERS}
       SQL
 
       DB.query(sql)

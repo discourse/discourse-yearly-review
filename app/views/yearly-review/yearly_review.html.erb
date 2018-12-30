@@ -35,6 +35,10 @@
     <% @featured_badge_users.each do |user| %>
       <span><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %><%= raw(user_link(user.username)) %></span>
     <% end %>
+    <% if @featured_badge_users[0].more_users > 0 %>
+    <% @badge = @featured_badge_users[0] %>
+      <div><%= raw(badge_link(@badge.name, @badge.id, @badge.more_users)) %></div>
+    <% end %>
   </div>
 <% end %>
 

@@ -35,22 +35,9 @@ module ::Jobs
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
 
-      most_topics = most_topics review_categories, review_start, review_end
-      most_replies = most_replies review_categories, review_start, review_end
-      most_likes = most_likes_given review_categories, review_start, review_end
-      most_likes_received = most_likes_received review_categories, review_start, review_end
-      most_visits = most_visits review_start, review_end
-      most_replied_to = most_replied_to review_categories, review_start, review_end
+      user_stats = user_stats review_categories, review_start, review_end
       category_topics = category_topics filtered_categories, review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
-
-      user_stats = []
-      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
-      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
-      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
-      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
-      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
-      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
@@ -73,6 +60,64 @@ module ::Jobs
 
     def filter_categories(category_ids)
       Category.where(id: category_ids).order("topics_year DESC")[0, 7].pluck(:id)
+    end
+
+    def user_stats(review_categories, review_start, review_end)
+      user_stats = []
+      most_topics = most_topics review_categories, review_start, review_end
+      most_replies = most_replies review_categories, review_start, review_end
+      most_likes = most_likes_given review_categories, review_start, review_end
+      most_likes_received = most_likes_received review_categories, review_start, review_end
+      most_visits = most_visits review_start, review_end
+      most_replied_to = most_replied_to review_categories, review_start, review_end
+      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
+      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
+      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
+      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
+      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
+      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
+      user_stats
+    end
+
+    def category_topics(category_ids, start_date, end_date)
+      topics = {}
+      category_ids.each do |cat_id|
+        category_topics = {}
+        most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
+        most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
+        most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
+        most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
+        category_topics[:most_liked] = most_liked if most_liked.any?
+        category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
+        category_topics[:most_popular] = most_popular if most_popular.any?
+        category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
+        if category_topics.any?
+          category_name = Category.find(cat_id).name
+          topics[category_name] = category_topics
+        end
+      end
+      topics
+    end
+
+    def ranked_topics(cat_id, start_date, end_date, sql)
+      data = []
+      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, limit: 3).each do |row|
+        if row
+          action = row.action
+          case action
+          when 'likes'
+            next if row.action_count < 1
+          when 'replies'
+            next if row.action_count < 1
+          when 'bookmarks'
+            next if row.action_count < 1
+          when 'score'
+            next if row.action_count < 1
+          end
+          data << row
+        end
+      end
+      data
     end
 
     def most_topics(categories, start_date, end_date)
@@ -382,45 +427,6 @@ module ::Jobs
         ORDER BY action_count DESC
         LIMIT :limit
       SQL
-    end
-
-    def ranked_topics(cat_id, start_date, end_date, sql)
-      data = []
-      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, limit: 3).each do |row|
-        if row
-          action = row.action
-          case action
-          when 'likes'
-            next if row.action_count < 1
-          when 'replies'
-            next if row.action_count < 1
-          when 'bookmarks'
-            next if row.action_count < 1
-          end
-          data << row
-        end
-      end
-      data
-    end
-
-    def category_topics(category_ids, start_date, end_date)
-      topics = {}
-      category_ids.each do |cat_id|
-        category_topics = {}
-        most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
-        most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
-        most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
-        most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
-        category_topics[:most_liked] = most_liked if most_liked.any?
-        category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
-        category_topics[:most_popular] = most_popular if most_popular.any?
-        category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
-        if category_topics.any?
-          category_name = Category.find(cat_id).name
-          topics[category_name] = category_topics
-        end
-      end
-      topics
     end
   end
 end

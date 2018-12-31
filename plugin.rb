@@ -5,6 +5,8 @@
 # url: https://github.com/discourse/discourse-yearly-review
 
 enabled_site_setting :yearly_review_enabled
+register_asset 'stylesheets/yearly_review.scss'
+
 PLUGIN_NAME = 'yearly-review'.freeze
 
 after_initialize do
@@ -17,16 +19,5 @@ after_initialize do
 end
 
 register_css <<CSS
-[data-review-topic="true"] table {
-    width: 100%;
-}
-[data-review-topic="true"] table th {
-    text-align: left;
-    width: 50%;
-}
-[data-review-users="true"] span {
-    white-space: pre;
-    display: inline-block;
-    margin-bottom: 4px;
-}
+
 CSS

@@ -2,7 +2,7 @@ require_relative '../../app/helpers/yearly_review_helper'
 
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
-    MAX_USERS = 15
+    MAX_USERS = 10
     MAX_BADGE_USERS = 100
 
     every 1.day
@@ -30,6 +30,7 @@ module ::Jobs
 
     def create_raw_topic
       review_categories = review_categories_from_settings
+      filtered_categories = filter_categories review_categories
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
@@ -40,14 +41,7 @@ module ::Jobs
       most_likes_received = most_likes_received review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
       most_replied_to = most_replied_to review_categories, review_start, review_end
-      # most_popular_topics = most_popular_topics review_categories, review_start, review_end
-      # most_liked_topics = most_liked_topics review_categories, review_start, review_end
-      # most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
-      # most_bookmarked_topics = most_bookmarked_topics review_categories, review_start, review_end
-      category_topics = category_topics review_categories, review_start, review_end
-      puts "CATTOPICS"
-      p category_topics
-      puts "ENDCATTOPICS"
+      category_topics = category_topics filtered_categories, review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       user_stats = []
@@ -71,24 +65,14 @@ module ::Jobs
 
     def review_categories_from_settings
       if SiteSetting.yearly_review_categories.blank?
-        categories = Category.where(read_restricted: false).pluck(:id)
+        Category.where(read_restricted: false).pluck(:id)
       else
-        categories = Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).pluck(:id)
+        Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).pluck(:id)
       end
-
-      filtered = filter_categories categories
-      filtered.any? ? filtered : categories
     end
 
     def filter_categories(category_ids)
-      ids = []
-      category_ids.each do |id|
-        category = Category.find(id)
-        if category.topics_year > 20
-          ids << id
-        end
-      end
-      ids
+      Category.where(id: category_ids).order("topics_year DESC")[0, 7].pluck(:id)
     end
 
     def most_topics(categories, start_date, end_date)

@@ -1,5 +1,5 @@
 <% if @user_stats.any? %>
-  <div data-review-topic="true">
+  <div data-review-topic-users="true">
     <% @user_stats.each do |obj| %>
       <% if obj[:users] %>
         <h1><%= t("yearly_review.title.#{obj[:key]}") %></h1>
@@ -42,22 +42,29 @@
   </div>
 <% end %>
 
-<div data-review-featured-topics="true">
-  <% if @most_popular_topics.any? %>
-    <h1><%= t('yearly_review.title.most_popular_topics') %></h1>
-    <%= raw(@most_popular_topics.join("\r\r")) %>
-  <% end %>
-  <% if @most_liked_topics.any? %>
-    <h1><%= t('yearly_review.title.most_liked_topics') %></h1>
-    <%= raw("\r\r") + raw(@most_liked_topics.join("\r\r")) %>
-  <% end %>
-  <% if @most_replied_to_topics.any? %>
-    <h1><%= t('yearly_review.title.most_replied_to_topics') %></h1>
-    <%= raw("\r\r") + raw(@most_replied_to_topics.join("\r\r")) %>
-  <% end %>
-  <% if @most_bookmarked_topics.any? %>
-    <h1><%= t('yearly_review.title.most_bookmarked_topics') %></h1>
-    <%= raw("\r\r") + raw(@most_bookmarked_topics.join("\r\r")) %>
-  <% end %>
-</div>
+<% if @category_topics.any? %>
+  <div data-review-featured-topics="true">
+    <% @category_topics.each do |category_name, ranked_topics| %>
+      <h1>#<%= category_name %></h1>
+      <% ranked_topics.each do |rank_type, topics| %>
+        <h2><%= t("yearly_review.rank_type_title.#{rank_type}") %></h2>
+        <table>
+          <tr>
+            <th><%= t('yearly_review.user') %></th>
+            <th><%= t('yearly_review.topic') %></th>
+            <th><%= t("yearly_review.#{rank_type}") %></th>
+          </tr>
+        <% topics.each do |topic| %>
+          <tr>
+            <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
+            <td>&nbsp;<%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
+            <td>&nbsp;<%= topic.action_count %></td>
+          </tr>
+        <% end %>
+        </table>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
 

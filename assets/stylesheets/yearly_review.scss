@@ -1,7 +1,8 @@
-[data-review-topic="true"] table {
+[data-review-topic-users="true"] table,
+[data-review-featured-topics="true"] table {
   width: 100%;
 }
-[data-review-topic="true"] table th {
+[data-review-topic-users="true"] table th {
   text-align: left;
   width: 50%;
 }
@@ -10,8 +11,12 @@
   display: inline-block;
   margin-bottom: 4px;
 }
-[data-review-featured-topics="true"] h3 {
-  display: inline-block;
-  margin-top: 10px;
-  margin-bottom: 4px;
+[data-review-featured-topics="true"] table td:first-child {
+  width: 10%;
+}
+[data-review-featured-topics="true"] table td:nth-child(2) {
+  width: 60%;
+}
+[data-review-featured-topics="true"] table td:last-child {
+  width: 30%;
 }

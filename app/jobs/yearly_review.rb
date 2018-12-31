@@ -40,10 +40,14 @@ module ::Jobs
       most_likes_received = most_likes_received review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
       most_replied_to = most_replied_to review_categories, review_start, review_end
-      most_popular_topics = most_popular_topics review_categories, review_start, review_end
-      most_liked_topics = most_liked_topics review_categories, review_start, review_end
-      most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
-      most_bookmarked_topics = most_bookmarked_topics review_categories, review_start, review_end
+      # most_popular_topics = most_popular_topics review_categories, review_start, review_end
+      # most_liked_topics = most_liked_topics review_categories, review_start, review_end
+      # most_replied_to_topics = most_replied_to_topics review_categories, review_start, review_end
+      # most_bookmarked_topics = most_bookmarked_topics review_categories, review_start, review_end
+      category_topics = category_topics review_categories, review_start, review_end
+      puts "CATTOPICS"
+      p category_topics
+      puts "ENDCATTOPICS"
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       user_stats = []
@@ -56,11 +60,8 @@ module ::Jobs
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
-                                  most_popular_topics: most_popular_topics,
-                                  most_liked_topics: most_liked_topics,
-                                  most_replied_to_topics: most_replied_to_topics,
-                                  most_bookmarked_topics: most_bookmarked_topics,
-                                  featured_badge_users: featured_badge_users)
+                                  featured_badge_users: featured_badge_users,
+                                  category_topics: category_topics)
       view.class_eval do
         include YearlyReviewHelper
       end
@@ -291,7 +292,7 @@ module ::Jobs
         ON u.id = t.user_id
         WHERE t.deleted_at IS NULL
         AND t.created_at BETWEEN :start_date AND :end_date
-        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
+        AND c.id = :cat_id
         ORDER BY tt.yearly_score DESC
         LIMIT :limit
       SQL
@@ -322,7 +323,7 @@ module ::Jobs
         ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 2
-        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
+        AND c.id = :cat_id
         AND p.post_number = 1
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
@@ -354,7 +355,7 @@ module ::Jobs
         JOIN users u
         ON u.id = t.user_id
         WHERE p.created_at BETWEEN :start_date AND :end_date
-        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
+        AND c.id = :cat_id
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         AND p.post_type = 1
@@ -390,7 +391,7 @@ module ::Jobs
         ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 3
-        AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
+        AND c.id = :cat_id
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id, username, uploaded_avatar_id
@@ -399,23 +400,46 @@ module ::Jobs
       SQL
     end
 
-    def most_liked_topics(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, most_liked_topic_sql)
+    def ranked_topics(cat_id, start_date, end_date, sql)
+      data = []
+      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, limit: 3).each do |row|
+        if row
+          action = row.action
+          case action
+          when 'likes'
+            next if row.action_count < 1
+          when 'replies'
+            next if row.action_count < 1
+          when 'bookmarks'
+            next if row.action_count < 1
+          end
+          data << row
+        end
+      end
+      data
     end
 
-    def most_replied_to_topics(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, most_replied_to_topic_sql)
+    def category_topics(category_ids, start_date, end_date)
+      topics = {}
+      category_ids.each do |cat_id|
+        category_topics = {}
+        most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
+        most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
+        most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
+        most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
+        category_topics[:most_liked] = most_liked if most_liked.any?
+        category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
+        category_topics[:most_popular] = most_popular if most_popular.any?
+        category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
+        if category_topics.any?
+          category_name = Category.find(cat_id).name
+          topics[category_name] = category_topics
+        end
+      end
+      topics
     end
 
-    def most_popular_topics(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, most_popular_topic_sql)
-    end
-
-    def most_bookmarked_topics(cat_ids, start_date, end_date)
-      category_topics(start_date, end_date, cat_ids, most_bookmarked_topic_sql)
-    end
-
-    def category_topics(start_date, end_date, category_ids, sql)
+    def category_topics_bak(start_date, end_date, category_ids, sql)
       data = []
       num_cats = category_ids.length
       exclude_categories = num_cats > 30

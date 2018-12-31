@@ -26,11 +26,17 @@ en:
       likes_given: "Likes"
       likes_received: "Likes"
       visits: "Days Visited"
-    rank_type_title:
-      most_liked: "Most Liked"
-      most_replied_to: "Most Replies"
-      most_popular: "Most Popular"
-      most_boomarked: "Most Bookmarked"
+    rank_type:
+      title:
+        most_liked: "Most Liked"
+        most_replied_to: "Most Replies"
+        most_popular: "Most Popular"
+        most_boomarked: "Most Bookmarked"
+      action_types:
+        most_popular: "Score"
+        most_replied_to: "Replies"
+        most_liked: "Likes"
+        most_bookmarked: "Bookmarks"
     user: "User"
     topics: "Topics"
     topic: "Topic"

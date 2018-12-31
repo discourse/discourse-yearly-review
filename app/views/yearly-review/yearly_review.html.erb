@@ -47,18 +47,18 @@
     <% @category_topics.each do |category_name, ranked_topics| %>
       <h1>#<%= category_name %></h1>
       <% ranked_topics.each do |rank_type, topics| %>
-        <h2><%= t("yearly_review.rank_type_title.#{rank_type}") %></h2>
+        <h2><%= t("yearly_review.rank_type.title.#{rank_type}") %></h2>
         <table>
           <tr>
             <th><%= t('yearly_review.user') %></th>
             <th><%= t('yearly_review.topic') %></th>
-            <th><%= t("yearly_review.#{rank_type}") %></th>
+            <th><%= t("yearly_review.rank_type.action_types.#{rank_type}") %></th>
           </tr>
         <% topics.each do |topic| %>
           <tr>
             <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
-            <td>&nbsp;<%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
-            <td>&nbsp;<%= topic.action_count %></td>
+            <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
+            <td><%= topic.action_count %></td>
           </tr>
         <% end %>
         </table>

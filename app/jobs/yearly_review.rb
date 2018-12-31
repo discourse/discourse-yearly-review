@@ -281,7 +281,7 @@ module ::Jobs
         c.slug AS category_slug,
         c.name AS category_name,
         c.id AS category_id,
-        tt.yearly_score AS action_count,
+        ROUND(tt.yearly_score::numeric, 2) AS action_count,
         'score' AS action
         FROM top_topics tt
         JOIN topics t
@@ -437,97 +437,6 @@ module ::Jobs
         end
       end
       topics
-    end
-
-    def category_topics_bak(start_date, end_date, category_ids, sql)
-      data = []
-      num_cats = category_ids.length
-      exclude_categories = num_cats > 30
-
-      if exclude_categories
-        DB.query(sql, start_date: start_date, end_date: end_date, categories: category_ids, cat_id: nil, exclude_categories: true, limit: 10).each do |row|
-          if row
-            action = row.action
-            case action
-            when 'likes'
-              next if row.action_count < 10
-            when 'replies'
-              next if row.action_count < 10
-            when 'bookmarks'
-              next if row.action_count < 10
-            end
-            data << topic_html(row)
-          end
-        end
-      else
-        category_ids.each do |cat_id|
-          limit = num_cats > 15 ? 2 : 3
-          DB.query(sql, start_date: start_date, end_date: end_date, categories: category_ids, cat_id: cat_id, exclude_categories: false, limit: limit).each_with_index do |row, i|
-            if row
-              action = row.action
-              case action
-              when 'likes'
-                next if row.action_count < 10
-              when 'replies'
-                next if row.action_count < 10
-              when 'bookmarks'
-                next if row.action_count < 10
-              end
-              data << "<h2>##{row.category_name}</h2>" if i == 0
-              data << topic_html(row)
-            end
-          end
-        end
-      end
-
-      data
-    end
-
-    def topic_html(row)
-      html = "<h3>#{avatar_image(row.username, row.uploaded_avatar_id)} #{topic_link(row.title, row.topic_slug, row.id)}</h3><p>#{format_date(row.created_at)}"
-      html += " #{emoji_for_action(row.action)} #{row.action_count}" if row.action && row.action != 'score'
-      html += '</p>'
-    end
-
-    def format_date(date_time)
-      date_time.strftime("%b %d")
-    end
-
-    def topic_link(title, slug, topic_id)
-      link = "#{Discourse.base_url}/t/#{slug}/#{topic_id}"
-      "<a href='#{link}'>#{title}</a>"
-    end
-
-    def avatar_image(username, uploaded_avatar_id)
-      template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, '25')
-      "<img src='#{template}' class='avatar'/>"
-    end
-
-    def user_link(username)
-      "<a class='mention' href='/u/#{username}'>@#{username}</a>"
-    end
-
-    def emoji_for_action(action)
-      return unless action
-
-      unless SiteSetting.enable_emoji
-        return action
-      end
-
-      case action
-      when 'likes'
-        emoji = 'heart'
-      when 'replies'
-        emoji = 'leftwards_arrow_with_hook'
-      when 'bookmarks'
-        emoji = 'bookmark'
-      else
-        return ''
-      end
-
-      url = Emoji.url_for(emoji)
-      emoji_sym = ":#{emoji}:"
-      "<img src='#{url}' title='#{emoji_sym}' class='emoji' alt='#{emoji_sym}'/>"
     end
   end
 end

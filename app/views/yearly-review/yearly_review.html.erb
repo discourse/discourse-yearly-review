@@ -2,7 +2,7 @@
   <div data-review-topic="true">
     <% @user_stats.each do |obj| %>
       <% if obj[:users] %>
-        <h2><%= t("yearly_review.title.#{obj[:key]}") %></h2>
+        <h1><%= t("yearly_review.title.#{obj[:key]}") %></h1>
         <table class="<%= class_from_key(obj[:key]) %>">
           <tr>
             <th>
@@ -31,33 +31,33 @@
 
 <% if @featured_badge_users.any? %>
   <div data-review-users="true">
-    <h2><%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %></h2>
+    <h1><%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %></h1>
     <% @featured_badge_users.each do |user| %>
       <span><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %><%= raw(user_link(user.username)) %></span>
     <% end %>
     <% if @featured_badge_users[0].more_users > 0 %>
-    <% @badge = @featured_badge_users[0] %>
+      <% @badge = @featured_badge_users[0] %>
       <div><%= raw(badge_link(@badge.name, @badge.id, @badge.more_users)) %></div>
     <% end %>
   </div>
 <% end %>
 
-<% if @most_popular_topics.any? %>
-  <h2><%= t('yearly_review.title.most_popular_topics') %></h2>
-  <%= raw("\r\r") + raw(@most_popular_topics.join("\r\r")) %>
-<% end %>
+<div data-review-featured-topics="true">
+  <% if @most_popular_topics.any? %>
+    <h1><%= t('yearly_review.title.most_popular_topics') %></h1>
+    <%= raw(@most_popular_topics.join("\r\r")) %>
+  <% end %>
+  <% if @most_liked_topics.any? %>
+    <h1><%= t('yearly_review.title.most_liked_topics') %></h1>
+    <%= raw("\r\r") + raw(@most_liked_topics.join("\r\r")) %>
+  <% end %>
+  <% if @most_replied_to_topics.any? %>
+    <h1><%= t('yearly_review.title.most_replied_to_topics') %></h1>
+    <%= raw("\r\r") + raw(@most_replied_to_topics.join("\r\r")) %>
+  <% end %>
+  <% if @most_bookmarked_topics.any? %>
+    <h1><%= t('yearly_review.title.most_bookmarked_topics') %></h1>
+    <%= raw("\r\r") + raw(@most_bookmarked_topics.join("\r\r")) %>
+  <% end %>
+</div>
 
-<% if @most_liked_topics.any? %>
-  <h2><%= t('yearly_review.title.most_liked_topics') %></h2>
-  <%= raw("\r\r") + raw(@most_liked_topics.join("\r\r")) %>
-<% end %>
-
-<% if @most_replied_to_topics.any? %>
-  <h2><%= t('yearly_review.title.most_replied_to_topics') %></h2>
-  <%= raw("\r\r") + raw(@most_replied_to_topics.join("\r\r")) %>
-<% end %>
-
-<% if @most_bookmarked_topics.any? %>
-  <h2><%= t('yearly_review.title.most_bookmarked_topics') %></h2>
-  <%= raw("\r\r") + raw(@most_bookmarked_topics.join("\r\r")) %>
-<% end %>

@@ -66,8 +66,8 @@ describe Jobs::YearlyReview do
     end
 
     it 'only displays data from public categories' do
-      review_category = Fabricate(:category)
-      non_review_category = Fabricate(:category)
+      review_category = Fabricate(:category, topics_year: 100)
+      non_review_category = Fabricate(:category, topics_year: 100)
       group = Fabricate(:group)
       non_review_category.set_permissions(group => :full)
       non_review_category.save
@@ -84,7 +84,7 @@ describe Jobs::YearlyReview do
       before do
         freeze_time DateTime.parse('2019-01-01')
         51.times do
-          category = Fabricate(:category)
+          category = Fabricate(:category, topics_year: 100)
           topic = Fabricate(:topic, category_id: category.id, created_at: 1.month.ago)
           2.times do
             Fabricate(:post, topic: topic)
@@ -96,7 +96,7 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).not_to have_tag('h3')
+        expect(raw).not_to have_tag('h2')
       end
     end
   end
@@ -141,9 +141,10 @@ describe Jobs::YearlyReview do
     end
 
     context 'likes given and received' do
+      SiteSetting.max_consecutive_replies = 20
       let(:reviewed_topic) { Fabricate(:topic, created_at: 1.year.ago) }
       before do
-        5.times do
+        11.times do
           post = Fabricate(:post, topic: reviewed_topic, user: reviewed_user, created_at: 1.month.ago)
           UserAction.create!(action_type: PostActionType.types[:like],
                              user_id: reviewed_user.id,
@@ -152,27 +153,29 @@ describe Jobs::YearlyReview do
                              target_topic_id: reviewed_topic.id,
                              created_at: 1.month.ago)
         end
-        post = Fabricate(:post, topic: reviewed_topic, user: top_review_user, created_at: 1.month.ago)
-        UserAction.create!(action_type: PostActionType.types[:like],
-                           user_id: top_review_user.id,
-                           acting_user_id: reviewed_user.id,
-                           target_post_id: post.id,
-                           target_topic_id: reviewed_topic.id,
-                           created_at: 1.month.ago)
+        10.times do
+          post = Fabricate(:post, topic: reviewed_topic, user: top_review_user, created_at: 1.month.ago)
+          UserAction.create!(action_type: PostActionType.types[:like],
+                             user_id: top_review_user.id,
+                             acting_user_id: reviewed_user.id,
+                             target_post_id: post.id,
+                             target_topic_id: reviewed_topic.id,
+                             created_at: 1.month.ago)
+        end
       end
 
       it 'should rank likes given and received correctly' do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).to have_tag('table.likes-given tr.user-row-0') { with_tag('td', text: /5/) }
+        expect(raw).to have_tag('table.likes-given tr.user-row-0') { with_tag('td', text: /11/) }
         expect(raw).to have_tag('table.likes-given tr.user-row-0') { with_tag('td', text: /@top_review_user/) }
-        expect(raw).to have_tag('table.likes-given tr.user-row-1') { with_tag('td', text: /1/) }
+        expect(raw).to have_tag('table.likes-given tr.user-row-1') { with_tag('td', text: /10/) }
         expect(raw).to have_tag('table.likes-given tr.user-row-1') { with_tag('td', text: /@reviewed_user/) }
 
-        expect(raw).to have_tag('table.likes-received tr.user-row-0') { with_tag('td', text: /5/) }
+        expect(raw).to have_tag('table.likes-received tr.user-row-0') { with_tag('td', text: /11/) }
         expect(raw).to have_tag('table.likes-received tr.user-row-0') { with_tag('td', text: /@reviewed_user/) }
-        expect(raw).to have_tag('table.likes-received tr.user-row-1') { with_tag('td', text: /1/) }
+        expect(raw).to have_tag('table.likes-received tr.user-row-1') { with_tag('td', text: /10/) }
         expect(raw).to have_tag('table.likes-received tr.user-row-1') { with_tag('td', text: /@top_review_user/) }
       end
     end
@@ -211,18 +214,19 @@ describe Jobs::YearlyReview do
         second_most_liked = Fabricate(:topic, title: 'The second most liked topic', created_at: 1.month.ago)
         most_liked_post = Fabricate(:post, topic: most_liked, created_at: 1.month.ago)
         second_most_liked_post = Fabricate(:post, topic: second_most_liked, created_at: 1.month.ago)
-        5.times do
+        11.times do
           PostAction.create!(post_id: most_liked_post.id,
                              user_id: Fabricate(:user).id,
                              post_action_type_id: PostActionType.types[:like],
                              created_at: 1.month.ago)
         end
-        PostAction.create!(post_id: second_most_liked_post.id,
-                           user_id: Fabricate(:user).id,
-                           post_action_type_id: PostActionType.types[:like],
-                           created_at: 1.month.ago)
-
-      end
+        10.times do
+          PostAction.create!(post_id: second_most_liked_post.id,
+                             user_id: Fabricate(:user).id,
+                             post_action_type_id: PostActionType.types[:like],
+                             created_at: 1.month.ago)
+        end
+       end
 
       it 'ranks the most liked topics correctly' do
         Jobs::YearlyReview.new.execute({})

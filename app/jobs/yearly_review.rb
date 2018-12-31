@@ -70,10 +70,24 @@ module ::Jobs
 
     def review_categories_from_settings
       if SiteSetting.yearly_review_categories.blank?
-        Category.where(read_restricted: false).pluck(:id)
+        categories = Category.where(read_restricted: false).pluck(:id)
       else
-        Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).pluck(:id)
+        categories = Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).pluck(:id)
       end
+
+      filtered = filter_categories categories
+      filtered.any? ? filtered : categories
+    end
+
+    def filter_categories(category_ids)
+      ids = []
+      category_ids.each do |id|
+        category = Category.find(id)
+        if category.topics_year > 20
+          ids << id
+        end
+      end
+      ids
     end
 
     def most_topics(categories, start_date, end_date)
@@ -257,18 +271,24 @@ module ::Jobs
     def most_popular_topic_sql
       <<~SQL
         SELECT
+        username,
+        uploaded_avatar_id,
         t.id,
         t.slug AS topic_slug,
         t.title,
+        t.created_at,
         c.slug AS category_slug,
         c.name AS category_name,
-        c.id as category_id,
-        tt.yearly_score
+        c.id AS category_id,
+        tt.yearly_score AS action_count,
+        'score' AS action
         FROM top_topics tt
         JOIN topics t
         ON t.id = tt.topic_id
         JOIN categories c
         ON c.id = t.category_id
+        JOIN users u
+        ON u.id = t.user_id
         WHERE t.deleted_at IS NULL
         AND t.created_at BETWEEN :start_date AND :end_date
         AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
@@ -280,13 +300,17 @@ module ::Jobs
     def most_liked_topic_sql
       <<~SQL
         SELECT
+        username,
+        uploaded_avatar_id,
         t.id,
         t.slug AS topic_slug,
         t.title,
+        t.created_at,
         c.slug AS category_slug,
         c.name AS category_name,
         c.id AS category_id,
-        COUNT(*) AS action_count
+        COUNT(*) AS action_count,
+        'likes' AS action
         FROM post_actions pa
         JOIN posts p
         ON p.id = pa.post_id
@@ -294,13 +318,15 @@ module ::Jobs
         ON t.id = p.topic_id
         JOIN categories c
         ON c.id = t.category_id
+        JOIN users u
+        ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 2
         AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         AND p.post_number = 1
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
-        GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id
+        GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT :limit
       SQL
@@ -309,25 +335,31 @@ module ::Jobs
     def most_replied_to_topic_sql
       <<~SQL
         SELECT
+        username,
+        uploaded_avatar_id,
         t.id,
         t.slug AS topic_slug,
         t.title,
+        t.created_at,
         c.slug AS category_slug,
         c.name AS category_name,
         c.id AS category_id,
-        COUNT(*) AS action_count
+        COUNT(*) AS action_count,
+        'replies' AS action
         FROM posts p
         JOIN topics t
         ON t.id = p.topic_id
         JOIN categories c
         ON c.id = t.category_id
+        JOIN users u
+        ON u.id = t.user_id
         WHERE p.created_at BETWEEN :start_date AND :end_date
         AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         AND p.post_type = 1
         AND t.posts_count > 1
-        GROUP BY t.id, topic_slug, category_slug, category_name, c.id
+        GROUP BY t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT :limit
       SQL
@@ -336,13 +368,17 @@ module ::Jobs
     def most_bookmarked_topic_sql
       <<~SQL
         SELECT
+        username,
+        uploaded_avatar_id,
         t.id,
         t.slug AS topic_slug,
         t.title,
+        t.created_at,
         c.slug AS category_slug,
         c.name AS category_name,
         c.id AS category_id,
-        COUNT(*) AS action_count
+        COUNT(*) AS action_count,
+        'bookmarks' AS action
         FROM post_actions pa
         JOIN posts p
         ON p.id = pa.post_id
@@ -350,12 +386,14 @@ module ::Jobs
         ON t.id = p.topic_id
         JOIN categories c
         ON c.id = t.category_id
+        JOIN users u
+        ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND pa.post_action_type_id = 3
         AND ((:exclude_categories AND t.category_id IN (:categories)) OR c.id = :cat_id)
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
-        GROUP BY t.id, category_slug, category_name, c.id
+        GROUP BY t.id, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT :limit
       SQL
@@ -380,20 +418,39 @@ module ::Jobs
     def category_topics(start_date, end_date, category_ids, sql)
       data = []
       num_cats = category_ids.length
-      exclude_categories = num_cats > 50
+      exclude_categories = num_cats > 30
+
       if exclude_categories
         DB.query(sql, start_date: start_date, end_date: end_date, categories: category_ids, cat_id: nil, exclude_categories: true, limit: 10).each do |row|
           if row
-            data << topic_link(row.topic_slug, row.id)
+            action = row.action
+            case action
+            when 'likes'
+              next if row.action_count < 10
+            when 'replies'
+              next if row.action_count < 10
+            when 'bookmarks'
+              next if row.action_count < 10
+            end
+            data << topic_html(row)
           end
         end
       else
         category_ids.each do |cat_id|
-          limit = num_cats > 30 ? 2 : 3
+          limit = num_cats > 15 ? 2 : 3
           DB.query(sql, start_date: start_date, end_date: end_date, categories: category_ids, cat_id: cat_id, exclude_categories: false, limit: limit).each_with_index do |row, i|
             if row
-              data << "<h3>#{row.category_name}</h3>" if i == 0
-              data << topic_link(row.topic_slug, row.id)
+              action = row.action
+              case action
+              when 'likes'
+                next if row.action_count < 10
+              when 'replies'
+                next if row.action_count < 10
+              when 'bookmarks'
+                next if row.action_count < 10
+              end
+              data << "<h2>##{row.category_name}</h2>" if i == 0
+              data << topic_html(row)
             end
           end
         end
@@ -402,8 +459,51 @@ module ::Jobs
       data
     end
 
-    def topic_link(slug, topic_id)
-      "#{Discourse.base_url}/t/#{slug}/#{topic_id}"
+    def topic_html(row)
+      html = "<h3>#{avatar_image(row.username, row.uploaded_avatar_id)} #{topic_link(row.title, row.topic_slug, row.id)}</h3><p>#{format_date(row.created_at)}"
+      html += " #{emoji_for_action(row.action)} #{row.action_count}" if row.action && row.action != 'score'
+      html += '</p>'
+    end
+
+    def format_date(date_time)
+      date_time.strftime("%b %d")
+    end
+
+    def topic_link(title, slug, topic_id)
+      link = "#{Discourse.base_url}/t/#{slug}/#{topic_id}"
+      "<a href='#{link}'>#{title}</a>"
+    end
+
+    def avatar_image(username, uploaded_avatar_id)
+      template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, '25')
+      "<img src='#{template}' class='avatar'/>"
+    end
+
+    def user_link(username)
+      "<a class='mention' href='/u/#{username}'>@#{username}</a>"
+    end
+
+    def emoji_for_action(action)
+      return unless action
+
+      unless SiteSetting.enable_emoji
+        return action
+      end
+
+      case action
+      when 'likes'
+        emoji = 'heart'
+      when 'replies'
+        emoji = 'leftwards_arrow_with_hook'
+      when 'bookmarks'
+        emoji = 'bookmark'
+      else
+        return ''
+      end
+
+      url = Emoji.url_for(emoji)
+      emoji_sym = ":#{emoji}:"
+      "<img src='#{url}' title='#{emoji_sym}' class='emoji' alt='#{emoji_sym}'/>"
     end
   end
 end

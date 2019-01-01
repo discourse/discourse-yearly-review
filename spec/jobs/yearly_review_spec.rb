@@ -79,26 +79,6 @@ describe Jobs::YearlyReview do
       expect(raw).not_to have_tag('td', text: /@reviewed_user/)
       expect(raw).to have_tag('td', text: /@top_review_user/)
     end
-
-    context 'with 51 categories' do
-      before do
-        freeze_time DateTime.parse('2019-01-01')
-        51.times do
-          category = Fabricate(:category, topics_year: 100)
-          topic = Fabricate(:topic, category_id: category.id, created_at: 1.month.ago)
-          2.times do
-            Fabricate(:post, topic: topic)
-          end
-        end
-      end
-
-      it "doesn't display category headings" do
-        Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).not_to have_tag('h2')
-      end
-    end
   end
 
   describe 'user stats' do
@@ -201,59 +181,6 @@ describe Jobs::YearlyReview do
       topic = Topic.last
       raw = Post.where(topic_id: topic.id).first.raw
       expect(raw).to have_tag('a', text: /And 1 more/)
-    end
-  end
-
-  describe 'topic stats' do
-    before do
-      freeze_time DateTime.parse('2019-01-01')
-    end
-    context 'most liked topics' do
-      before do
-        most_liked = Fabricate(:topic, title: 'The most liked topic', created_at: 1.month.ago)
-        second_most_liked = Fabricate(:topic, title: 'The second most liked topic', created_at: 1.month.ago)
-        most_liked_post = Fabricate(:post, topic: most_liked, created_at: 1.month.ago)
-        second_most_liked_post = Fabricate(:post, topic: second_most_liked, created_at: 1.month.ago)
-        11.times do
-          PostAction.create!(post_id: most_liked_post.id,
-                             user_id: Fabricate(:user).id,
-                             post_action_type_id: PostActionType.types[:like],
-                             created_at: 1.month.ago)
-        end
-        10.times do
-          PostAction.create!(post_id: second_most_liked_post.id,
-                             user_id: Fabricate(:user).id,
-                             post_action_type_id: PostActionType.types[:like],
-                             created_at: 1.month.ago)
-        end
-       end
-
-      it 'ranks the most liked topics correctly' do
-        Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).to match(/the-most-liked-topic.+\r\r.+the-second-most-liked-topic/)
-      end
-    end
-
-    context 'most replied to topics' do
-      let(:most_replies) { Fabricate(:topic, created_at: 1.year.ago, title: 'The most replied to topic') }
-      let(:second_most_replies) { Fabricate(:topic, created_at: 1.year.ago, title: 'The second most replied to topic') }
-      before do
-        5.times do
-          Fabricate(:post, topic: most_replies, created_at: 1.month.ago)
-        end
-        2.times do
-          Fabricate(:post, topic: second_most_replies, created_at: 1.month.ago)
-        end
-      end
-
-      it 'ranks the most replied to topics correctly' do
-        Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).to match(/the-most-replied-to-topic.+\r\r.+the-second-most-replied-to-topic/)
-      end
     end
   end
 end

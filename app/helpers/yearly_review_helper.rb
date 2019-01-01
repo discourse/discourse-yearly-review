@@ -25,27 +25,4 @@ module YearlyReviewHelper
     url = "#{Discourse.base_url}/badges/#{id}/#{slug_from_name(name)}"
     "<a class='more-badge-users' href='#{url}'>#{t('yearly_review.more_badge_users', more: more)}</a>"
   end
-
-  def emoji_for_action(action)
-    return unless action
-
-    unless SiteSetting.enable_emoji
-      return action
-    end
-
-    case action
-    when 'likes'
-      emoji = 'heart'
-    when 'replies'
-      emoji = 'leftwards_arrow_with_hook'
-    when 'bookmarks'
-      emoji = 'bookmark'
-    else
-      return ''
-    end
-
-    url = Emoji.url_for(emoji)
-    emoji_sym = ":#{emoji}:"
-    "<img src='#{url}' title='#{emoji_sym}' class='emoji' alt='#{emoji_sym}'/>"
-  end
 end

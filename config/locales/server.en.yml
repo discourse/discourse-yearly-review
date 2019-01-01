@@ -7,12 +7,14 @@ en:
   yearly_review:
     topic_title: "%{year}: The Year in Review"
     title:
+      users_section: "%{year}'s top Users"
+      topics_section: "%{year}'s top Topics"
       topics_created: "Most Topics Created"
       replies_created: "Most Replies Created"
       likes_given: "Most Likes Given"
       likes_received: "Most Likes Received"
       visits: "Most Visits"
-      time_read: "Most Time Reading"
+      time_read: "Time Reading the Year's Topics"
       most_replied_to: "Most Replied to"
       featured_badge: "Users Granted the %{badge_name} Badge"
       most_popular_topics: "Most Popular Topics"

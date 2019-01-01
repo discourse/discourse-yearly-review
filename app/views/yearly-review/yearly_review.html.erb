@@ -1,8 +1,9 @@
+<h1><%= t('yearly_review.title.users_section', year: 2018) %></h1>
 <% if @user_stats.any? %>
   <div data-review-topic-users="true">
     <% @user_stats.each do |obj| %>
       <% if obj[:users] %>
-        <h1><%= t("yearly_review.title.#{obj[:key]}") %></h1>
+        <h2><%= t("yearly_review.title.#{obj[:key]}") %></h2>
         <table class="<%= class_from_key(obj[:key]) %>">
           <tr>
             <th>
@@ -31,7 +32,7 @@
 
 <% if @featured_badge_users.any? %>
   <div data-review-users="true">
-    <h1><%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %></h1>
+    <h2><%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %></h2>
     <% @featured_badge_users.each do |user| %>
       <span><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %><%= raw(user_link(user.username)) %></span>
     <% end %>
@@ -41,13 +42,13 @@
     <% end %>
   </div>
 <% end %>
-
+<h1><%= t('yearly_review.title.topics_section', year: 2018) %></h1>
 <% if @category_topics.any? %>
   <div data-review-featured-topics="true">
     <% @category_topics.each do |category_name, ranked_topics| %>
-      <h1>#<%= category_name %></h1>
+      <h2>#<%= category_name %></h2>
       <% ranked_topics.each do |rank_type, topics| %>
-        <h2><%= t("yearly_review.rank_type.title.#{rank_type}") %></h2>
+        <h3><%= t("yearly_review.rank_type.title.#{rank_type}") %></h3>
         <table>
           <tr>
             <th><%= t('yearly_review.user') %></th>

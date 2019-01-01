@@ -64,12 +64,14 @@ module ::Jobs
 
     def user_stats(review_categories, review_start, review_end)
       user_stats = []
+      most_time_read = most_time_read review_categories, review_start, review_end
       most_topics = most_topics review_categories, review_start, review_end
       most_replies = most_replies review_categories, review_start, review_end
       most_likes = most_likes_given review_categories, review_start, review_end
       most_likes_received = most_likes_received review_categories, review_start, review_end
       most_visits = most_visits review_start, review_end
       most_replied_to = most_replied_to review_categories, review_start, review_end
+      user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
       user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
       user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
@@ -83,10 +85,13 @@ module ::Jobs
       topics = {}
       category_ids.each do |cat_id|
         category_topics = {}
+        most_read = ranked_topics(cat_id, start_date, end_date, most_read_topic_sql)
         most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
         most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
         most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
         most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
+
+        category_topics[:most_read] = most_read if most_read.any?
         category_topics[:most_liked] = most_liked if most_liked.any?
         category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
         category_topics[:most_popular] = most_popular if most_popular.any?
@@ -113,6 +118,8 @@ module ::Jobs
             next if row.action_count < 1
           when 'score'
             next if row.action_count < 1
+          when 'read_time'
+            next if row.action_count < 0.1
           end
           data << row
         end
@@ -187,6 +194,32 @@ module ::Jobs
         AND uv.visited_at >= '#{start_date}'
         AND uv.visited_at <= '#{end_date}'
         GROUP BY uv.user_id, u.username, u.uploaded_avatar_id
+        ORDER BY action_count DESC
+        LIMIT #{MAX_USERS}
+      SQL
+
+      DB.query(sql)
+    end
+
+    def most_time_read(categories, start_date, end_date)
+      sql = <<~SQL
+        SELECT
+        u.id,
+        u.username,
+        u.uploaded_avatar_id,
+        (SUM(tu.total_msecs_viewed) / (1000 * 60)) AS action_count
+        FROM users u
+        JOIN topic_users tu
+        ON tu.user_id = u.id
+        JOIN topics t
+        ON t.id = tu.topic_id
+        WHERE u.id > 0
+        AND t.created_at >= '#{start_date}'
+        AND t.created_at <= '#{end_date}'
+        AND t.category_id IN (#{categories.join(',')})
+        AND t.deleted_at IS NULL
+        AND tu.total_msecs_viewed > (1000 * 60)
+        GROUP BY u.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
       SQL
@@ -296,6 +329,36 @@ module ::Jobs
       SQL
 
       DB.query(sql)
+    end
+
+    def most_read_topic_sql
+      <<~SQL
+      SELECT
+      username,
+      uploaded_avatar_id,
+      t.id,
+      t.slug AS topic_slug,
+      t.title,
+      t.created_at,
+      c.slug AS category_slug,
+      c.name AS category_name,
+      c.id AS category_id,
+      ROUND(SUM(tu.total_msecs_viewed::numeric) / (1000 * 60 * 60)::numeric, 2) AS action_count,
+      'read_time' AS action
+      FROM users u
+      JOIN topics t
+      ON t.user_id = u.id
+      JOIN topic_users tu
+      ON tu.topic_id = t.id
+      JOIN categories c
+      ON c.id = t.category_id
+      WHERE t.deleted_at IS NULL
+      AND t.created_at BETWEEN :start_date AND :end_date
+      AND c.id = :cat_id
+      GROUP BY t.id, username, uploaded_avatar_id, c.id
+      ORDER BY action_count DESC
+      LIMIT :limit
+      SQL
     end
 
     def most_popular_topic_sql

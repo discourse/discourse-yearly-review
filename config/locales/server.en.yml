@@ -12,6 +12,7 @@ en:
       likes_given: "Most Likes Given"
       likes_received: "Most Likes Received"
       visits: "Most Visits"
+      time_read: "Most Time Reading"
       most_replied_to: "Most Replied to"
       featured_badge: "Users Granted the %{badge_name} Badge"
       most_popular_topics: "Most Popular Topics"
@@ -26,6 +27,7 @@ en:
       likes_given: "Likes"
       likes_received: "Likes"
       visits: "Days Visited"
+      time_read: "Minutes Read"
     rank_type:
       title:
         most_liked: "Most Liked"
@@ -37,6 +39,7 @@ en:
         most_replied_to: "Replies"
         most_liked: "Likes"
         most_bookmarked: "Bookmarks"
+        most_read: "Hours Read"
     user: "User"
     topics: "Topics"
     topic: "Topic"

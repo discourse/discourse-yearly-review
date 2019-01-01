@@ -59,7 +59,7 @@ module ::Jobs
     end
 
     def filter_categories(category_ids)
-      Category.where(id: category_ids).order("topics_year DESC")[0, 7].pluck(:id)
+      Category.where(id: category_ids).order("topics_year DESC")[0, 5].pluck(:id)
     end
 
     def user_stats(review_categories, review_start, review_end)
@@ -207,7 +207,7 @@ module ::Jobs
         u.id,
         u.username,
         u.uploaded_avatar_id,
-        (SUM(tu.total_msecs_viewed) / (1000 * 60)) AS action_count
+        ROUND(SUM(tu.total_msecs_viewed::numeric) / (1000 * 60 * 60)::numeric, 2) AS action_count
         FROM users u
         JOIN topic_users tu
         ON tu.user_id = u.id
@@ -355,6 +355,7 @@ module ::Jobs
       WHERE t.deleted_at IS NULL
       AND t.created_at BETWEEN :start_date AND :end_date
       AND c.id = :cat_id
+      AND u.id > 0
       GROUP BY t.id, username, uploaded_avatar_id, c.id
       ORDER BY action_count DESC
       LIMIT :limit
@@ -385,6 +386,7 @@ module ::Jobs
         WHERE t.deleted_at IS NULL
         AND t.created_at BETWEEN :start_date AND :end_date
         AND c.id = :cat_id
+        AND u.id > 0
         ORDER BY tt.yearly_score DESC
         LIMIT :limit
       SQL
@@ -419,6 +421,7 @@ module ::Jobs
         AND p.post_number = 1
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
+        AND u.id > 0
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT :limit
@@ -452,6 +455,7 @@ module ::Jobs
         AND p.deleted_at IS NULL
         AND p.post_type = 1
         AND t.posts_count > 1
+        AND u.id > 0
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT :limit

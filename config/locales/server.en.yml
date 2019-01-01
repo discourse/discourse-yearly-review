@@ -29,7 +29,7 @@ en:
       likes_given: "Likes"
       likes_received: "Likes"
       visits: "Days Visited"
-      time_read: "Minutes Read"
+      time_read: "Hours Read"
     rank_type:
       title:
         most_liked: "Most Liked"

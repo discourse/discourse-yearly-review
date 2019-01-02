@@ -1,6 +1,6 @@
 plugins:
   yearly_review_enabled:
-    default: true
+    default: false
     client: true
   yearly_review_categories:
     type: category_list

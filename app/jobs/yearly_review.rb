@@ -29,15 +29,16 @@ module ::Jobs
     end
 
     def create_raw_topic
+      exclude_staff = SiteSetting.yearly_review_exclude_staff
       review_categories = review_categories_from_settings
       filtered_categories = filter_categories review_categories
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
 
-      user_stats = user_stats review_categories, review_start, review_end
+      user_stats = user_stats review_start, review_end, exclude_staff
       category_topics = category_topics filtered_categories, review_start, review_end
-      featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
+      featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end, exclude_staff)
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
@@ -62,15 +63,15 @@ module ::Jobs
       Category.where(id: category_ids).order("topics_year DESC")[0, 5].pluck(:id)
     end
 
-    def user_stats(review_categories, review_start, review_end)
+    def user_stats(review_start, review_end, exclude_staff)
       user_stats = []
-      most_time_read = most_time_read review_categories, review_start, review_end
-      most_topics = most_topics review_categories, review_start, review_end
-      most_replies = most_replies review_categories, review_start, review_end
-      most_likes = most_likes_given review_categories, review_start, review_end
-      most_likes_received = most_likes_received review_categories, review_start, review_end
-      most_visits = most_visits review_start, review_end
-      most_replied_to = most_replied_to review_categories, review_start, review_end
+      most_time_read = most_time_read review_start, review_end, exclude_staff
+      most_topics = most_topics review_start, review_end, exclude_staff
+      most_replies = most_replies review_start, review_end, exclude_staff
+      most_likes = most_likes_given review_start, review_end, exclude_staff
+      most_likes_received = most_likes_received review_start, review_end, exclude_staff
+      most_visits = most_visits review_start, review_end, exclude_staff
+      most_replied_to = most_replied_to review_start, review_end, exclude_staff
       user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
       user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
@@ -127,7 +128,7 @@ module ::Jobs
       data
     end
 
-    def most_topics(categories, start_date, end_date)
+    def most_topics(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         t.user_id,
@@ -138,10 +139,10 @@ module ::Jobs
         JOIN users u
         ON u.id = t.user_id
         WHERE t.archetype = 'regular'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
         AND t.user_id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
-        AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         GROUP BY t.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
@@ -151,7 +152,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_replies(categories, start_date, end_date)
+    def most_replies(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         p.user_id,
@@ -164,12 +165,12 @@ module ::Jobs
         JOIN topics t
         ON t.id = p.topic_id
         WHERE t.archetype = 'regular'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
         AND p.user_id > 0
         AND p.post_number > 1
         AND p.post_type = 1
         AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
-        AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         GROUP BY p.user_id, u.username, u.uploaded_avatar_id
@@ -180,7 +181,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_visits(start_date, end_date)
+    def most_visits(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         uv.user_id,
@@ -191,6 +192,7 @@ module ::Jobs
         JOIN users u
         ON u.id = uv.user_id
         WHERE u.id > 0
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
         AND uv.visited_at >= '#{start_date}'
         AND uv.visited_at <= '#{end_date}'
         GROUP BY uv.user_id, u.username, u.uploaded_avatar_id
@@ -201,7 +203,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_time_read(categories, start_date, end_date)
+    def most_time_read(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         u.id,
@@ -213,10 +215,11 @@ module ::Jobs
         ON tu.user_id = u.id
         JOIN topics t
         ON t.id = tu.topic_id
-        WHERE u.id > 0
+        WHERE t.archetype = 'regular'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND u.id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
-        AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         AND tu.total_msecs_viewed > (1000 * 60)
         GROUP BY u.id, username, uploaded_avatar_id
@@ -227,7 +230,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_likes_given(categories, start_date, end_date)
+    def most_likes_given(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         ua.acting_user_id,
@@ -239,11 +242,12 @@ module ::Jobs
         ON t.id = ua.target_topic_id
         JOIN users u
         ON u.id = ua.acting_user_id
-        WHERE u.id > 0
+        WHERE t.archetype = 'regular'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
         AND ua.action_type = 2
-        AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         GROUP BY ua.acting_user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
@@ -253,7 +257,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_likes_received(categories, start_date, end_date)
+    def most_likes_received(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         u.username,
@@ -264,11 +268,12 @@ module ::Jobs
         ON t.id = ua.target_topic_id
         JOIN users u
         ON u.id = ua.user_id
-        WHERE u.id > 0
+        WHERE t.archetype = 'regular'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
         AND ua.action_type = 2
-        AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         GROUP BY u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
@@ -278,7 +283,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_replied_to(categories, start_date, end_date)
+    def most_replied_to(start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         u.username,
@@ -289,10 +294,11 @@ module ::Jobs
         ON t.id = p.topic_id
         JOIN users u
         ON u.id = p.user_id
-        WHERE p.created_at >= '#{start_date}'
+        WHERE t.archetype = 'regular'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
         AND p.reply_count > 0
-        AND t.category_id IN (#{categories.join(',')})
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         AND p.post_type = 1
@@ -305,7 +311,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def featured_badge_users(badge_name, start_date, end_date)
+    def featured_badge_users(badge_name, start_date, end_date, exclude_staff)
       sql = <<~SQL
         SELECT
         u.id AS user_id,
@@ -322,6 +328,7 @@ module ::Jobs
         JOIN users u
         ON u.id = ub.user_id
         WHERE b.name = '#{badge_name}'
+        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
         AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
         AND u.id > 0
         ORDER BY ub.granted_at DESC

@@ -63,21 +63,28 @@ describe Jobs::YearlyReview do
   describe 'review categories' do
     before do
       freeze_time DateTime.parse('2019-01-01')
-    end
-
-    it 'only displays data from public categories' do
       review_category = Fabricate(:category, topics_year: 100)
       non_review_category = Fabricate(:category, topics_year: 100)
       group = Fabricate(:group)
       non_review_category.set_permissions(group => :full)
       non_review_category.save
-      Fabricate(:topic, category_id: non_review_category.id, user: reviewed_user, created_at: 1.month.ago)
-      Fabricate(:topic, category_id: review_category.id, user: top_review_user, created_at: 1.month.ago)
+      private_topic = Fabricate(:topic, category_id: non_review_category.id, title: 'A topic in a private category' , created_at: 1.month.ago)
+      public_topic = Fabricate(:topic, category_id: review_category.id, posts_count: 100, title: 'A topic in a public category', created_at: 1.month.ago)
+      20.times do
+        Fabricate(:post, topic: private_topic, created_at: 1.month.ago)
+      end
+      20.times do
+        Fabricate(:post, topic: public_topic, created_at: 1.month.ago)
+      end
+    end
+
+    it 'only displays data from public categories' do
       Jobs::YearlyReview.new.execute({})
       topic = Topic.last
       raw = Post.where(topic_id: topic.id).first.raw
-      expect(raw).not_to have_tag('td', text: /@reviewed_user/)
-      expect(raw).to have_tag('td', text: /@top_review_user/)
+      puts "#{raw}"
+      expect(raw).not_to have_tag('a', text: /A topic in a private category/)
+      expect(raw).to have_tag('a', text: /A topic in a public category/)
     end
   end
 

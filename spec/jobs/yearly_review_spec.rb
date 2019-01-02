@@ -70,10 +70,10 @@ describe Jobs::YearlyReview do
       non_review_category.save
       private_topic = Fabricate(:topic, category_id: non_review_category.id, title: 'A topic in a private category' , created_at: 1.month.ago)
       public_topic = Fabricate(:topic, category_id: review_category.id, posts_count: 100, title: 'A topic in a public category', created_at: 1.month.ago)
-      20.times do
+      11.times do
         Fabricate(:post, topic: private_topic, created_at: 1.month.ago)
       end
-      20.times do
+      11.times do
         Fabricate(:post, topic: public_topic, created_at: 1.month.ago)
       end
     end
@@ -82,7 +82,6 @@ describe Jobs::YearlyReview do
       Jobs::YearlyReview.new.execute({})
       topic = Topic.last
       raw = Post.where(topic_id: topic.id).first.raw
-      puts "#{raw}"
       expect(raw).not_to have_tag('a', text: /A topic in a private category/)
       expect(raw).to have_tag('a', text: /A topic in a public category/)
     end

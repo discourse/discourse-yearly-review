@@ -2,6 +2,7 @@ en:
   site_settings:
     yearly_review_enabled: "Enable the yearly review."
     yearly_review_categories: "The categories to pull data from. If left blank will default to all public categories."
+    yearly_review_exclude_staff: "Exclude Staff from user stats."
     yearly_review_publish_category: "The category the review will be published in."
     yearly_review_featured_badge: "Show users who have earned the badge during 2018."
   yearly_review:
@@ -14,7 +15,7 @@ en:
       likes_given: "Most Likes Given"
       likes_received: "Most Likes Received"
       visits: "Most Visits"
-      time_read: "Time Reading the Year's Topics"
+      time_read: "Most Time Reading"
       most_replied_to: "Most Replied to"
       featured_badge: "Users Granted the %{badge_name} Badge"
       most_popular_topics: "Most Popular Topics"

@@ -1,7 +1,7 @@
 module YearlyReviewHelper
   def avatar_image(username, uploaded_avatar_id)
     template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, '25')
-    "<img src='#{template}' class='avatar'/>"
+    "<img src='#{template}' class='avatar' height='25' width='25'/>"
   end
 
   def user_link(username)

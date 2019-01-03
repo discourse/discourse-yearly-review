@@ -173,7 +173,7 @@ describe Jobs::YearlyReview do
     before do
       SiteSetting.yearly_review_featured_badge = badge.name
       freeze_time DateTime.parse('2019-01-01')
-      101.times do
+      16.times do
         user = Fabricate(:user)
         UserBadge.create!(badge_id: badge.id,
                           user_id: user.id,

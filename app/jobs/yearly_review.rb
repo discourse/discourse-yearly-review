@@ -3,7 +3,7 @@ require_relative '../../app/helpers/yearly_review_helper'
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
     MAX_USERS = 10
-    MAX_BADGE_USERS = 100
+    MAX_BADGE_USERS = 25
 
     every 1.day
     def execute(args)
@@ -75,10 +75,10 @@ module ::Jobs
       user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
       user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
+      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
       user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
       user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
       user_stats << { key: 'visits', users: most_visits } if most_visits.any?
-      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
       user_stats
     end
 

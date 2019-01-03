@@ -3,7 +3,7 @@ require_relative '../../app/helpers/yearly_review_helper'
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
     MAX_USERS = 10
-    MAX_BADGE_USERS = 25
+    MAX_BADGE_USERS = 15
 
     every 1.day
     def execute(args)

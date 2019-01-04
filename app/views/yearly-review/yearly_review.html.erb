@@ -20,7 +20,7 @@
                 <%= raw(user_link(user.username)) %>
               </td>
               <td>
-                <%= user.action_count %>
+                <%= user.action_count < 1 ? 1 : user.action_count.round %>
               </td>
             </tr>
           <% end %>
@@ -59,7 +59,7 @@
           <tr>
             <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
             <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
-            <td><%= topic.action_count %></td>
+            <td><%= topic.action_count.round %></td>
           </tr>
         <% end %>
         </table>

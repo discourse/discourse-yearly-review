@@ -29,16 +29,14 @@ module ::Jobs
     end
 
     def create_raw_topic
-      exclude_staff = SiteSetting.yearly_review_exclude_staff
       review_categories = review_categories_from_settings
-      filtered_categories = filter_categories review_categories
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
 
-      user_stats = user_stats review_start, review_end, exclude_staff
-      category_topics = category_topics filtered_categories, review_start, review_end
-      featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end, exclude_staff)
+      user_stats = user_stats review_start, review_end
+      category_topics = category_topics review_categories, review_start, review_end
+      featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
@@ -53,17 +51,14 @@ module ::Jobs
 
     def review_categories_from_settings
       if SiteSetting.yearly_review_categories.blank?
-        Category.where(read_restricted: false).pluck(:id)
+        Category.where(read_restricted: false).order("topics_year DESC")[0, 5].pluck(:id)
       else
-        Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).pluck(:id)
+        Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).order("topics_year DESC").pluck(:id)
       end
     end
 
-    def filter_categories(category_ids)
-      Category.where(id: category_ids).order("topics_year DESC")[0, 5].pluck(:id)
-    end
-
-    def user_stats(review_start, review_end, exclude_staff)
+    def user_stats(review_start, review_end)
+      exclude_staff = SiteSetting.yearly_review_exclude_staff
       user_stats = []
       most_time_read = most_time_read review_start, review_end, exclude_staff
       most_topics = most_topics review_start, review_end, exclude_staff
@@ -107,7 +102,8 @@ module ::Jobs
 
     def ranked_topics(cat_id, start_date, end_date, sql)
       data = []
-      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, limit: 3).each do |row|
+      exclude_staff = SiteSetting.yearly_review_exclude_staff
+      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 3).each do |row|
         if row
           action = row.action
           case action
@@ -311,7 +307,8 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def featured_badge_users(badge_name, start_date, end_date, exclude_staff)
+    def featured_badge_users(badge_name, start_date, end_date)
+      exclude_staff = SiteSetting.yearly_review_exclude_staff
       sql = <<~SQL
         SELECT
         u.id AS user_id,
@@ -360,6 +357,7 @@ module ::Jobs
       JOIN categories c
       ON c.id = t.category_id
       WHERE t.deleted_at IS NULL
+      AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
       AND t.created_at BETWEEN :start_date AND :end_date
       AND c.id = :cat_id
       AND u.id > 0
@@ -391,6 +389,7 @@ module ::Jobs
         JOIN users u
         ON u.id = t.user_id
         WHERE t.deleted_at IS NULL
+        AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND t.created_at BETWEEN :start_date AND :end_date
         AND c.id = :cat_id
         AND u.id > 0
@@ -423,6 +422,7 @@ module ::Jobs
         JOIN users u
         ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
+        AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND pa.post_action_type_id = 2
         AND c.id = :cat_id
         AND p.post_number = 1
@@ -457,6 +457,7 @@ module ::Jobs
         JOIN users u
         ON u.id = t.user_id
         WHERE p.created_at BETWEEN :start_date AND :end_date
+        AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
@@ -493,6 +494,7 @@ module ::Jobs
         JOIN users u
         ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
+        AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND pa.post_action_type_id = 3
         AND c.id = :cat_id
         AND t.deleted_at IS NULL

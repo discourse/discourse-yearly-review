@@ -6,7 +6,7 @@ plugins:
     type: category_list
     default: ''
   yearly_review_exclude_staff:
-    default: false
+    default: true
   yearly_review_publish_category:
     type: category
     default: ''

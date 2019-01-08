@@ -17,7 +17,3 @@ after_initialize do
   ].each { |path| load File.expand_path(path, __FILE__) }
 
 end
-
-register_css <<CSS
-
-CSS

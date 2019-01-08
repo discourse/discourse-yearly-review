@@ -18,14 +18,14 @@ module ::Jobs
 
       raw = create_raw_topic
 
-      opts = {
+      topic_opts = {
         title: title,
         raw: raw,
         category: SiteSetting.yearly_review_publish_category,
         skip_validations: true
       }
 
-      PostCreator.create!(Discourse.system_user, opts)
+      topic = PostCreator.create!(Discourse.system_user, opts)
     end
 
     def create_raw_topic
@@ -47,6 +47,21 @@ module ::Jobs
       end
 
       view.render template: "yearly_review", formats: :html, layout: false
+    end
+
+    def create_category_posts
+      review_categories = review_categories_from_settings
+      review_start = Time.new(2018, 1, 1)
+      review_end = review_start.end_of_year
+      category_topics = category_topics review_categories, review_start, review_end
+
+      view = ActionView::Base.new(ActionController::Base.view_paths,
+                                  category_topics: category_topics)
+      view.class_eval do
+        include YearlyReviewHelper
+      end
+
+      view.render template: "yearly_review_category", formats: :html, layout: false
     end
 
     def review_categories_from_settings

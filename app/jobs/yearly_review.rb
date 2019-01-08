@@ -310,7 +310,7 @@ module ::Jobs
     def featured_badge_users(badge_name, start_date, end_date)
       exclude_staff = SiteSetting.yearly_review_exclude_staff
       sql = <<~SQL
-        SELECT
+        SELECT DISTINCT ON(u.id)
         u.id AS user_id,
         username,
         uploaded_avatar_id,
@@ -328,7 +328,7 @@ module ::Jobs
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
         AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
         AND u.id > 0
-        ORDER BY ub.granted_at DESC
+        ORDER BY u.id
         LIMIT #{MAX_BADGE_USERS}
       SQL
 

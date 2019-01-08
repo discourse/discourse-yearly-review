@@ -12,7 +12,7 @@ module ::Jobs
 
       unless args[:force]
         return unless SiteSetting.yearly_review_enabled
-        return unless now.month == 1 && now.day < 8
+        return unless now.month == 1 && now.day < 22
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 

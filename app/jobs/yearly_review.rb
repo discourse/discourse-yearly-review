@@ -38,14 +38,17 @@ module ::Jobs
 
       user_stats = user_stats review_start, review_end
       category_topics = category_topics review_categories, review_start, review_end
+      daily_visits = daily_visits review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
+                                  daily_visits: daily_visits,
                                   featured_badge_users: featured_badge_users,
                                   category_topics: category_topics)
       view.class_eval do
         include YearlyReviewHelper
+        include ActionView::Helpers::NumberHelper
       end
 
       view.render template: "yearly_review", formats: :html, layout: false
@@ -64,9 +67,8 @@ module ::Jobs
                                     category_topics: category_post_topics)
         view.class_eval do
           include YearlyReviewHelper
+          include ActionView::Helpers::NumberHelper
         end
-
-        puts "CATEGORYPOSTTOPICS #{category_post_topics}"
 
         if category_post_topics[:topics]
           raw = view.render template: "yearly_review_category", formats: :html, layout: false
@@ -231,6 +233,29 @@ module ::Jobs
         GROUP BY p.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
+      SQL
+
+      DB.query(sql)
+    end
+
+    def daily_visits(start_date, end_date)
+      sql = <<~SQL
+      WITH visits AS (
+      SELECT
+      user_id,
+      COUNT(user_id) AS days_visited_count
+      FROM user_visits uv
+      WHERE uv.visited_at >= '#{start_date}'
+      AND uv.visited_at <= '#{end_date}'
+      GROUP BY user_id
+      )
+      SELECT
+      COUNT(user_id) AS users,
+      days_visited_count AS days
+      FROM visits
+      GROUP BY days_visited_count
+      ORDER BY days_visited_count DESC
+      LIMIT 10
       SQL
 
       DB.query(sql)

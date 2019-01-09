@@ -20,13 +20,31 @@
                 <%= raw(user_link(user.username)) %>
               </td>
               <td>
-                <%= user.action_count < 1 ? 1 : user.action_count.round %>
+                <%= number_to_human(user.action_count < 1 ? 1 : user.action_count.round, units: {thousand: 'K'}) %>
               </td>
             </tr>
           <% end %>
         </table>
       <% end %>
     <% end %>
+  </div>
+<% end %>
+
+<% if @daily_visits.any? %>
+  <div data-review-topic-users="true">
+    <h2>Daily Visits</h2>
+    <table>
+      <tr>
+        <th>Days</th>
+        <th>Visits</th>
+      </tr>
+      <% @daily_visits.each do |visit| %>
+      <tr>
+        <td><%= number_to_human(visit.days, units: {thousand: 'K' }) %></td>
+        <td><%= number_to_human(visit.users, units: {thousand: 'K'}) %></td>
+      </tr>
+      <% end %>
+    </table>
   </div>
 <% end %>
 

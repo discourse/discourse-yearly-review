@@ -12,7 +12,7 @@
     <tr>
       <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
       <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
-      <td><%= topic.action_count.round %></td>
+      <td><%= number_to_human(topic.action_count.round, units: {thousand: 'K'}) %></td>
     </tr>
   <% end %>
   </table>

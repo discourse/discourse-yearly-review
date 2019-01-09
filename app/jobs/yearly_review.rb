@@ -37,15 +37,13 @@ module ::Jobs
       review_end = review_start.end_of_year
 
       user_stats = user_stats review_start, review_end
-      category_topics = category_topics review_categories, review_start, review_end
       daily_visits = daily_visits review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
 
       view = ActionView::Base.new(ActionController::Base.view_paths,
                                   user_stats: user_stats,
                                   daily_visits: daily_visits,
-                                  featured_badge_users: featured_badge_users,
-                                  category_topics: category_topics)
+                                  featured_badge_users: featured_badge_users)
       view.class_eval do
         include YearlyReviewHelper
         include ActionView::Helpers::NumberHelper
@@ -58,7 +56,6 @@ module ::Jobs
       review_categories = review_categories_from_settings
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
-      # category_topics = category_topics review_categories, review_start, review_end
 
       review_categories.each do |category_id|
         category_post_topics = category_post_topics category_id, review_start, review_end
@@ -134,30 +131,6 @@ module ::Jobs
       user_stats << {key: 'likes_received', users: most_likes_received} if most_likes_received.any?
       user_stats << {key: 'visits', users: most_visits} if most_visits.any?
       user_stats
-    end
-
-
-    def category_topics(category_ids, start_date, end_date)
-      topics = {}
-      category_ids.each do |cat_id|
-        category_topics = {}
-        most_read = ranked_topics(cat_id, start_date, end_date, most_read_topic_sql)
-        most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
-        most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
-        most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
-        most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
-
-        category_topics[:most_read] = most_read if most_read.any?
-        category_topics[:most_liked] = most_liked if most_liked.any?
-        category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
-        category_topics[:most_popular] = most_popular if most_popular.any?
-        category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
-        if category_topics.any?
-          category_name = Category.find(cat_id).name
-          topics[category_name] = category_topics
-        end
-      end
-      topics
     end
 
     def ranked_topics(cat_id, start_date, end_date, sql)

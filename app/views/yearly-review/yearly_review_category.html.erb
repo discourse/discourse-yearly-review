@@ -1,23 +1,20 @@
 <div data-review-featured-topics="true">
-  <h1><%= t('yearly_review.title.topics_section', year: 2018) %></h1>
-  <% @category_topics.each do |category_name, ranked_topics| %>
-    <h2>#<%= category_name %></h2>
-    <% ranked_topics.each do |rank_type, topics| %>
-      <h3><%= t("yearly_review.rank_type.title.#{rank_type}") %></h3>
-      <table>
-        <tr>
-          <th><%= t('yearly_review.user') %></th>
-          <th><%= t('yearly_review.topic') %></th>
-          <th><%= t("yearly_review.rank_type.action_types.#{rank_type}") %></th>
-        </tr>
-      <% topics.each do |topic| %>
-        <tr>
-          <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
-          <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
-          <td><%= topic.action_count.round %></td>
-        </tr>
-      <% end %>
-      </table>
-    <% end %>
+  <h2>#<%= @category_topics[:category_name] %></h2>
+  <% @category_topics[:topics].each do |key, val| %>
+  <h3><%= t("yearly_review.rank_type.title.#{key}") %></h3>
+  <table>
+    <tr>
+      <th><%= t('yearly_review.user') %></th>
+      <th><%= t('yearly_review.topic') %></th>
+      <th><%= t("yearly_review.rank_type.action_types.#{key}") %></th>
+    </tr>
+    <% val.each do |topic| %>
+    <tr>
+      <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
+      <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
+      <td><%= topic.action_count.round %></td>
+    </tr>
+  <% end %>
+  </table>
   <% end %>
 </div>

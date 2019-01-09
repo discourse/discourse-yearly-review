@@ -6,6 +6,7 @@ module ::Jobs
     MAX_BADGE_USERS = 15
 
     every 1.day
+
     def execute(args)
       now = Time.now
       title = I18n.t("yearly_review.topic_title", year: now.year - 1)
@@ -25,7 +26,8 @@ module ::Jobs
         skip_validations: true
       }
 
-      topic = PostCreator.create!(Discourse.system_user, opts)
+      post = PostCreator.create!(Discourse.system_user, topic_opts)
+      create_category_posts post.topic_id
     end
 
     def create_raw_topic
@@ -49,19 +51,59 @@ module ::Jobs
       view.render template: "yearly_review", formats: :html, layout: false
     end
 
-    def create_category_posts
+    def create_category_posts(topic_id)
       review_categories = review_categories_from_settings
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
-      category_topics = category_topics review_categories, review_start, review_end
+      # category_topics = category_topics review_categories, review_start, review_end
 
-      view = ActionView::Base.new(ActionController::Base.view_paths,
-                                  category_topics: category_topics)
-      view.class_eval do
-        include YearlyReviewHelper
+      review_categories.each do |category_id|
+        category_post_topics = category_post_topics category_id, review_start, review_end
+        # Todo: this should only be called once
+        view = ActionView::Base.new(ActionController::Base.view_paths,
+                                    category_topics: category_post_topics)
+        view.class_eval do
+          include YearlyReviewHelper
+        end
+
+        puts "CATEGORYPOSTTOPICS #{category_post_topics}"
+
+        if category_post_topics[:topics]
+          raw = view.render template: "yearly_review_category", formats: :html, layout: false
+          unless raw.empty? # todo: maybe this can be removed?
+            post_opts = {
+              topic_id: topic_id,
+              raw: raw,
+              skip_validations: true
+            }
+
+            PostCreator.create!(Discourse.system_user, post_opts)
+          end
+        end
       end
+    end
 
-      view.render template: "yearly_review_category", formats: :html, layout: false
+    def category_post_topics(cat_id, start_date, end_date)
+      data = {}
+
+      most_read = ranked_topics(cat_id, start_date, end_date, most_read_topic_sql)
+      most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
+      most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
+      most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
+      most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
+
+      category_topics = {}
+      category_topics[:most_read] = most_read if most_read.any?
+      category_topics[:most_liked] = most_liked if most_liked.any?
+      category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
+      category_topics[:most_popular] = most_popular if most_popular.any?
+      category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
+      if category_topics.any?
+        category_name = Category.find(cat_id).name
+        data[:category_name] = category_name
+        data[:topics] = category_topics
+      end
+      data
     end
 
     def review_categories_from_settings
@@ -82,15 +124,16 @@ module ::Jobs
       most_likes_received = most_likes_received review_start, review_end, exclude_staff
       most_visits = most_visits review_start, review_end, exclude_staff
       most_replied_to = most_replied_to review_start, review_end, exclude_staff
-      user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
-      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
-      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
-      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
-      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
-      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
-      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
+      user_stats << {key: 'time_read', users: most_time_read} if most_time_read.any?
+      user_stats << {key: 'topics_created', users: most_topics} if most_topics.any?
+      user_stats << {key: 'replies_created', users: most_replies} if most_replies.any?
+      user_stats << {key: 'most_replied_to', users: most_replied_to} if most_replied_to.any?
+      user_stats << {key: 'likes_given', users: most_likes} if most_likes.any?
+      user_stats << {key: 'likes_received', users: most_likes_received} if most_likes_received.any?
+      user_stats << {key: 'visits', users: most_visits} if most_visits.any?
       user_stats
     end
+
 
     def category_topics(category_ids, start_date, end_date)
       topics = {}
@@ -121,17 +164,18 @@ module ::Jobs
       DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 3).each do |row|
         if row
           action = row.action
+          # Todo: put these back to defaults for production!
           case action
           when 'likes'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'replies'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'bookmarks'
-            next if row.action_count < 5
+            next if row.action_count < 0
           when 'score'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'read_time'
-            next if row.action_count < 1
+            next if row.action_count < 0
           end
           data << row
         end
@@ -352,33 +396,33 @@ module ::Jobs
 
     def most_read_topic_sql
       <<~SQL
-      SELECT
-      username,
-      uploaded_avatar_id,
-      t.id,
-      t.slug AS topic_slug,
-      t.title,
-      t.created_at,
-      c.slug AS category_slug,
-      c.name AS category_name,
-      c.id AS category_id,
-      ROUND(SUM(tu.total_msecs_viewed::numeric) / (1000 * 60 * 60)::numeric, 2) AS action_count,
-      'read_time' AS action
-      FROM users u
-      JOIN topics t
-      ON t.user_id = u.id
-      JOIN topic_users tu
-      ON tu.topic_id = t.id
-      JOIN categories c
-      ON c.id = t.category_id
-      WHERE t.deleted_at IS NULL
-      AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
-      AND t.created_at BETWEEN :start_date AND :end_date
-      AND c.id = :cat_id
-      AND u.id > 0
-      GROUP BY t.id, username, uploaded_avatar_id, c.id
-      ORDER BY action_count DESC
-      LIMIT :limit
+        SELECT
+        username,
+        uploaded_avatar_id,
+        t.id,
+        t.slug AS topic_slug,
+        t.title,
+        t.created_at,
+        c.slug AS category_slug,
+        c.name AS category_name,
+        c.id AS category_id,
+        ROUND(SUM(tu.total_msecs_viewed::numeric) / (1000 * 60 * 60)::numeric, 2) AS action_count,
+        'read_time' AS action
+        FROM users u
+        JOIN topics t
+        ON t.user_id = u.id
+        JOIN topic_users tu
+        ON tu.topic_id = t.id
+        JOIN categories c
+        ON c.id = t.category_id
+        WHERE t.deleted_at IS NULL
+        AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
+        AND t.created_at BETWEEN :start_date AND :end_date
+        AND c.id = :cat_id
+        AND u.id > 0
+        GROUP BY t.id, username, uploaded_avatar_id, c.id
+        ORDER BY action_count DESC
+        LIMIT :limit
       SQL
     end
 

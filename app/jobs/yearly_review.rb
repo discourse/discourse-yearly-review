@@ -32,8 +32,8 @@ module ::Jobs
         }
 
         post = PostCreator.create!(Discourse.system_user, topic_opts)
-        # Todo: make sure post.topic_id exists
-        create_category_posts view, post.topic_id
+
+        create_category_posts view, post.topic_id if post.respond_to? :topic_id
       end
     end
 

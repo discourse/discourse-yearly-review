@@ -7,6 +7,7 @@ en:
     yearly_review_featured_badge: "Enter the full badge name."
   yearly_review:
     topic_title: "%{year}: The Year in Review"
+    category_topics_title: "Top #%{category} Topics"
     title:
       users_section: "%{year}'s top Users"
       topics_section: "%{year}'s top Topics"

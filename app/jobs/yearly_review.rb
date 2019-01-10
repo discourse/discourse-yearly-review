@@ -17,7 +17,13 @@ module ::Jobs
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
-      raw = create_raw_topic
+      view = ActionView::Base.new(ActionController::Base.view_paths, {})
+      view.class_eval do
+        include YearlyReviewHelper
+        include ActionView::Helpers::NumberHelper
+      end
+
+      raw = create_raw_topic view
 
       topic_opts = {
         title: title,
@@ -27,11 +33,10 @@ module ::Jobs
       }
 
       post = PostCreator.create!(Discourse.system_user, topic_opts)
-      create_category_posts post.topic_id
+      create_category_posts view, post.topic_id
     end
 
-    def create_raw_topic
-      review_categories = review_categories_from_settings
+    def create_raw_topic(view)
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
@@ -39,20 +44,12 @@ module ::Jobs
       user_stats = user_stats review_start, review_end
       daily_visits = daily_visits review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
-
-      view = ActionView::Base.new(ActionController::Base.view_paths,
-                                  user_stats: user_stats,
-                                  daily_visits: daily_visits,
-                                  featured_badge_users: featured_badge_users)
-      view.class_eval do
-        include YearlyReviewHelper
-        include ActionView::Helpers::NumberHelper
-      end
+      view.assign(user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
 
       view.render template: "yearly_review", formats: :html, layout: false
     end
 
-    def create_category_posts(topic_id)
+    def create_category_posts(view, topic_id)
       review_categories = review_categories_from_settings
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
@@ -60,14 +57,17 @@ module ::Jobs
       review_categories.each do |category_id|
         category_post_topics = category_post_topics category_id, review_start, review_end
         # Todo: this should only be called once
-        view = ActionView::Base.new(ActionController::Base.view_paths,
-                                    category_topics: category_post_topics)
-        view.class_eval do
-          include YearlyReviewHelper
-          include ActionView::Helpers::NumberHelper
-        end
+        # view = ActionView::Base.new(ActionController::Base.view_paths,
+        #                             category_topics: category_post_topics)
+        # view.class_eval do
+        #   include YearlyReviewHelper
+        #   include ActionView::Helpers::NumberHelper
+        # end
+
+
 
         if category_post_topics[:topics]
+          view.assign(category_topics: category_post_topics)
           raw = view.render template: "yearly_review_category", formats: :html, layout: false
           unless raw.empty? # todo: maybe this can be removed?
             post_opts = {

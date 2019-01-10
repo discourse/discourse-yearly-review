@@ -234,8 +234,8 @@ module ::Jobs
         data << row
       end
 
-      # If the average is better than 100 days visited by 10 users, include the data.
-      if (total_rows > 0) && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 10)
+      # If the average is better than 100 days visited by 5 users, include the data.
+      if (total_rows > 0) && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 5)
         data
       else
         []

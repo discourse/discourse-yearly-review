@@ -13,7 +13,7 @@ module ::Jobs
 
       unless args[:force]
         return unless SiteSetting.yearly_review_enabled
-        return unless now.month == 1 && now.day < 22
+        return unless now.month == 1 && now.day < 31
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
@@ -115,13 +115,13 @@ module ::Jobs
       most_likes_received = most_likes_received review_start, review_end, exclude_staff
       most_visits = most_visits review_start, review_end, exclude_staff
       most_replied_to = most_replied_to review_start, review_end, exclude_staff
-      user_stats << {key: 'time_read', users: most_time_read} if most_time_read.any?
-      user_stats << {key: 'topics_created', users: most_topics} if most_topics.any?
-      user_stats << {key: 'replies_created', users: most_replies} if most_replies.any?
-      user_stats << {key: 'most_replied_to', users: most_replied_to} if most_replied_to.any?
-      user_stats << {key: 'likes_given', users: most_likes} if most_likes.any?
-      user_stats << {key: 'likes_received', users: most_likes_received} if most_likes_received.any?
-      user_stats << {key: 'visits', users: most_visits} if most_visits.any?
+      user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
+      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
+      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
+      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
+      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
+      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
+      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
       user_stats
     end
 
@@ -235,7 +235,7 @@ module ::Jobs
       end
 
       # If the average is better than 100 days visited by 10 users, include the data.
-      if (total_rows > 0)  && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 10)
+      if (total_rows > 0) && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 10)
         data
       else
         []

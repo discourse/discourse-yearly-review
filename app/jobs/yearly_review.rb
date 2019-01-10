@@ -20,7 +20,6 @@ module ::Jobs
       view = ActionView::Base.new(ActionController::Base.view_paths, {})
       view.class_eval do
         include YearlyReviewHelper
-        include ActionView::Helpers::NumberHelper
       end
 
       raw = create_raw_topic view
@@ -223,7 +222,24 @@ module ::Jobs
       LIMIT 10
       SQL
 
-      DB.query(sql)
+      total_days = 0
+      total_users = 0
+      row_count = 0
+      data = []
+
+      DB.query(sql).each do |row|
+        total_days += row.days
+        total_users += row.users
+        row_count += 1
+        data << row
+      end
+
+      # If the average row is at least 10 users visiting for 100 days, send data to be displayed.
+      if row_count > 0 && total_days / row_count > 3 && total_users / row_count > 1
+        data
+      else
+        []
+      end
     end
 
     def most_visits(start_date, end_date, exclude_staff)

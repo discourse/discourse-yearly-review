@@ -24,16 +24,17 @@ module ::Jobs
       end
 
       raw = create_raw_topic view
+      unless raw.empty?
+        topic_opts = {
+          title: title,
+          raw: raw,
+          category: SiteSetting.yearly_review_publish_category,
+          skip_validations: true
+        }
 
-      topic_opts = {
-        title: title,
-        raw: raw,
-        category: SiteSetting.yearly_review_publish_category,
-        skip_validations: true
-      }
-
-      post = PostCreator.create!(Discourse.system_user, topic_opts)
-      create_category_posts view, post.topic_id
+        post = PostCreator.create!(Discourse.system_user, topic_opts)
+        create_category_posts view, post.topic_id
+      end
     end
 
     def create_raw_topic(view)
@@ -56,20 +57,10 @@ module ::Jobs
 
       review_categories.each do |category_id|
         category_post_topics = category_post_topics category_id, review_start, review_end
-        # Todo: this should only be called once
-        # view = ActionView::Base.new(ActionController::Base.view_paths,
-        #                             category_topics: category_post_topics)
-        # view.class_eval do
-        #   include YearlyReviewHelper
-        #   include ActionView::Helpers::NumberHelper
-        # end
-
-
-
         if category_post_topics[:topics]
           view.assign(category_topics: category_post_topics)
           raw = view.render template: "yearly_review_category", formats: :html, layout: false
-          unless raw.empty? # todo: maybe this can be removed?
+          unless raw.empty?
             post_opts = {
               topic_id: topic_id,
               raw: raw,
@@ -102,6 +93,7 @@ module ::Jobs
         data[:category_name] = category_name
         data[:topics] = category_topics
       end
+
       data
     end
 

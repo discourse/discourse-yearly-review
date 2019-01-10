@@ -128,7 +128,7 @@ module ::Jobs
     def ranked_topics(cat_id, start_date, end_date, sql)
       data = []
       exclude_staff = SiteSetting.yearly_review_exclude_staff
-      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 3).each do |row|
+      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
         if row
           action = row.action
           # Todo: put these back to defaults for production!

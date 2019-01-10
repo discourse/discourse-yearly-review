@@ -130,18 +130,17 @@ module ::Jobs
       DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
         if row
           action = row.action
-          # Todo: put these back to defaults for production!
           case action
           when 'likes'
-            next if row.action_count < 0
+            next if row.action_count < 10
           when 'replies'
-            next if row.action_count < 0
+            next if row.action_count < 10
           when 'bookmarks'
-            next if row.action_count < 0
+            next if row.action_count < 5
           when 'score'
-            next if row.action_count < 0
+            next if row.action_count < 10
           when 'read_time'
-            next if row.action_count < 0
+            next if row.action_count < 5
           end
           data << row
         end
@@ -222,8 +221,8 @@ module ::Jobs
       LIMIT 10
       SQL
 
-      total_days = 0
-      total_users = 0
+      total_days = 0.0
+      total_users = 0.0
       total_rows = 0
       data = []
 
@@ -235,7 +234,7 @@ module ::Jobs
       end
 
       # If the average is better than 100 days visited by 10 users, include the data.
-      if total_rows > 0 && total_days / total_rows > 100 && total_users / total_rows > 10
+      if (total_rows > 0)  && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 10)
         data
       else
         []

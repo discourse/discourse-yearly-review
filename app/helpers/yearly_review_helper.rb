@@ -1,4 +1,6 @@
 module YearlyReviewHelper
+  include ActionView::Helpers::NumberHelper
+
   def avatar_image(username, uploaded_avatar_id)
     template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, '50')
     "<img src='#{template}' class='avatar' height='25' width='25'/>"
@@ -24,5 +26,16 @@ module YearlyReviewHelper
   def badge_link(name, id, more)
     url = "#{Discourse.base_url}/badges/#{id}/#{slug_from_name(name)}"
     "<a class='more-badge-users' href='#{url}'>#{t('yearly_review.more_badge_users', more: more)}</a>"
+  end
+
+  def user_visits_link
+    if SiteSetting.enable_user_directory && !SiteSetting.hide_user_profiles_from_public
+      url = "#{Discourse.base_url}/u?order=days_visited&period=yearly"
+      "<br><a href='#{url}'>#{t('yearly_review.all_yearly_visits')}</a>"
+    end
+  end
+
+  def format_number(number)
+    number_to_human(number, units: { thousand: 'K' }, format: "%n%u")
   end
 end

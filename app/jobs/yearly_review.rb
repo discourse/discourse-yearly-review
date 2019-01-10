@@ -6,6 +6,7 @@ module ::Jobs
     MAX_BADGE_USERS = 15
 
     every 1.day
+
     def execute(args)
       now = Time.now
       title = I18n.t("yearly_review.topic_title", year: now.year - 1)
@@ -16,37 +17,83 @@ module ::Jobs
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
-      raw = create_raw_topic
+      view = ActionView::Base.new(ActionController::Base.view_paths, {})
+      view.class_eval do
+        include YearlyReviewHelper
+      end
 
-      opts = {
-        title: title,
-        raw: raw,
-        category: SiteSetting.yearly_review_publish_category,
-        skip_validations: true
-      }
+      raw = create_raw_topic view
+      unless raw.empty?
+        topic_opts = {
+          title: title,
+          raw: raw,
+          category: SiteSetting.yearly_review_publish_category,
+          skip_validations: true
+        }
 
-      PostCreator.create!(Discourse.system_user, opts)
+        post = PostCreator.create!(Discourse.system_user, topic_opts)
+        create_category_posts view, post.topic_id
+      end
     end
 
-    def create_raw_topic
-      review_categories = review_categories_from_settings
+    def create_raw_topic(view)
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       review_start = Time.new(2018, 1, 1)
       review_end = review_start.end_of_year
 
       user_stats = user_stats review_start, review_end
-      category_topics = category_topics review_categories, review_start, review_end
+      daily_visits = daily_visits review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
-
-      view = ActionView::Base.new(ActionController::Base.view_paths,
-                                  user_stats: user_stats,
-                                  featured_badge_users: featured_badge_users,
-                                  category_topics: category_topics)
-      view.class_eval do
-        include YearlyReviewHelper
-      end
+      view.assign(user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
 
       view.render template: "yearly_review", formats: :html, layout: false
+    end
+
+    def create_category_posts(view, topic_id)
+      review_categories = review_categories_from_settings
+      review_start = Time.new(2018, 1, 1)
+      review_end = review_start.end_of_year
+
+      review_categories.each do |category_id|
+        category_post_topics = category_post_topics category_id, review_start, review_end
+        if category_post_topics[:topics]
+          view.assign(category_topics: category_post_topics)
+          raw = view.render template: "yearly_review_category", formats: :html, layout: false
+          unless raw.empty?
+            post_opts = {
+              topic_id: topic_id,
+              raw: raw,
+              skip_validations: true
+            }
+
+            PostCreator.create!(Discourse.system_user, post_opts)
+          end
+        end
+      end
+    end
+
+    def category_post_topics(cat_id, start_date, end_date)
+      data = {}
+
+      most_read = ranked_topics(cat_id, start_date, end_date, most_read_topic_sql)
+      most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
+      most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
+      most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
+      most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
+
+      category_topics = {}
+      category_topics[:most_read] = most_read if most_read.any?
+      category_topics[:most_liked] = most_liked if most_liked.any?
+      category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
+      category_topics[:most_popular] = most_popular if most_popular.any?
+      category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
+      if category_topics.any?
+        category_name = Category.find(cat_id).name
+        data[:category_name] = category_name
+        data[:topics] = category_topics
+      end
+
+      data
     end
 
     def review_categories_from_settings
@@ -67,43 +114,20 @@ module ::Jobs
       most_likes_received = most_likes_received review_start, review_end, exclude_staff
       most_visits = most_visits review_start, review_end, exclude_staff
       most_replied_to = most_replied_to review_start, review_end, exclude_staff
-      user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
-      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
-      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
-      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
-      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
-      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
-      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
+      user_stats << {key: 'time_read', users: most_time_read} if most_time_read.any?
+      user_stats << {key: 'topics_created', users: most_topics} if most_topics.any?
+      user_stats << {key: 'replies_created', users: most_replies} if most_replies.any?
+      user_stats << {key: 'most_replied_to', users: most_replied_to} if most_replied_to.any?
+      user_stats << {key: 'likes_given', users: most_likes} if most_likes.any?
+      user_stats << {key: 'likes_received', users: most_likes_received} if most_likes_received.any?
+      user_stats << {key: 'visits', users: most_visits} if most_visits.any?
       user_stats
-    end
-
-    def category_topics(category_ids, start_date, end_date)
-      topics = {}
-      category_ids.each do |cat_id|
-        category_topics = {}
-        most_read = ranked_topics(cat_id, start_date, end_date, most_read_topic_sql)
-        most_liked = ranked_topics(cat_id, start_date, end_date, most_liked_topic_sql)
-        most_replied_to = ranked_topics(cat_id, start_date, end_date, most_replied_to_topic_sql)
-        most_popular = ranked_topics(cat_id, start_date, end_date, most_popular_topic_sql)
-        most_bookmarked = ranked_topics(cat_id, start_date, end_date, most_bookmarked_topic_sql)
-
-        category_topics[:most_read] = most_read if most_read.any?
-        category_topics[:most_liked] = most_liked if most_liked.any?
-        category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
-        category_topics[:most_popular] = most_popular if most_popular.any?
-        category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
-        if category_topics.any?
-          category_name = Category.find(cat_id).name
-          topics[category_name] = category_topics
-        end
-      end
-      topics
     end
 
     def ranked_topics(cat_id, start_date, end_date, sql)
       data = []
       exclude_staff = SiteSetting.yearly_review_exclude_staff
-      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 3).each do |row|
+      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
         if row
           action = row.action
           case action
@@ -116,7 +140,7 @@ module ::Jobs
           when 'score'
             next if row.action_count < 10
           when 'read_time'
-            next if row.action_count < 1
+            next if row.action_count < 5
           end
           data << row
         end
@@ -175,6 +199,46 @@ module ::Jobs
       SQL
 
       DB.query(sql)
+    end
+
+    def daily_visits(start_date, end_date)
+      sql = <<~SQL
+      WITH visits AS (
+      SELECT
+      user_id,
+      COUNT(user_id) AS days_visited_count
+      FROM user_visits uv
+      WHERE uv.visited_at >= '#{start_date}'
+      AND uv.visited_at <= '#{end_date}'
+      GROUP BY user_id
+      )
+      SELECT
+      COUNT(user_id) AS users,
+      days_visited_count AS days
+      FROM visits
+      GROUP BY days_visited_count
+      ORDER BY days_visited_count DESC
+      LIMIT 10
+      SQL
+
+      total_days = 0.0
+      total_users = 0.0
+      total_rows = 0
+      data = []
+
+      DB.query(sql).each do |row|
+        total_days += row.days
+        total_users = row.users
+        total_rows += 1
+        data << row
+      end
+
+      # If the average is better than 100 days visited by 10 users, include the data.
+      if (total_rows > 0)  && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 10)
+        data
+      else
+        []
+      end
     end
 
     def most_visits(start_date, end_date, exclude_staff)
@@ -337,33 +401,33 @@ module ::Jobs
 
     def most_read_topic_sql
       <<~SQL
-      SELECT
-      username,
-      uploaded_avatar_id,
-      t.id,
-      t.slug AS topic_slug,
-      t.title,
-      t.created_at,
-      c.slug AS category_slug,
-      c.name AS category_name,
-      c.id AS category_id,
-      ROUND(SUM(tu.total_msecs_viewed::numeric) / (1000 * 60 * 60)::numeric, 2) AS action_count,
-      'read_time' AS action
-      FROM users u
-      JOIN topics t
-      ON t.user_id = u.id
-      JOIN topic_users tu
-      ON tu.topic_id = t.id
-      JOIN categories c
-      ON c.id = t.category_id
-      WHERE t.deleted_at IS NULL
-      AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
-      AND t.created_at BETWEEN :start_date AND :end_date
-      AND c.id = :cat_id
-      AND u.id > 0
-      GROUP BY t.id, username, uploaded_avatar_id, c.id
-      ORDER BY action_count DESC
-      LIMIT :limit
+        SELECT
+        username,
+        uploaded_avatar_id,
+        t.id,
+        t.slug AS topic_slug,
+        t.title,
+        t.created_at,
+        c.slug AS category_slug,
+        c.name AS category_name,
+        c.id AS category_id,
+        ROUND(SUM(tu.total_msecs_viewed::numeric) / (1000 * 60 * 60)::numeric, 2) AS action_count,
+        'read_time' AS action
+        FROM users u
+        JOIN topics t
+        ON t.user_id = u.id
+        JOIN topic_users tu
+        ON tu.topic_id = t.id
+        JOIN categories c
+        ON c.id = t.category_id
+        WHERE t.deleted_at IS NULL
+        AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
+        AND t.created_at BETWEEN :start_date AND :end_date
+        AND c.id = :cat_id
+        AND u.id > 0
+        GROUP BY t.id, username, uploaded_avatar_id, c.id
+        ORDER BY action_count DESC
+        LIMIT :limit
       SQL
     end
 

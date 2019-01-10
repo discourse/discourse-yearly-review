@@ -20,7 +20,7 @@
                 <%= raw(user_link(user.username)) %>
               </td>
               <td>
-                <%= number_to_human(user.action_count < 1 ? 1 : user.action_count.round, units: {thousand: 'K'}) %>
+                <%= format_number(user.action_count < 1 ? 1 : user.action_count.round) %>
               </td>
             </tr>
           <% end %>

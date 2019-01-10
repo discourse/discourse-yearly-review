@@ -1,5 +1,5 @@
 <div data-review-featured-topics="true">
-  <h2>#<%= @category_topics[:category_name] %></h2>
+  <h2><%= t('yearly_review.category_topics_title', category: @category_topics[:category_name]) %></h2>
   <% @category_topics[:topics].each do |key, val| %>
   <h3><%= t("yearly_review.rank_type.title.#{key}") %></h3>
   <table>
@@ -12,7 +12,7 @@
     <tr>
       <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
       <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
-      <td><%= number_to_human(topic.action_count.round, units: {thousand: 'K'}) %></td>
+      <td><%= format_number(topic.action_count.round) %></td>
     </tr>
   <% end %>
   </table>

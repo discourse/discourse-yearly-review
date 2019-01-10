@@ -224,18 +224,18 @@ module ::Jobs
 
       total_days = 0
       total_users = 0
-      row_count = 0
+      total_rows = 0
       data = []
 
       DB.query(sql).each do |row|
         total_days += row.days
-        total_users += row.users
-        row_count += 1
+        total_users = row.users
+        total_rows += 1
         data << row
       end
 
-      # If the average row is at least 10 users visiting for 100 days, send data to be displayed.
-      if row_count > 0 && total_days / row_count > 3 && total_users / row_count > 1
+      # If the average is better than 100 days visited by 10 users, include the data.
+      if total_rows > 0 && total_days / total_rows > 100 && total_users / total_rows > 10
         data
       else
         []

@@ -28,6 +28,13 @@ module YearlyReviewHelper
     "<a class='more-badge-users' href='#{url}'>#{t('yearly_review.more_badge_users', more: more)}</a>"
   end
 
+  def user_visits_link
+    if SiteSetting.enable_user_directory && !SiteSetting.hide_user_profiles_from_public
+      url = "#{Discourse.base_url}/u?order=days_visited&period=yearly"
+      "<br><a href='#{url}'>#{t('yearly_review.all_yearly_visits')}</a>"
+    end
+  end
+
   def format_number(number)
     number_to_human(number, units: { thousand: 'K' }, format: "%n%u")
   end

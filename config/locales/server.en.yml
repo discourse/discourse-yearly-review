@@ -1,10 +1,10 @@
 en:
   site_settings:
     yearly_review_enabled: "Enable the yearly review."
-    yearly_review_categories: "The categories to pull topics from. If left blank will default to all public categories."
+    yearly_review_categories: "Public categories to pull topics from. The top 5 categories from this group will be selected. If left blank will default to the top 5 public categories."
     yearly_review_exclude_staff: "Exclude Staff from user stats."
     yearly_review_publish_category: "The category the review will be published in."
-    yearly_review_featured_badge: "Enter the full badge name."
+    yearly_review_featured_badge: "Enter the full badge name. Can be left blank."
   yearly_review:
     topic_title: "%{year}: The Year in Review"
     category_topics_title: "Top #%{category} Topics"

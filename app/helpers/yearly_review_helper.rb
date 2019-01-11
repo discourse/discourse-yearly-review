@@ -28,6 +28,18 @@ module YearlyReviewHelper
     "<a class='more-badge-users' href='#{url}'>#{t('yearly_review.more_badge_users', more: more)}</a>"
   end
 
+  def category_link(name)
+    category = Category.find_by(name: name)
+    if category.parent_category_id
+      parent_category = Category.find(category.parent_category_id)
+      url = "#{Discourse.base_url}/c/#{parent_category.slug}/#{category.slug}"
+    else
+      url = "#{Discourse.base_url}/c/#{category.slug}"
+    end
+    link_text = t("yearly_review.category_topics_title", category: name)
+    "<a href='#{url}'>#{link_text}</a>"
+  end
+
   def user_visits_link
     if SiteSetting.enable_user_directory && !SiteSetting.hide_user_profiles_from_public
       url = "#{Discourse.base_url}/u?order=days_visited&period=yearly"

@@ -1,5 +1,5 @@
 <div data-review-featured-topics="true">
-  <h2><%= t('yearly_review.category_topics_title', category: @category_topics[:category_name]) %></h2>
+  <h2><%= raw(category_link(@category_topics[:category_name])) %></h2>
   <% @category_topics[:topics].each do |key, val| %>
   <h3><%= t("yearly_review.rank_type.title.#{key}") %></h3>
   <table>

@@ -36,6 +36,6 @@ module YearlyReviewHelper
   end
 
   def format_number(number)
-    number_to_human(number, units: { thousand: 'K' }, format: "%n%u")
+    number_to_human(number, units: { thousand: 'k' }, format: "%n%u")
   end
 end

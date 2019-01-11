@@ -222,24 +222,7 @@ module ::Jobs
       LIMIT 10
       SQL
 
-      total_days = 0.0
-      total_users = 0.0
-      total_rows = 0
-      data = []
-
-      DB.query(sql).each do |row|
-        total_days += row.days
-        total_users = row.users
-        total_rows += 1
-        data << row
-      end
-
-      # If the average is better than 100 days visited by 5 users, include the data.
-      if (total_rows > 0) && ((total_days / total_rows) >= 100) && ((total_users / total_rows) >= 5)
-        data
-      else
-        []
-      end
+      DB.query(sql)
     end
 
     def most_visits(start_date, end_date, exclude_staff)

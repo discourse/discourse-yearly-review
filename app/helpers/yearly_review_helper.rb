@@ -32,9 +32,9 @@ module YearlyReviewHelper
     category = Category.find_by(name: name)
     if category.parent_category_id
       parent_category = Category.find(category.parent_category_id)
-      url = "#{Discourse.base_url}/c/#{parent_category.slug}/#{category.slug}"
+      url = "#{Discourse.base_url}/c/#{parent_category.slug}/#{category.slug}/l/top"
     else
-      url = "#{Discourse.base_url}/c/#{category.slug}"
+      url = "#{Discourse.base_url}/c/#{category.slug}/l/top"
     end
     link_text = t("yearly_review.category_topics_title", category: name)
     "<a href='#{url}'>#{link_text}</a>"

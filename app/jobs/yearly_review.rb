@@ -363,8 +363,6 @@ module ::Jobs
         username,
         uploaded_avatar_id,
         b.name,
-        b.icon,
-        b.image,
         b.id,
         ((COUNT(*) OVER()) - #{MAX_BADGE_USERS}) AS more_users
         FROM badges b

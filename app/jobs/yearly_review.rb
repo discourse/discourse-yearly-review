@@ -22,7 +22,10 @@ module ::Jobs
         include YearlyReviewHelper
       end
 
-      raw = create_raw_topic view
+      review_start = Time.new(2018, 1, 1)
+      review_end = review_start.end_of_year
+
+      raw = create_raw_topic view, review_start, review_end
       unless raw.empty?
         topic_opts = {
           title: title,
@@ -33,15 +36,12 @@ module ::Jobs
 
         post = PostCreator.create!(Discourse.system_user, topic_opts)
 
-        create_category_posts view, post.topic_id if post.respond_to? :topic_id
+        create_category_posts view, review_start, review_end, post.topic_id if post.respond_to? :topic_id
       end
     end
 
-    def create_raw_topic(view)
+    def create_raw_topic(view, review_start, review_end)
       review_featured_badge = SiteSetting.yearly_review_featured_badge
-      review_start = Time.new(2018, 1, 1)
-      review_end = review_start.end_of_year
-
       user_stats = user_stats review_start, review_end
       daily_visits = daily_visits review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
@@ -50,10 +50,8 @@ module ::Jobs
       view.render template: "yearly_review", formats: :html, layout: false
     end
 
-    def create_category_posts(view, topic_id)
+    def create_category_posts(view, review_start, review_end, topic_id)
       review_categories = review_categories_from_settings
-      review_start = Time.new(2018, 1, 1)
-      review_end = review_start.end_of_year
 
       review_categories.each do |category_id|
         category_post_topics = category_post_topics category_id, review_start, review_end

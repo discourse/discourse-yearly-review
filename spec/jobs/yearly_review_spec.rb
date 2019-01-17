@@ -18,19 +18,6 @@ describe Jobs::YearlyReview do
       end
     end
 
-    context 'January 5, 2019' do
-      before do
-        freeze_time DateTime.parse('2019-01-05')
-        Fabricate(:topic, created_at: 1.month.ago)
-      end
-
-      it 'publishes a review topic' do
-        Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        expect(topic.title).to eq(I18n.t('yearly_review.topic_title', year: 2018))
-      end
-    end
-
     context 'February 1, 2019' do
       before do
         freeze_time DateTime.parse('2019-02-01')

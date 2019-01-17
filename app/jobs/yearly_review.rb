@@ -13,7 +13,7 @@ module ::Jobs
 
       unless args[:force]
         return unless SiteSetting.yearly_review_enabled
-        return unless now.month == 1 && now.day < 31
+        return unless now.year == 2019 && now.month == 1 && now.day <= 31
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
@@ -128,18 +128,19 @@ module ::Jobs
       exclude_staff = SiteSetting.yearly_review_exclude_staff
       DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
         if row
+          # todo: revert these settings.
           action = row.action
           case action
           when 'likes'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'replies'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'bookmarks'
-            next if row.action_count < 5
+            next if row.action_count < 0
           when 'score'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'read_time'
-            next if row.action_count < 5
+            next if row.action_count < 0
           end
           data << row
         end

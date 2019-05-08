@@ -2,11 +2,13 @@ require 'rails_helper'
 
 describe Jobs::YearlyReview do
   SiteSetting.yearly_review_enabled = true
+  let(:category) { Fabricate(:category) }
   let(:top_review_user) { Fabricate(:user, username: 'top_review_user') }
   let(:reviewed_user) { Fabricate(:user, username: 'reviewed_user') }
   describe 'publishing the topic' do
     context 'January 1, 2019' do
       before do
+        SiteSetting.yearly_review_publish_category = category.id
         freeze_time DateTime.parse('2019-01-01')
         Fabricate(:topic, created_at: 1.month.ago)
       end
@@ -33,6 +35,7 @@ describe Jobs::YearlyReview do
 
     context 'After the review has been published' do
       before do
+        SiteSetting.yearly_review_publish_category = category.id
         freeze_time DateTime.parse('2019-01-05')
         Fabricate(:topic, created_at: 1.month.ago)
         Jobs::YearlyReview.new.execute({})
@@ -50,6 +53,7 @@ describe Jobs::YearlyReview do
   describe 'user stats' do
     before do
       freeze_time DateTime.parse('2019-01-01')
+      SiteSetting.yearly_review_publish_category = category.id
     end
 
     context 'most topics' do
@@ -70,6 +74,7 @@ describe Jobs::YearlyReview do
     context 'most replies' do
       before do
         SiteSetting.max_consecutive_replies = 5
+        SiteSetting.yearly_review_publish_category = category.id
         topic_user = Fabricate(:user)
         reviewed_topic = Fabricate(:topic, user: topic_user, created_at: 1.year.ago)
         Fabricate(:post, topic: reviewed_topic, user: topic_user)
@@ -132,6 +137,7 @@ describe Jobs::YearlyReview do
     let(:badge) { Fabricate(:badge) }
     before do
       SiteSetting.yearly_review_featured_badge = badge.name
+      SiteSetting.yearly_review_publish_category = category.id
       freeze_time DateTime.parse('2019-01-01')
       16.times do
         user = Fabricate(:user)

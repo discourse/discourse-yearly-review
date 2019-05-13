@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # name: discourse-yearly-review
 # about: Creates an automated Year in Review summary topic
 # version: 0.1

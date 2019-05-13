@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../app/helpers/yearly_review_helper'
 
 module ::Jobs

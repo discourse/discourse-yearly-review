@@ -15,7 +15,7 @@ module ::Jobs
 
       unless args[:force]
         return unless SiteSetting.yearly_review_enabled
-        return unless now.year == 2019 && now.month == 1 && now.day <= 31
+        return unless now.year == 2020 && now.month == 1 && now.day <= 31
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 

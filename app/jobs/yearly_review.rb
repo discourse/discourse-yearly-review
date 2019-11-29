@@ -27,7 +27,7 @@ module ::Jobs
         end
       end
 
-      review_start = Time.new(2018, 1, 1)
+      review_start = Time.new(2019, 1, 1)
       review_end = review_start.end_of_year
 
       raw = create_raw_topic view, review_start, review_end
@@ -133,7 +133,7 @@ module ::Jobs
       exclude_staff = SiteSetting.yearly_review_exclude_staff
       DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
         if row
-          # todo: revert these settings.
+          # todo: find sane values for minimum action counts
           action = row.action
           case action
           when 'likes'

@@ -9,9 +9,20 @@
 enabled_site_setting :yearly_review_enabled
 register_asset 'stylesheets/yearly_review.scss'
 
-PLUGIN_NAME = 'yearly-review'.freeze
-
 after_initialize do
+
+  module ::YearlyReview
+    PLUGIN_NAME = 'yearly-review'
+
+    def self.current_year
+      Time.now.year
+    end
+
+    def self.last_year
+      current_year - 1
+    end
+  end
+
   ::ActionController::Base.prepend_view_path File.expand_path("../app/views/yearly-review", __FILE__)
 
   [

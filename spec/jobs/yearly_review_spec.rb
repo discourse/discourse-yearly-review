@@ -8,37 +8,37 @@ describe Jobs::YearlyReview do
   let(:top_review_user) { Fabricate(:user, username: 'top_review_user') }
   let(:reviewed_user) { Fabricate(:user, username: 'reviewed_user') }
   describe 'publishing the topic' do
-    context 'January 1, 2019' do
+    context 'January 1st' do
       before do
         SiteSetting.yearly_review_publish_category = category.id
-        freeze_time DateTime.parse('2019-01-01')
+        freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-01")
         Fabricate(:topic, created_at: 1.month.ago)
       end
 
       it 'publishes a review topic' do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
-        expect(topic.title).to eq(I18n.t('yearly_review.topic_title', year: 2018))
+        expect(topic.title).to eq(I18n.t('yearly_review.topic_title', year: ::YearlyReview.last_year))
       end
     end
 
-    context 'February 1, 2019' do
+    context 'February 1st' do
       before do
-        freeze_time DateTime.parse('2019-02-01')
-        Fabricate(:topic, created_at: 2.months.ago, title: 'A topic from 2018')
+        freeze_time DateTime.parse("#{::YearlyReview.current_year}-02-01")
+        Fabricate(:topic, created_at: 2.months.ago, title: "A topic from #{::YearlyReview.last_year}")
       end
 
       it "doesn't publish a review topic" do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
-        expect(topic.title).to eq('A topic from 2018')
+        expect(topic.title).to eq("A topic from #{::YearlyReview.last_year}")
       end
     end
 
     context 'After the review has been published' do
       before do
         SiteSetting.yearly_review_publish_category = category.id
-        freeze_time DateTime.parse('2019-01-05')
+        freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-05")
         Fabricate(:topic, created_at: 1.month.ago)
         Jobs::YearlyReview.new.execute({})
         Fabricate(:topic, title: 'The last topic published')
@@ -54,7 +54,7 @@ describe Jobs::YearlyReview do
 
   describe 'user stats' do
     before do
-      freeze_time DateTime.parse('2019-01-01')
+      freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-01")
       SiteSetting.yearly_review_publish_category = category.id
     end
 
@@ -140,7 +140,7 @@ describe Jobs::YearlyReview do
     before do
       SiteSetting.yearly_review_featured_badge = badge.name
       SiteSetting.yearly_review_publish_category = category.id
-      freeze_time DateTime.parse('2019-01-01')
+      freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-01")
       16.times do
         user = Fabricate(:user)
         UserBadge.create!(badge_id: badge.id,

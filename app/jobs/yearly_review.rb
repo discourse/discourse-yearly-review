@@ -15,7 +15,7 @@ module ::Jobs
 
       unless args[:force]
         return unless SiteSetting.yearly_review_enabled
-        return unless now.year == 2020 && now.month == 1 && now.day <= 31
+        return unless now.month == 1 && now.day <= 31
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
@@ -27,7 +27,7 @@ module ::Jobs
         end
       end
 
-      review_start = Time.new(2019, 1, 1)
+      review_start = Time.new(::YearlyReview.last_year, 1, 1)
       review_end = review_start.end_of_year
 
       raw = create_raw_topic view, review_start, review_end

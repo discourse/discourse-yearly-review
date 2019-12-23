@@ -27,7 +27,8 @@ module ::Jobs
         end
       end
 
-      review_start = Time.new(::YearlyReview.last_year, 1, 1)
+      review_year = args[:review_year] ? args[:review_year] : ::YearlyReview.last_year
+      review_start = Time.new(review_year, 1, 1)
       review_end = review_start.end_of_year
 
       raw = create_raw_topic view, review_start, review_end

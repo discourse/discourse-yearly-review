@@ -545,7 +545,7 @@ module ::Jobs
         ON u.id = t.user_id
         WHERE pa.created_at BETWEEN :start_date AND :end_date
         AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
-        AND pa.post_action_type_id = 3
+        AND pa.post_action_type_id = 1
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL

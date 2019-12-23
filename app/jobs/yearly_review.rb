@@ -134,19 +134,18 @@ module ::Jobs
       exclude_staff = SiteSetting.yearly_review_exclude_staff
       DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
         if row
-          # todo: find sane values for minimum action counts
           action = row.action
           case action
           when 'likes'
-            next if row.action_count < 0
+            next if row.action_count < 10
           when 'replies'
-            next if row.action_count < 0
+            next if row.action_count < 10
           when 'bookmarks'
-            next if row.action_count < 0
+            next if row.action_count < 5
           when 'score'
-            next if row.action_count < 0
+            next if row.action_count < 10
           when 'read_time'
-            next if row.action_count < 0
+            next if row.action_count < 5
           end
           data << row
         end

@@ -1,5 +1,5 @@
 <% if @user_stats.any? %>
-  <h1><%= t('yearly_review.title.users_section', year: ::YearlyReview.last_year) %></h1>
+  <h1><%= t('yearly_review.title.users_section', year: @review_year) %></h1>
   <div data-review-topic-users="true">
     <% @user_stats.each do |obj| %>
       <% if obj[:users] %>
@@ -16,8 +16,12 @@
           <% obj[:users].each_with_index do |user, i| %>
             <tr class="user-row-<%= i %>">
               <td>
-                <%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %>
-                <%= raw(user_link(user.username)) %>
+                <table>
+                  <tr>
+                    <td><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %></td>
+                    <td><%= raw(user_link(user.username)) %></td>
+                  </tr>
+                </table>
               </td>
               <td>
                 <%= format_number(user.action_count < 1 ? 1 : user.action_count.round) %>
@@ -55,7 +59,7 @@
   <div data-review-users="true">
     <h2><%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %></h2>
     <% @featured_badge_users.each do |user| %>
-      <span><%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %><%= raw(user_link(user.username)) %></span>
+      <span><%= raw(user_link(user.username)) %></span>
     <% end %>
     <% if @featured_badge_users[0].more_users > 0 %>
       <% @badge = @featured_badge_users[0] %>

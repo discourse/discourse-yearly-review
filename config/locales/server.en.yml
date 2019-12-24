@@ -9,8 +9,7 @@ en:
     topic_title: "%{year}: The Year in Review"
     category_topics_title: "Top #%{category} Topics"
     title:
-      users_section: "%{year}'s top Users"
-      topics_section: "%{year}'s top Topics"
+      users_section: "%{year}'s Top Users"
       topics_created: "Most Topics"
       replies_created: "Most Replies"
       likes_given: "Most Likes Given"

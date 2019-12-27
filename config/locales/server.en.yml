@@ -19,11 +19,6 @@ en:
       time_read: "Most Time Reading"
       most_replied_to: "Most Replied to"
       featured_badge: "Users Granted the %{badge_name} Badge"
-      most_popular_topics: "Most Popular Topics"
-      most_liked_topics: "Most Liked Topics"
-      most_liked_posts: "Most Liked Posts"
-      most_replied_to_topics: "Most Replied to Topics"
-      most_bookmarked_topics: "Most Bookmarked Topics"
     action:
       topics_created: "Topics"
       most_replied_to: "Replies"

@@ -136,15 +136,15 @@ module ::Jobs
           action = row.action
           case action
           when 'likes'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'replies'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'bookmarks'
-            next if row.action_count < 5
+            next if row.action_count < 0
           when 'score'
-            next if row.action_count < 10
+            next if row.action_count < 0
           when 'read_time'
-            next if row.action_count < 5
+            next if row.action_count < 0
           end
           data << row
         end

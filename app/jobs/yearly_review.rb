@@ -511,6 +511,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         AND p.post_type = 1
+        AND p.post_number > 1
         AND t.posts_count > 1
         AND u.id > 0
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id

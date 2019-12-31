@@ -408,6 +408,7 @@ module ::Jobs
         WHERE t.deleted_at IS NULL
         AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND t.created_at BETWEEN :start_date AND :end_date
+        AND t.visible = true
         AND c.id = :cat_id
         AND u.id > 0
         GROUP BY t.id, username, uploaded_avatar_id, c.id
@@ -440,6 +441,7 @@ module ::Jobs
         WHERE t.deleted_at IS NULL
         AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND t.created_at BETWEEN :start_date AND :end_date
+        AND t.visible = true
         AND c.id = :cat_id
         AND u.id > 0
         ORDER BY tt.yearly_score DESC
@@ -477,6 +479,7 @@ module ::Jobs
         AND p.post_number = 1
         AND p.deleted_at IS NULL
         AND t.deleted_at IS NULL
+        AND t.visible = true
         AND u.id > 0
         GROUP BY p.id, t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC
@@ -509,6 +512,7 @@ module ::Jobs
         AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
+        AND t.visible = true
         AND p.deleted_at IS NULL
         AND p.post_type = 1
         AND p.post_number > 1
@@ -548,6 +552,7 @@ module ::Jobs
         AND pa.post_action_type_id = 1
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
+        AND t.visible = true
         AND p.deleted_at IS NULL
         GROUP BY t.id, category_slug, category_name, c.id, username, uploaded_avatar_id
         ORDER BY action_count DESC

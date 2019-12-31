@@ -12,6 +12,24 @@
   width: 50%;
 }
 
+[data-review-topic-users="true"] table table tr {
+  border-top: none;
+  border-bottom: none;
+}
+
+[data-review-topic-users="true"] table table tbody {
+  border-top: none;
+}
+
+[data-review-topic-users="true"] table table td {
+  text-align: left;
+  padding-left: 0;
+}
+
+[data-review-topic-users="true"] table table td:first-child {
+  width: 25px;
+}
+
 [data-review-users="true"] span {
   white-space: pre;
   display: inline-block;

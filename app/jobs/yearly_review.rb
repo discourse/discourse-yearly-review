@@ -11,7 +11,10 @@ module ::Jobs
 
     def execute(args)
       now = Time.now
-      title = I18n.t("yearly_review.topic_title", year: now.year - 1)
+      review_year = args[:review_year] ? args[:review_year] : ::YearlyReview.last_year
+      review_start = Time.new(review_year, 1, 1)
+      review_end = review_start.end_of_year
+      title = I18n.t("yearly_review.topic_title", year: review_year)
 
       unless args[:force]
         return unless SiteSetting.yearly_review_enabled
@@ -27,11 +30,7 @@ module ::Jobs
         end
       end
 
-      review_year = args[:review_year] ? args[:review_year] : ::YearlyReview.last_year
-      review_start = Time.new(review_year, 1, 1)
-      review_end = review_start.end_of_year
-
-      raw = create_raw_topic view, review_start, review_end
+      raw = create_raw_topic view, review_year, review_start, review_end
       unless raw.empty?
         topic_opts = {
           title: title,
@@ -46,12 +45,12 @@ module ::Jobs
       end
     end
 
-    def create_raw_topic(view, review_start, review_end)
+    def create_raw_topic(view, review_year, review_start, review_end)
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       user_stats = user_stats review_start, review_end
       daily_visits = daily_visits review_start, review_end
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
-      view.assign(user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
+      view.assign(review_year: review_year, user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
 
       view.render template: "yearly_review", formats: :html, layout: false
     end
@@ -512,6 +511,7 @@ module ::Jobs
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         AND p.post_type = 1
+        AND p.post_number > 1
         AND t.posts_count > 1
         AND u.id > 0
         GROUP BY t.id, topic_slug, category_slug, category_name, c.id, username, uploaded_avatar_id

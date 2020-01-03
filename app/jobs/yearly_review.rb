@@ -52,7 +52,7 @@ module ::Jobs
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
       view.assign(review_year: review_year, user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
 
-      view.render template: "yearly_review", formats: :html, layout: false
+      view.render partial: 'yearly_review', layout: false
     end
 
     def create_category_posts(view, review_start, review_end, topic_id)
@@ -62,7 +62,7 @@ module ::Jobs
         category_post_topics = category_post_topics category_id, review_start, review_end
         if category_post_topics[:topics]
           view.assign(category_topics: category_post_topics)
-          raw = view.render template: "yearly_review_category", formats: :html, layout: false
+          raw = view.render partial: 'yearly_review_category', layout: false
           unless raw.empty?
             post_opts = {
               topic_id: topic_id,

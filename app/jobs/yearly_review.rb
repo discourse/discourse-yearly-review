@@ -162,8 +162,11 @@ module ::Jobs
         FROM topics t
         JOIN users u
         ON u.id = t.user_id
+        JOIN categories c
+        ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND c.read_restricted = false
         AND t.user_id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -188,8 +191,11 @@ module ::Jobs
         ON u.id = p.user_id
         JOIN topics t
         ON t.id = p.topic_id
+        JOIN categories c
+        ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND c.read_restricted = false
         AND p.user_id > 0
         AND p.post_number > 1
         AND p.post_type = 1
@@ -262,8 +268,11 @@ module ::Jobs
         ON tu.user_id = u.id
         JOIN topics t
         ON t.id = tu.topic_id
+        JOIN categories c
+        ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND c.read_restricted = false
         AND u.id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -289,8 +298,11 @@ module ::Jobs
         ON t.id = ua.target_topic_id
         JOIN users u
         ON u.id = ua.acting_user_id
+        JOIN categories c
+        ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND c.read_restricted = false
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -315,8 +327,11 @@ module ::Jobs
         ON t.id = ua.target_topic_id
         JOIN users u
         ON u.id = ua.user_id
+        JOIN categories c
+        ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND c.read_restricted = false
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -341,8 +356,11 @@ module ::Jobs
         ON t.id = p.topic_id
         JOIN users u
         ON u.id = p.user_id
+        JOIN categories c
+        ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND c.read_restricted = false
         AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
         AND p.reply_count > 0

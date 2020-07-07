@@ -556,18 +556,17 @@ module ::Jobs
         c.id AS category_id,
         COUNT(*) AS action_count,
         'bookmarks' AS action
-        FROM post_actions pa
+        FROM bookmarks
         JOIN posts p
-        ON p.id = pa.post_id
+        ON p.id = bookmarks.post_id
         JOIN topics t
-        ON t.id = p.topic_id
+        ON t.id = bookmarks.topic_id
         JOIN categories c
         ON c.id = t.category_id
         JOIN users u
         ON u.id = t.user_id
-        WHERE pa.created_at BETWEEN :start_date AND :end_date
+        WHERE bookmarks.created_at BETWEEN :start_date AND :end_date
         AND ((:exclude_staff = false) OR (u.admin = false AND u.moderator = false))
-        AND pa.post_action_type_id = 1
         AND c.id = :cat_id
         AND t.deleted_at IS NULL
         AND t.visible = true

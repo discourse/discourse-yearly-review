@@ -4,11 +4,11 @@ plugins:
     client: true
   yearly_review_categories:
     type: category_list
-    default: ''
+    default: ""
   yearly_review_exclude_staff:
     default: true
   yearly_review_publish_category:
     type: category
-    default: ''
+    default: ""
   yearly_review_featured_badge:
-    default: ''
+    default: ""

@@ -1,3 +1,5 @@
 .DS_Store
 .idea/
 auto_generated/
+node_modules
+yarn-error.log

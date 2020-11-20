@@ -49,7 +49,7 @@ module ::Jobs
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       include_user_stats = SiteSetting.yearly_review_include_user_stats
 
-      user_stats = include_user_stats ? user_stats review_start, review_end : []
+      user_stats = include_user_stats ? user_stats(review_start, review_end) : []
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
       daily_visits = daily_visits review_start, review_end
       view.assign(review_year: review_year, user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
@@ -120,7 +120,7 @@ module ::Jobs
       most_replies = most_replies review_start, review_end, exclude_staff, read_restricted
       most_likes = most_likes_given review_start, review_end, exclude_staff, read_restricted
       most_likes_received = most_likes_received review_start, review_end, exclude_staff, read_restricted
-      most_visits = most_visits review_start, review_end, exclude_staff, read_restricted
+      most_visits = most_visits review_start, review_end, exclude_staff
       most_replied_to = most_replied_to review_start, review_end, exclude_staff, read_restricted
       user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?

@@ -1,6 +1,6 @@
 <% if @user_stats.any? %>
-  <h1><%= t('yearly_review.title.users_section', year: @review_year) %></h1>
   <div data-review-topic-users="true">
+    <h2><%= t('yearly_review.title.users_section', year: @review_year) %></h2>
     <% @user_stats.each do |obj| %>
       <% if obj[:users] %>
         <h2><%= t("yearly_review.title.#{obj[:key]}") %></h2>

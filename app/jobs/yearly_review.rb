@@ -104,10 +104,13 @@ module ::Jobs
 
     def review_categories_from_settings
       read_restricted = SiteSetting.yearly_review_include_private_categories
+      opts = {}
+      opts[:read_restricted] = false if read_restricted == false
       if SiteSetting.yearly_review_categories.blank?
-        Category.where(read_restricted: read_restricted).order("topics_year DESC")[0, 5].pluck(:id)
+        Category.where(opts).order("topics_year DESC")[0, 5].pluck(:id)
       else
-        Category.where(read_restricted: read_restricted, id: SiteSetting.yearly_review_categories.split('|')).order("topics_year DESC").pluck(:id)
+        opts[:id] = SiteSetting.yearly_review_categories.split('|')
+        Category.where(opts).order("topics_year DESC").pluck(:id)
       end
     end
 
@@ -170,7 +173,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = #{read_restricted}
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND t.user_id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -199,7 +202,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = #{read_restricted}
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND p.user_id > 0
         AND p.post_number > 1
         AND p.post_type = 1
@@ -276,7 +279,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = #{read_restricted}
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND u.id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -306,7 +309,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = #{read_restricted}
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -335,7 +338,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = #{read_restricted}
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -364,7 +367,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = #{read_restricted}
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
         AND p.reply_count > 0

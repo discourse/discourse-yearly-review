@@ -103,23 +103,28 @@ module ::Jobs
     end
 
     def review_categories_from_settings
+      read_restricted = SiteSetting.yearly_review_include_private_categories
       if SiteSetting.yearly_review_categories.blank?
         Category.where(read_restricted: false).order("topics_year DESC")[0, 5].pluck(:id)
       else
-        Category.where(read_restricted: false, id: SiteSetting.yearly_review_categories.split('|')).order("topics_year DESC").pluck(:id)
+        opts = {}
+        opts[:read_restricted] = false if read_restricted == false
+        opts[:id] = SiteSetting.yearly_review_categories.split('|')
+        Category.where(opts).order("topics_year DESC").pluck(:id)
       end
     end
 
     def user_stats(review_start, review_end)
       exclude_staff = SiteSetting.yearly_review_exclude_staff
+      read_restricted = SiteSetting.yearly_review_include_private_categories
       user_stats = []
-      most_time_read = most_time_read review_start, review_end, exclude_staff
-      most_topics = most_topics review_start, review_end, exclude_staff
-      most_replies = most_replies review_start, review_end, exclude_staff
-      most_likes = most_likes_given review_start, review_end, exclude_staff
-      most_likes_received = most_likes_received review_start, review_end, exclude_staff
+      most_time_read = most_time_read review_start, review_end, exclude_staff, read_restricted
+      most_topics = most_topics review_start, review_end, exclude_staff, read_restricted
+      most_replies = most_replies review_start, review_end, exclude_staff, read_restricted
+      most_likes = most_likes_given review_start, review_end, exclude_staff, read_restricted
+      most_likes_received = most_likes_received review_start, review_end, exclude_staff, read_restricted
       most_visits = most_visits review_start, review_end, exclude_staff
-      most_replied_to = most_replied_to review_start, review_end, exclude_staff
+      most_replied_to = most_replied_to review_start, review_end, exclude_staff, read_restricted
       user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
       user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
       user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
@@ -154,7 +159,7 @@ module ::Jobs
       data
     end
 
-    def most_topics(start_date, end_date, exclude_staff)
+    def most_topics(start_date, end_date, exclude_staff, read_restricted)
       sql = <<~SQL
         SELECT
         t.user_id,
@@ -168,7 +173,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = false
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND t.user_id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -181,7 +186,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_replies(start_date, end_date, exclude_staff)
+    def most_replies(start_date, end_date, exclude_staff, read_restricted)
       sql = <<~SQL
         SELECT
         p.user_id,
@@ -197,7 +202,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = false
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND p.user_id > 0
         AND p.post_number > 1
         AND p.post_type = 1
@@ -258,7 +263,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_time_read(start_date, end_date, exclude_staff)
+    def most_time_read(start_date, end_date, exclude_staff, read_restricted)
       sql = <<~SQL
         SELECT
         u.id,
@@ -274,7 +279,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = false
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND u.id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -288,7 +293,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_likes_given(start_date, end_date, exclude_staff)
+    def most_likes_given(start_date, end_date, exclude_staff, read_restricted)
       sql = <<~SQL
         SELECT
         ua.acting_user_id,
@@ -304,7 +309,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = false
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -318,7 +323,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_likes_received(start_date, end_date, exclude_staff)
+    def most_likes_received(start_date, end_date, exclude_staff, read_restricted)
       sql = <<~SQL
         SELECT
         u.username,
@@ -333,7 +338,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = false
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -347,7 +352,7 @@ module ::Jobs
       DB.query(sql)
     end
 
-    def most_replied_to(start_date, end_date, exclude_staff)
+    def most_replied_to(start_date, end_date, exclude_staff, read_restricted)
       sql = <<~SQL
         SELECT
         u.username,
@@ -362,7 +367,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND c.read_restricted = false
+        #{'AND c.read_restricted = false' unless read_restricted}
         AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
         AND p.reply_count > 0

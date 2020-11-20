@@ -9,6 +9,8 @@ plugins:
     default: true
   yearly_review_include_user_stats:
     default: true
+  yearly_review_include_private_categories:
+    default: false
   yearly_review_publish_category:
     type: category
     default: ""

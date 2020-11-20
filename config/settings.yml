@@ -7,6 +7,8 @@ plugins:
     default: ""
   yearly_review_exclude_staff:
     default: true
+  yearly_review_include_user_stats:
+    default: true
   yearly_review_publish_category:
     type: category
     default: ""

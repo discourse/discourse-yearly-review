@@ -104,11 +104,11 @@ module ::Jobs
 
     def review_categories_from_settings
       read_restricted = SiteSetting.yearly_review_include_private_categories
-      opts = {}
-      opts[:read_restricted] = false if read_restricted == false
       if SiteSetting.yearly_review_categories.blank?
-        Category.where(opts).order("topics_year DESC")[0, 5].pluck(:id)
+        Category.where(read_restricted: false).order("topics_year DESC")[0, 5].pluck(:id)
       else
+        opts = {}
+        opts[:read_restricted] = false if read_restricted == false
         opts[:id] = SiteSetting.yearly_review_categories.split('|')
         Category.where(opts).order("topics_year DESC").pluck(:id)
       end

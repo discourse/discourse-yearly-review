@@ -49,7 +49,7 @@ module ::Jobs
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       include_user_stats = SiteSetting.yearly_review_include_user_stats
 
-      user_stats = include_user_stats ? user_stats review_start, review_end : []
+      user_stats = include_user_stats ? user_stats(review_start, review_end) : []
       featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
       daily_visits = daily_visits review_start, review_end
       view.assign(review_year: review_year, user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)

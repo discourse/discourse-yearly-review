@@ -34,7 +34,8 @@ en:
         most_liked: "Most Liked"
         most_replied_to: "Most Replies"
         most_popular: "Most Popular"
-        most_boomarked: "Most Bookmarked"
+        most_bookmarked: "Most Bookmarked"
+        most_read: "Most Read"
       action_types:
         most_popular: "Score"
         most_replied_to: "Replies"

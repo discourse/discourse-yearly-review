@@ -1,5 +1,7 @@
 ## Discourse Yearly Review
 
+https://meta.discourse.org/t/discourse-yearly-review-plugin/105713/
+
 Creates a Yearly Review topic that summarizes user and topic stats for the previous year.
 Stats are only selected from a site's public categories.
 

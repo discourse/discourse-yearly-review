@@ -22,7 +22,7 @@ module ::Jobs
         return if Topic.where(user: Discourse.system_user, title: title).exists?
       end
 
-      view = ActionView::Base.new(ActionView::LookupContext.new(ActionController::Base.view_paths), {})
+      view = ActionView::Base.with_view_paths(ActionController::Base.view_paths)
       view.class_eval do
         include YearlyReviewHelper
         def compiled_method_container

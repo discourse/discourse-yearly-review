@@ -93,6 +93,30 @@ describe Jobs::YearlyReview do
       end
     end
 
+    context 'most bookmarks' do
+      let(:topic_user) { Fabricate(:user) }
+      let(:reviewed_topic) { Fabricate(:topic, user: topic_user, created_at: 1.year.ago) }
+
+      before do
+        SiteSetting.yearly_review_publish_category = category.id
+        10.times { Fabricate(:post, topic: reviewed_topic, created_at: 1.month.ago, user: top_review_user) }
+        reviewed_topic.reload
+        Fabricate(:bookmark, post: reviewed_topic.posts[1], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, post: reviewed_topic.posts[2], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, post: reviewed_topic.posts[3], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, post: reviewed_topic.posts[4], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, post: reviewed_topic.posts[5], user: topic_user, created_at: 1.month.ago)
+      end
+
+      it "ranks bookmarks created by users correctly" do
+        Jobs::YearlyReview.new.execute({})
+        topic = Topic.last
+        raw = Post.where(topic_id: topic.id).second.raw
+        expect(raw).to have_tag("tr.topic-#{reviewed_topic.id}") { with_tag('td', text: reviewed_topic.title) }
+        expect(raw).to have_tag("tr.topic-#{reviewed_topic.id}") { with_tag('td', text: /5/) }
+      end
+    end
+
     context 'likes given and received' do
       SiteSetting.max_consecutive_replies = 20
       let(:reviewed_topic) { Fabricate(:topic, created_at: 1.year.ago) }

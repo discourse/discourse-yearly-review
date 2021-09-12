@@ -9,7 +9,7 @@
       <th><%= t("yearly_review.rank_type.action_types.#{key}") %></th>
     </tr>
     <% val.each do |topic| %>
-    <tr>
+    <tr class="topic-<%= topic.id %>">
       <td><%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %></td>
       <td><%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %></td>
       <td><%= format_number(topic.action_count.round) %></td>

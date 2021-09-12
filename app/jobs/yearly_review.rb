@@ -567,7 +567,7 @@ module ::Jobs
         JOIN posts p
         ON p.id = bookmarks.post_id
         JOIN topics t
-        ON t.id = bookmarks.topic_id
+        ON t.id = p.topic_id
         JOIN categories c
         ON c.id = t.category_id
         JOIN users u

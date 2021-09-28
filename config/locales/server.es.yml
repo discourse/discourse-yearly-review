@@ -1,3 +1,9 @@
+# WARNING: Never edit this file.
+# It will be overwritten when translations are pulled from Crowdin.
+#
+# To work with us on translations, join this project:
+# https://translate.discourse.org/
+
 es:
   site_settings:
     yearly_review_enabled: "Habilitar la revisión anual."
@@ -32,7 +38,6 @@ es:
         most_liked: "Más Gustado"
         most_replied_to: "Más Respondido"
         most_popular: "Más Popular"
-        most_boomarked: "Más Guardado"
       action_types:
         most_popular: "Score"
         most_replied_to: "Respuestas"

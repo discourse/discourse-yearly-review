@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 sv:
+  site_settings:
+    yearly_review_enabled: "Aktivera den årliga granskningen."
+    yearly_review_categories: "Offentliga kategorier att dra ämnen från. De 5 översta kategorierna från den här gruppen väljs. Om detta lämnas tomt blir standardvalet de 5 översta offentliga kategorierna."
+    yearly_review_exclude_staff: "Uteslut personal från användarstatistik."
+    yearly_review_include_user_stats: "Lägg till användaridentifierande statistik till det första inlägget i granskningsämnet."
+    yearly_review_include_private_categories: "Omfatta användaraktivitet från privata eller läsbegränsade kategorier i granskningen."
+    yearly_review_publish_category: "Kategorin som granskningen kommer att publiceras i."
+    yearly_review_featured_badge: "Ange utmärkelsens hela namn. Kan lämnas tomt."
+  yearly_review:
+    topic_title: "%{year}: En granskning av året"
+    category_topics_title: "Toppämnen i #%{category}"
+    title:
+      users_section: "Toppanvändarna %{year}"
+      topics_created: "Flest ämnen"
+      replies_created: "Flest svar"
+      likes_given: "Flest givna gillningar"
+      likes_received: "Flest mottagna gillningar"
+      visits: "Flest besök"
+      daily_visits: "Dagliga besök"
+      time_read: "Mest tid läst"
+      most_replied_to: "Mest besvarade"
+      featured_badge: "Användare beviljade utmärkelsen %{badge_name}"
+    action:
+      topics_created: "Ämnen"
+      most_replied_to: "Svar"
+      replies_created: "Svar"
+      likes_given: "Gillningar"
+      likes_received: "Gillningar"
+      visits: "Besökta dagar"
+      time_read: "Lästa timmar"
+    rank_type:
+      title:
+        most_liked: "Mest gillade"
+        most_replied_to: "Flest svar"
+        most_popular: "Mest populära"
+        most_bookmarked: "Mest bokmärkta"
+        most_read: "Mest lästa"
+      action_types:
+        most_popular: "Poäng"
+        most_replied_to: "Svar"
+        most_liked: "Gillningar"
+        most_bookmarked: "Bokmärken"
+        most_read: "Lästa timmar"
+    user: "Användare"
+    users: "Användare"
+    days_visited: "Besökta dagar"
+    all_yearly_visits: "Årets alla besök"
+    topics: "Ämnen"
+    topic: "Ämne"
+    likes: "Gillningar"
+    bookmarks: "Bokmärken"
+    score: "Poäng"
+    replies: "Svar"
+    visits: "Besök"
+    more_badge_users: "Och ytterligare %{more}..."

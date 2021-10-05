@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 he:
+  site_settings:
+    yearly_review_enabled: "לאפשר סקירה שנתית."
+    yearly_review_categories: "קטגוריות ציבוריות מהן למשוך נושאים. 5 הקטגוריות המובילות מהקבוצה הזאת תיבחרנה. אם השדה נשאר ריק אז תוגדרנה 5 הקטגוריות הציבוריות המובילות."
+    yearly_review_exclude_staff: "להחריג את הסגל מסטטיסטיקת המשתמשים."
+    yearly_review_include_user_stats: "להוסיף סטטיסטיקה שמאפשרת לזהות את המשתמשים לפוסט הראשון של נושא הסקירה."
+    yearly_review_include_private_categories: "לכלול פעילו משתמשים מקטגוריות פרטיות או מוגבלות לקריאה בסקירה."
+    yearly_review_publish_category: "הקטגוריה בה תפורסם הסקירה."
+    yearly_review_featured_badge: "נא למלא את שם העיטור המלא. יכול להישאר ריק."
+  yearly_review:
+    topic_title: "%{year}: סקירת השנה"
+    category_topics_title: "%{category} הנושאים המובילים"
+    title:
+      users_section: "המשתמשים המובילים לשנת %{year}"
+      topics_created: "הכי הרבה נושאים"
+      replies_created: "הכי הרבה תגובות"
+      likes_given: "הכי הרבה לייקים ניתנו"
+      likes_received: "הכי הרבה לייקים התקבלו"
+      visits: "הכי הרבה ביקורים"
+      daily_visits: "ביקורים יומיים"
+      time_read: "זמן הקריאה המרבי"
+      most_replied_to: "התקבלו הכי הרבה תגובות"
+      featured_badge: "משתמשים שהוענק להם העיטור %{badge_name}"
+    action:
+      topics_created: "נושאים"
+      most_replied_to: "תגובות"
+      replies_created: "תגובות"
+      likes_given: "לייקים"
+      likes_received: "לייקים"
+      visits: "ביקורים יומיים"
+      time_read: "שעות קריאה"
+    rank_type:
+      title:
+        most_liked: "הכי הרבה לייקים"
+        most_replied_to: "הכי הרבה תגובות"
+        most_popular: "הכי נפוץ"
+        most_bookmarked: "הכי נוסף לסימניות"
+        most_read: "הכי נקרא"
+      action_types:
+        most_popular: "ניקוד"
+        most_replied_to: "תגובות"
+        most_liked: "לייקים"
+        most_bookmarked: "סימניות"
+        most_read: "שעות קריאה"
+    user: "משתמש"
+    users: "משתמשים"
+    days_visited: "ביקורים יומיים"
+    all_yearly_visits: "כל הביקורים השנתיים"
+    topics: "נושאים"
+    topic: "נושא"
+    likes: "לייקים"
+    bookmarks: "סימניות"
+    score: "ניקוד"
+    replies: "תגובות"
+    visits: "ביקורים"
+    more_badge_users: "ועוד %{more}…"

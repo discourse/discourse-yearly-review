@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 de:
+  site_settings:
+    yearly_review_enabled: "Aktiviere den jährlichen Rückblick."
+    yearly_review_categories: "Öffentliche Kategorien, aus denen Themen abgerufen werden. Es werden die Top 5 Kategorien aus dieser Gruppe ausgewählt. Wenn du nichts angibst, werden standardmäßig die Top 5 der öffentlichen Kategorien ausgewählt."
+    yearly_review_exclude_staff: "Schließe das Team aus der Benutzerstatistik aus."
+    yearly_review_include_user_stats: "Füge benutzeridentifizierende Statistiken zum ersten Beitrag des Rückblickthemas hinzu."
+    yearly_review_include_private_categories: "Beziehe Benutzeraktivitäten aus privaten oder lesebeschränkten Kategorien in den Rückblick ein."
+    yearly_review_publish_category: "Die Kategorie, in welcher der Rückblick veröffentlicht werden soll."
+    yearly_review_featured_badge: "Gib den vollständigen Namen des Abzeichens ein. Kann leer gelassen werden."
+  yearly_review:
+    topic_title: "%{year}: das Jahr im Rückblick"
+    category_topics_title: "Top #%{category} Themen"
+    title:
+      users_section: "Top-Benutzer %{year}"
+      topics_created: "Meiste Themen"
+      replies_created: "Meiste Antworten"
+      likes_given: "Meiste vergebene „Gefällt mir“"
+      likes_received: "Meiste erhaltene „Gefällt mir“"
+      visits: "Meiste Besuche"
+      daily_visits: "Tägliche Besuche"
+      time_read: "Meiste Lesezeit"
+      most_replied_to: "Am meisten beantwortet"
+      featured_badge: "Benutzer, denen das Abzeichen „%{badge_name}“ verliehen wurde"
+    action:
+      topics_created: "Themen"
+      most_replied_to: "Antworten"
+      replies_created: "Antworten"
+      likes_given: "„Gefällt mir“"
+      likes_received: "„Gefällt mir“"
+      visits: "Besuchstage"
+      time_read: "Stunden gelesen"
+    rank_type:
+      title:
+        most_liked: "Am meisten „Gefällt mir“"
+        most_replied_to: "Meiste Antworten"
+        most_popular: "Am beliebtesten"
+        most_bookmarked: "Am häufigsten mit Lesezeichen versehen"
+        most_read: "Meist gelesen"
+      action_types:
+        most_popular: "Score"
+        most_replied_to: "Antworten"
+        most_liked: "„Gefällt mir“"
+        most_bookmarked: "Lesezeichen"
+        most_read: "Stunden gelesen"
+    user: "Benutzer"
+    users: "Benutzer"
+    days_visited: "Besuchstage"
+    all_yearly_visits: "Alle jährlichen Besuche"
+    topics: "Themen"
+    topic: "Thema"
+    likes: "„Gefällt mir“"
+    bookmarks: "Lesezeichen"
+    score: "Score"
+    replies: "Antworten"
+    visits: "Besuche"
+    more_badge_users: "Und %{more} mehr …"

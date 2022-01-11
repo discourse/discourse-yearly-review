@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 ja:
+  site_settings:
+    yearly_review_enabled: "年次レビューを有効にします。"
+    yearly_review_categories: "トピックをプルする公開カテゴリ。このグループの上位 5 つのカテゴリが選択されます。空白のままにすると、デフォルトで上位 5 つの公開カテゴリが選択されます。"
+    yearly_review_exclude_staff: "ユーザー統計からスタッフを除外します。"
+    yearly_review_include_user_stats: "レビュートピックの最初の投稿にユーザーを特定する統計を追加します。"
+    yearly_review_include_private_categories: "レビューに非公開のカテゴリまたは読み取り制限のあるカテゴリのユーザーアクティビティを含めます。"
+    yearly_review_publish_category: "レビューが公開されるカテゴリ。"
+    yearly_review_featured_badge: "バッジのフルネームを入力します。空白にすることができます。"
+  yearly_review:
+    topic_title: "%{year} 年を振り返る"
+    category_topics_title: "上位 %{category} 件のトピック"
+    title:
+      users_section: "%{year} 年の上位ユーザー"
+      topics_created: "最も多かったトピック"
+      replies_created: "最も多かった返信"
+      likes_given: "最も多く与えた「いいね！」"
+      likes_received: "最も多く受けた「いいね！」"
+      visits: "最も多かったアクセス"
+      daily_visits: "1 日当たりのアクセス"
+      time_read: "最も長く閲覧された項目"
+      most_replied_to: "最も返信の多かった項目"
+      featured_badge: "%{badge_name} バッジを付与されたユーザー"
+    action:
+      topics_created: "トピック"
+      most_replied_to: "返信先"
+      replies_created: "返信"
+      likes_given: "「いいね！」"
+      likes_received: "「いいね！」"
+      visits: "アクセス日数"
+      time_read: "閲覧時間"
+    rank_type:
+      title:
+        most_liked: "最も「いいね！」の多い項目"
+        most_replied_to: "最も返信の多い項目"
+        most_popular: "最も人気の高い項目"
+        most_bookmarked: "最もブックマークされた項目"
+        most_read: "最も閲覧された項目"
+      action_types:
+        most_popular: "スコア"
+        most_replied_to: "返信"
+        most_liked: "「いいね！」"
+        most_bookmarked: "ブックマーク"
+        most_read: "閲覧時間"
+    user: "ユーザー"
+    users: "ユーザー"
+    days_visited: "アクセス日数"
+    all_yearly_visits: "年間アクセス数"
+    topics: "トピック"
+    topic: "トピック"
+    likes: "「いいね！」"
+    bookmarks: "ブックマーク"
+    score: "スコア"
+    replies: "返信"
+    visits: "アクセス"
+    more_badge_users: "および他 %{more} 人..."

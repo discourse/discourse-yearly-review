@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 pt_BR:
+  site_settings:
+    yearly_review_enabled: "Ative a revisão anual."
+    yearly_review_categories: "Categorias públicas para receber tópicos. As cinco melhores categorias deste grupo serão selecionadas. Se estiver em branco, as cinco melhores categorias públicas serão definidas como padrão."
+    yearly_review_exclude_staff: "Tirar equipe das estatísticas do(a) usuário(a)."
+    yearly_review_include_user_stats: "Adicionar estatísticas de identificação de usuário(a) à primeira postagem do tópico de revisão."
+    yearly_review_include_private_categories: "Inclua atividade de usuário(a) das categorias privada ou restrita à leitura na revisão."
+    yearly_review_publish_category: "A categoria em que a revisão será publicada."
+    yearly_review_featured_badge: "Insira o nome completo do emblema. Não pode ser deixado em branco."
+  yearly_review:
+    topic_title: "%{year}: ano da revisão"
+    category_topics_title: "Melhores #%{category} tópicos"
+    title:
+      users_section: "Melhores usuários(as) do ano %{year}"
+      topics_created: "Mais tópicos"
+      replies_created: "Mais respostas"
+      likes_given: "Mais curtidas dadas"
+      likes_received: "Mais curtidas recebidas"
+      visits: "Mais visitas"
+      daily_visits: "Visitas diárias"
+      time_read: "Mais tempo de leitura"
+      most_replied_to: "Mais respondidos(as)"
+      featured_badge: "Os(as) usuários(as) concederam o emblema %{badge_name}"
+    action:
+      topics_created: "Tópicos"
+      most_replied_to: "Respostas"
+      replies_created: "Respostas"
+      likes_given: "Curtidas"
+      likes_received: "Curtidas"
+      visits: "Dias visitados"
+      time_read: "Horas lidas"
+    rank_type:
+      title:
+        most_liked: "Mais curtido(a)"
+        most_replied_to: "Mais respostas"
+        most_popular: "Mais popular"
+        most_bookmarked: "Mais favoritado"
+        most_read: "Mais lidos"
+      action_types:
+        most_popular: "Pontuação"
+        most_replied_to: "Respostas"
+        most_liked: "Curtidas"
+        most_bookmarked: "Favoritos"
+        most_read: "Horas lidas"
+    user: "Usuário(a)"
+    users: "Usuários(as)"
+    days_visited: "Dias visitados"
+    all_yearly_visits: "Todas as visitas anuais"
+    topics: "Tópicos"
+    topic: "Tópico"
+    likes: "Curtidas"
+    bookmarks: "Favoritos"
+    score: "Pontuação"
+    replies: "Respostas"
+    visits: "Acessos"
+    more_badge_users: "E mais %{more}..."

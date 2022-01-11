@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 it:
+  site_settings:
+    yearly_review_enabled: "Abilita revisione annuale."
+    yearly_review_categories: "Categorie pubbliche da cui estrarre argomenti. Verranno selezionate le prime 5 categorie di questo gruppo. Se l'opzione è lasciata vuota, verranno automaticamente visualizzate le prime 5 categorie pubbliche."
+    yearly_review_exclude_staff: "Escludi staff dalle statistiche utente."
+    yearly_review_include_user_stats: "Aggiungi le statistiche di identificazione degli utenti al primo messaggio dell'argomento della revisione."
+    yearly_review_include_private_categories: "Includi nella revisione l'attività degli utenti di categorie private o con limitazioni di lettura."
+    yearly_review_publish_category: "La categoria in cui verrà pubblicata la revisione."
+    yearly_review_featured_badge: "Inserisci il nome completo del distintivo. Può essere lasciato vuoto."
+  yearly_review:
+    topic_title: "%{year}: L'anno della revisione"
+    category_topics_title: "I primi %{category} argomenti"
+    title:
+      users_section: "I principali utenti dell'anno %{year}"
+      topics_created: "Con più argomenti"
+      replies_created: "Con più risposte"
+      likes_given: "Più \"Mi piace\" dati"
+      likes_received: "Più \"Mi piace\" ricevuti"
+      visits: "Con più visite"
+      daily_visits: "Visite giornaliere"
+      time_read: "Maggiori tempi di lettura"
+      most_replied_to: "Più risposte ricevute"
+      featured_badge: "Utenti che hanno ottenuto il distintivo %{badge_name}"
+    action:
+      topics_created: "Argomenti"
+      most_replied_to: "Risposte"
+      replies_created: "Risposte"
+      likes_given: "Mi piace"
+      likes_received: "Mi piace"
+      visits: "Giorni di frequenza"
+      time_read: "Ore di lettura"
+    rank_type:
+      title:
+        most_liked: "Con più \"Mi Piace\""
+        most_replied_to: "Più risposte"
+        most_popular: "Più popolari"
+        most_bookmarked: "Più aggiunti ai segnalibri"
+        most_read: "Più letti"
+      action_types:
+        most_popular: "Punteggio"
+        most_replied_to: "Risposte"
+        most_liked: "Mi piace"
+        most_bookmarked: "Segnalibri"
+        most_read: "Ore di lettura"
+    user: "Utente"
+    users: "Utenti"
+    days_visited: "Giorni di frequenza"
+    all_yearly_visits: "Tutte le visite annuali"
+    topics: "Argomenti"
+    topic: "Argomento"
+    likes: "Mi piace"
+    bookmarks: "Segnalibri"
+    score: "Punteggio"
+    replies: "Risposte"
+    visits: "Visite"
+    more_badge_users: "E altri %{more}..."

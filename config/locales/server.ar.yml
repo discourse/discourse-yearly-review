@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 ar:
+  site_settings:
+    yearly_review_enabled: "تفعيل المراجعة السنوية"
+    yearly_review_categories: "الفئات العامة لسحب الموضوعات منها. سيتم تحديد أبرز 5 فئات من هذه المجموعة. في حال ترك هذا الإعداد فارغًا، سيتم تحديد أبرز 5 فئات عامة بشكلٍ افتراضي."
+    yearly_review_exclude_staff: "استثناء فريق العمل من إحصاءات المستخدمين"
+    yearly_review_include_user_stats: "إضافة الإحصاءات المحدِّدة للمستخدمين إلى أول منشور في موضوع المراجعة"
+    yearly_review_include_private_categories: "تضمين نشاط المستخدم من الفئات الخاصة أو المقيَّدة قراءتها في المراجعة"
+    yearly_review_publish_category: "الفئة التي سيتم نشر المراجعة فيها"
+    yearly_review_featured_badge: "أدخل اسم الشارة بالكامل. يمكن تركه فارغًا."
+  yearly_review:
+    topic_title: "%{year}: العام قيد المراجعة"
+    category_topics_title: "أبرز #%{category} من الموضوعات"
+    title:
+      users_section: "أبرز المستخدمين في %{year}"
+      topics_created: "الأكثر في عدد الموضوعات"
+      replies_created: "الأكثر في عدد الردود"
+      likes_given: "الأكثر في عدد الإعجابات الممنوحة"
+      likes_received: "الأكثر في عدد الإعجابات المتلقاة"
+      visits: "الأكثر في عدد الزيارات"
+      daily_visits: "الزيارات اليومية"
+      time_read: "الأكثر في وقت القراءة"
+      most_replied_to: "الأكثر ردًا عليه"
+      featured_badge: "المستخدمون الذين تم منحهم شارة %{badge_name}"
+    action:
+      topics_created: "الموضوعات"
+      most_replied_to: "الردود"
+      replies_created: "الردود"
+      likes_given: "الإعجابات"
+      likes_received: "الإعجابات"
+      visits: "أيام الزيارة"
+      time_read: "ساعات القراءة"
+    rank_type:
+      title:
+        most_liked: "الأكثر تلقيًا للإعجاب"
+        most_replied_to: "الأكثر في عدد الردود"
+        most_popular: "الأكثر شعبية"
+        most_bookmarked: "الأكثر تسجيلًا للإشارات المرجعية"
+        most_read: "الأكثر قراءة"
+      action_types:
+        most_popular: "النقاط"
+        most_replied_to: "الردود"
+        most_liked: "الإعجابات"
+        most_bookmarked: "الإشارات المرجعية"
+        most_read: "ساعات القراءة"
+    user: "المستخدم"
+    users: "المستخدمون"
+    days_visited: "أيام الزيارة"
+    all_yearly_visits: "جميع الزيارات السنوية"
+    topics: "الموضوعات"
+    topic: "الموضوع"
+    likes: "الإعجابات"
+    bookmarks: "الإشارات المرجعية"
+    score: "النقاط"
+    replies: "الردود"
+    visits: "الزيارات"
+    more_badge_users: "و%{more} أخرى..."

@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 ru:
+  site_settings:
+    yearly_review_enabled: "Включить ежегодный обзор статистики."
+    yearly_review_categories: "Общедоступные категории, из которых нужно извлекать темы. Будут выбраны 5 лучших категорий из этой группы. Если оставить это поле пустым, по умолчанию будут выбраны 5 лучших общедоступных категорий."
+    yearly_review_exclude_staff: "Исключить персонал из статистики пользователя."
+    yearly_review_include_user_stats: "Добавить идентифицирующую пользователя статистику в первую публикацию темы обзора."
+    yearly_review_include_private_categories: "Включить в обзор действия пользователей из закрытых или ограниченных для чтения категорий."
+    yearly_review_publish_category: "Категория, в которой будет опубликован обзор."
+    yearly_review_featured_badge: "Введите полное имя награды. Может быть оставлено пустым."
+  yearly_review:
+    topic_title: "%{year}: Годовой обзор"
+    category_topics_title: "Лучшие темы #%{category}"
+    title:
+      users_section: "Лучшие пользователи %{year}"
+      topics_created: "По количеству тем"
+      replies_created: "По количеству ответов"
+      likes_given: "По количеству выраженных симпатий"
+      likes_received: "По количеству полученных симпатий"
+      visits: "По количеству посещений"
+      daily_visits: "По количеству ежедневных посещений"
+      time_read: "По количеству времени чтения"
+      most_replied_to: "По количеству ответов на тему"
+      featured_badge: "Пользователи получили награду: %{badge_name}"
+    action:
+      topics_created: "Тем"
+      most_replied_to: "Ответов"
+      replies_created: "Ответов"
+      likes_given: "Симпатии"
+      likes_received: "Симпатии"
+      visits: "Дней посещения"
+      time_read: "Часов чтения"
+    rank_type:
+      title:
+        most_liked: "Фаворит"
+        most_replied_to: "Большинство ответов"
+        most_popular: "Самые популярные темы"
+        most_bookmarked: "Больше всего закладок"
+        most_read: "Тексточитатель"
+      action_types:
+        most_popular: "Оценка"
+        most_replied_to: "Ответов"
+        most_liked: "Симпатий"
+        most_bookmarked: "Закладок"
+        most_read: "Часов чтения"
+    user: "Пользователь"
+    users: "Пользователей"
+    days_visited: "Дней посещения"
+    all_yearly_visits: "Все ежегодные посещения"
+    topics: "Темы"
+    topic: "Тема"
+    likes: "Симпатии"
+    bookmarks: "Закладки"
+    score: "Оценка"
+    replies: "Ответов"
+    visits: "Посещений"
+    more_badge_users: "И ещё %{more}..."

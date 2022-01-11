@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 fr:
+  site_settings:
+    yearly_review_enabled: "Activer la révision annuelle."
+    yearly_review_categories: "Catégories publiques à partir desquelles extraire les sujets. Les 5 meilleures catégories de ce groupe seront sélectionnées. Si ce paramètre est laissé vide, les 5 premières catégories publiques seront sélectionnées par défaut."
+    yearly_review_exclude_staff: "Exclure le personnel des statistiques des utilisateurs."
+    yearly_review_include_user_stats: "Ajouter les statistiques d'identification des utilisateurs au premier message du sujet de révision."
+    yearly_review_include_private_categories: "Inclure l'activité de l'utilisateur à partir de catégories privées ou en lecture restreintes dans la révision."
+    yearly_review_publish_category: "La catégorie dans laquelle la révision sera publiée."
+    yearly_review_featured_badge: "Saisissez le nom complet du badge. Cet espace peut être laissé vide."
+  yearly_review:
+    topic_title: "%{year} : l'année en cours de révision"
+    category_topics_title: "%{category} principaux sujets"
+    title:
+      users_section: "Meilleurs utilisateurs de %{year}"
+      topics_created: "Le plus de sujets"
+      replies_created: "Le plus de réponses"
+      likes_given: "Le plus de « J'aime » donnés"
+      likes_received: "Le plus de « J'aime » reçus"
+      visits: "Le plus de visites"
+      daily_visits: "Visites quotidiennes"
+      time_read: "Le plus de temps de lecture"
+      most_replied_to: "Le plus de réponses reçues"
+      featured_badge: "Utilisateurs ayant obtenu le badge %{badge_name}"
+    action:
+      topics_created: "Sujets"
+      most_replied_to: "Réponses"
+      replies_created: "Réponses"
+      likes_given: "« J'aime » attribués"
+      likes_received: "« J'aime » attribués"
+      visits: "Jours de visite"
+      time_read: "Heures de lecture"
+    rank_type:
+      title:
+        most_liked: "Le plus aimé"
+        most_replied_to: "Le plus de réponses"
+        most_popular: "Le plus populaire"
+        most_bookmarked: "Le plus marqué"
+        most_read: "Le plus lu"
+      action_types:
+        most_popular: "Score"
+        most_replied_to: "Réponses"
+        most_liked: "« J'aime » attribués"
+        most_bookmarked: "Signets"
+        most_read: "Heures de lecture"
+    user: "Utilisateur"
+    users: "Utilisateurs"
+    days_visited: "Jours de visite"
+    all_yearly_visits: "Toutes les visites de l'année"
+    topics: "Sujets"
+    topic: "Sujet"
+    likes: "« J'aime » attribués"
+    bookmarks: "Signets"
+    score: "Score"
+    replies: "Réponses"
+    visits: "Visites"
+    more_badge_users: "Et %{more} de plus…"

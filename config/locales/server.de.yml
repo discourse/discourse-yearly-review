@@ -25,7 +25,7 @@ de:
       visits: "Meiste Besuche"
       daily_visits: "Tägliche Besuche"
       time_read: "Meiste Lesezeit"
-      most_replied_to: "Am meisten beantwortet"
+      most_replied_to: "Häufigste Antworten an"
       featured_badge: "Benutzer, denen das Abzeichen „%{badge_name}“ verliehen wurde"
     action:
       topics_created: "Themen"

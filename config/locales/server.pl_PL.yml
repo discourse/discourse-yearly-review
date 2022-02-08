@@ -5,3 +5,54 @@
 # https://translate.discourse.org/
 
 pl_PL:
+  site_settings:
+    yearly_review_enabled: "Włącz przegląd roczny."
+    yearly_review_categories: "Kategorie publiczne, z których można pobierać tematy. Zostanie wybranych 5 najlepszych kategorii z tej grupy. Jeśli pozostawisz puste, domyślnie zostanie wyświetlonych 5 najlepszych publicznych kategorii."
+    yearly_review_exclude_staff: "Wyłączenie personelu ze statystyk użytkowników."
+    yearly_review_include_private_categories: "Uwzględnij w przeglądzie aktywność użytkowników z kategorii prywatnych lub ograniczonych do odczytu."
+    yearly_review_publish_category: "Kategoria, w której zostanie opublikowany przegląd roczny."
+    yearly_review_featured_badge: "Wprowadź pełną nazwę odznaki. Można pozostawić puste."
+  yearly_review:
+    topic_title: "%{year}: Przegląd roku"
+    category_topics_title: "Top #%{category} tematów"
+    title:
+      users_section: "Najlepsi użytkownicy %{year}"
+      topics_created: "Najwięcej utworzonych tematów"
+      replies_created: "Najwięcej odpowiedzi"
+      likes_given: "Najwięcej danych polubień"
+      likes_received: "Najwięcej danych polubień"
+      visits: "Najwięcej odwiedzin"
+      daily_visits: "Dzienne odwiedziny"
+      featured_badge: "Użytkownicy, którym przyznano odznakę %{badge_name}"
+    action:
+      topics_created: "Tematy"
+      most_replied_to: "Odpowiedzi"
+      replies_created: "Odpowiedzi"
+      likes_given: "Polubienia"
+      likes_received: "Polubienia"
+      visits: "Dni odwiedzin"
+      time_read: "Godzin czytania"
+    rank_type:
+      title:
+        most_liked: "Najbardziej lubiane"
+        most_replied_to: "Najwięcej odpowiedzi"
+        most_popular: "Najbardziej popularne"
+        most_bookmarked: "Najczęściej dodawane do zakładek"
+        most_read: "Najczęściej czytane"
+      action_types:
+        most_popular: "Wynik"
+        most_replied_to: "Odpowiedzi"
+        most_liked: "Polubień"
+        most_bookmarked: "Zakładek"
+        most_read: "Godzin czytania"
+    user: "Użytkownik"
+    users: "Użytkownicy"
+    days_visited: "Dni odwiedzin"
+    topics: "Tematy"
+    topic: "Temat"
+    likes: "Polubienia"
+    bookmarks: "Zakładek"
+    score: "Wynik"
+    replies: "Odpowiedzi"
+    visits: "Odwiedzin"
+    more_badge_users: "I %{more} wIęcej..."

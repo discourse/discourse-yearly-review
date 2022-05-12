@@ -99,13 +99,14 @@ describe Jobs::YearlyReview do
 
       before do
         SiteSetting.yearly_review_publish_category = category.id
+        SiteSetting.use_polymorphic_bookmarks = true
         10.times { Fabricate(:post, topic: reviewed_topic, created_at: 1.month.ago, user: top_review_user) }
         reviewed_topic.reload
-        Fabricate(:bookmark, post: reviewed_topic.posts[1], user: topic_user, created_at: 1.month.ago)
-        Fabricate(:bookmark, post: reviewed_topic.posts[2], user: topic_user, created_at: 1.month.ago)
-        Fabricate(:bookmark, post: reviewed_topic.posts[3], user: topic_user, created_at: 1.month.ago)
-        Fabricate(:bookmark, post: reviewed_topic.posts[4], user: topic_user, created_at: 1.month.ago)
-        Fabricate(:bookmark, post: reviewed_topic.posts[5], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, bookmarkable: reviewed_topic.posts[1], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, bookmarkable: reviewed_topic.posts[2], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, bookmarkable: reviewed_topic.posts[3], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, bookmarkable: reviewed_topic.posts[4], user: topic_user, created_at: 1.month.ago)
+        Fabricate(:bookmark, bookmarkable: reviewed_topic.posts[5], user: topic_user, created_at: 1.month.ago)
       end
 
       it "ranks bookmarks created by users correctly" do

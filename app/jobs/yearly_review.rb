@@ -550,12 +550,13 @@ module ::Jobs
     end
 
     def most_bookmarked_topic_sql
-      post_bookmark_join_sql = if SiteSetting.use_polymorphic_bookmarks
-                                 "ON p.id = bookmarks.bookmarkable_id AND bookmarks.bookmarkable_type = 'Post'"
-                               else
-                                 "ON p.id = bookmarks.post_id"
-                               end
-      <<~SQL
+      post_bookmark_join_sql = \
+        if SiteSetting.use_polymorphic_bookmarks
+          "ON p.id = bookmarks.bookmarkable_id AND bookmarks.bookmarkable_type = 'Post'"
+        else
+          "ON p.id = bookmarks.post_id"
+        end
+    <<~SQL
         SELECT
         username,
         uploaded_avatar_id,

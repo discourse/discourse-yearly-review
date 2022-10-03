@@ -8,7 +8,7 @@ describe Jobs::YearlyReview do
   let(:top_review_user) { Fabricate(:user, username: 'top_review_user') }
   let(:reviewed_user) { Fabricate(:user, username: 'reviewed_user') }
   describe 'publishing the topic' do
-    context 'January 1st' do
+    describe 'on January 1st' do
       before do
         SiteSetting.yearly_review_publish_category = category.id
         freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-01")
@@ -22,7 +22,7 @@ describe Jobs::YearlyReview do
       end
     end
 
-    context 'February 1st' do
+    describe 'on February 1st' do
       before do
         freeze_time DateTime.parse("#{::YearlyReview.current_year}-02-01")
         Fabricate(:topic, created_at: 2.months.ago, title: "A topic from #{::YearlyReview.last_year}")
@@ -35,7 +35,7 @@ describe Jobs::YearlyReview do
       end
     end
 
-    context 'After the review has been published' do
+    describe 'after the review has been published' do
       before do
         SiteSetting.yearly_review_publish_category = category.id
         freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-05")
@@ -58,7 +58,7 @@ describe Jobs::YearlyReview do
       SiteSetting.yearly_review_publish_category = category.id
     end
 
-    context 'most topics' do
+    describe 'most topics' do
       before do
         5.times { Fabricate(:topic, user: top_review_user, created_at: 1.month.ago) }
         Fabricate(:topic, user: reviewed_user, created_at: 1.month.ago)
@@ -73,7 +73,7 @@ describe Jobs::YearlyReview do
       end
     end
 
-    context 'most replies' do
+    describe 'most replies' do
       before do
         SiteSetting.max_consecutive_replies = 5
         SiteSetting.yearly_review_publish_category = category.id
@@ -93,7 +93,7 @@ describe Jobs::YearlyReview do
       end
     end
 
-    context 'most bookmarks' do
+    describe 'most bookmarks' do
       let(:topic_user) { Fabricate(:user) }
       let(:reviewed_topic) { Fabricate(:topic, user: topic_user, created_at: 1.year.ago) }
 
@@ -118,7 +118,7 @@ describe Jobs::YearlyReview do
       end
     end
 
-    context 'likes given and received' do
+    describe 'likes given and received' do
       SiteSetting.max_consecutive_replies = 20
       let(:reviewed_topic) { Fabricate(:topic, created_at: 1.year.ago) }
       before do

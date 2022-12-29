@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../app/helpers/yearly_review_helper'
+require_relative "../../app/helpers/yearly_review_helper"
 
 module ::Jobs
   class YearlyReview < ::Jobs::Scheduled
@@ -36,12 +36,14 @@ module ::Jobs
           title: title,
           raw: raw,
           category: SiteSetting.yearly_review_publish_category,
-          skip_validations: true
+          skip_validations: true,
         }
 
         post = PostCreator.create!(Discourse.system_user, topic_opts)
 
-        create_category_posts view, review_start, review_end, post.topic_id if post.respond_to? :topic_id
+        if post.respond_to? :topic_id
+          create_category_posts view, review_start, review_end, post.topic_id
+        end
       end
     end
 
@@ -50,11 +52,23 @@ module ::Jobs
       include_user_stats = SiteSetting.yearly_review_include_user_stats
 
       user_stats = include_user_stats ? user_stats(review_start, review_end) : []
-      featured_badge_users = review_featured_badge.blank? ? [] : featured_badge_users(review_featured_badge, review_start, review_end)
+      featured_badge_users =
+        (
+          if review_featured_badge.blank?
+            []
+          else
+            featured_badge_users(review_featured_badge, review_start, review_end)
+          end
+        )
       daily_visits = daily_visits review_start, review_end
-      view.assign(review_year: review_year, user_stats: user_stats, daily_visits: daily_visits, featured_badge_users: featured_badge_users)
+      view.assign(
+        review_year: review_year,
+        user_stats: user_stats,
+        daily_visits: daily_visits,
+        featured_badge_users: featured_badge_users,
+      )
 
-      view.render partial: 'yearly_review', layout: false
+      view.render partial: "yearly_review", layout: false
     end
 
     def create_category_posts(view, review_start, review_end, topic_id)
@@ -64,13 +78,9 @@ module ::Jobs
         category_post_topics = category_post_topics category_id, review_start, review_end
         if category_post_topics[:topics]
           view.assign(category_topics: category_post_topics)
-          raw = view.render partial: 'yearly_review_category', layout: false
+          raw = view.render partial: "yearly_review_category", layout: false
           unless raw.empty?
-            post_opts = {
-              topic_id: topic_id,
-              raw: raw,
-              skip_validations: true
-            }
+            post_opts = { topic_id: topic_id, raw: raw, skip_validations: true }
 
             PostCreator.create!(Discourse.system_user, post_opts)
           end
@@ -109,7 +119,7 @@ module ::Jobs
       else
         opts = {}
         opts[:read_restricted] = false if read_restricted == false
-        opts[:id] = SiteSetting.yearly_review_categories.split('|')
+        opts[:id] = SiteSetting.yearly_review_categories.split("|")
         Category.where(opts).order("topics_year DESC").pluck(:id)
       end
     end
@@ -122,40 +132,52 @@ module ::Jobs
       most_topics = most_topics review_start, review_end, exclude_staff, read_restricted
       most_replies = most_replies review_start, review_end, exclude_staff, read_restricted
       most_likes = most_likes_given review_start, review_end, exclude_staff, read_restricted
-      most_likes_received = most_likes_received review_start, review_end, exclude_staff, read_restricted
+      most_likes_received =
+        most_likes_received review_start, review_end, exclude_staff, read_restricted
       most_visits = most_visits review_start, review_end, exclude_staff
       most_replied_to = most_replied_to review_start, review_end, exclude_staff, read_restricted
-      user_stats << { key: 'time_read', users: most_time_read } if most_time_read.any?
-      user_stats << { key: 'topics_created', users: most_topics } if most_topics.any?
-      user_stats << { key: 'replies_created', users: most_replies } if most_replies.any?
-      user_stats << { key: 'most_replied_to', users: most_replied_to } if most_replied_to.any?
-      user_stats << { key: 'likes_given', users: most_likes } if most_likes.any?
-      user_stats << { key: 'likes_received', users: most_likes_received } if most_likes_received.any?
-      user_stats << { key: 'visits', users: most_visits } if most_visits.any?
+      user_stats << { key: "time_read", users: most_time_read } if most_time_read.any?
+      user_stats << { key: "topics_created", users: most_topics } if most_topics.any?
+      user_stats << { key: "replies_created", users: most_replies } if most_replies.any?
+      user_stats << { key: "most_replied_to", users: most_replied_to } if most_replied_to.any?
+      user_stats << { key: "likes_given", users: most_likes } if most_likes.any?
+      if most_likes_received.any?
+        user_stats << { key: "likes_received", users: most_likes_received }
+      end
+      user_stats << { key: "visits", users: most_visits } if most_visits.any?
       user_stats
     end
 
     def ranked_topics(cat_id, start_date, end_date, sql)
       data = []
       exclude_staff = SiteSetting.yearly_review_exclude_staff
-      DB.query(sql, start_date: start_date, end_date: end_date, cat_id: cat_id, exclude_staff: exclude_staff, limit: 5).each do |row|
-        if row
-          action = row.action
-          case action
-          when 'likes'
-            next if row.action_count < 10
-          when 'replies'
-            next if row.action_count < 10
-          when 'bookmarks'
-            next if row.action_count < 5
-          when 'score'
-            next if row.action_count < 10
-          when 'read_time'
-            next if row.action_count < 5
+      DB
+        .query(
+          sql,
+          start_date: start_date,
+          end_date: end_date,
+          cat_id: cat_id,
+          exclude_staff: exclude_staff,
+          limit: 5,
+        )
+        .each do |row|
+          if row
+            action = row.action
+            case action
+            when "likes"
+              next if row.action_count < 10
+            when "replies"
+              next if row.action_count < 10
+            when "bookmarks"
+              next if row.action_count < 5
+            when "score"
+              next if row.action_count < 10
+            when "read_time"
+              next if row.action_count < 5
+            end
+            data << row
           end
-          data << row
         end
-      end
       data
     end
 
@@ -173,7 +195,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        #{'AND c.read_restricted = false' unless read_restricted}
+        #{"AND c.read_restricted = false" unless read_restricted}
         AND t.user_id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -202,7 +224,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        #{'AND c.read_restricted = false' unless read_restricted}
+        #{"AND c.read_restricted = false" unless read_restricted}
         AND p.user_id > 0
         AND p.post_number > 1
         AND p.post_type = 1
@@ -279,7 +301,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        #{'AND c.read_restricted = false' unless read_restricted}
+        #{"AND c.read_restricted = false" unless read_restricted}
         AND u.id > 0
         AND t.created_at >= '#{start_date}'
         AND t.created_at <= '#{end_date}'
@@ -309,7 +331,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        #{'AND c.read_restricted = false' unless read_restricted}
+        #{"AND c.read_restricted = false" unless read_restricted}
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -338,7 +360,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        #{'AND c.read_restricted = false' unless read_restricted}
+        #{"AND c.read_restricted = false" unless read_restricted}
         AND u.id > 0
         AND ua.created_at >= '#{start_date}'
         AND ua.created_at <= '#{end_date}'
@@ -367,7 +389,7 @@ module ::Jobs
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
         AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        #{'AND c.read_restricted = false' unless read_restricted}
+        #{"AND c.read_restricted = false" unless read_restricted}
         AND p.created_at >= '#{start_date}'
         AND p.created_at <= '#{end_date}'
         AND p.reply_count > 0
@@ -550,13 +572,13 @@ module ::Jobs
     end
 
     def most_bookmarked_topic_sql
-      post_bookmark_join_sql = \
+      post_bookmark_join_sql =
         if SiteSetting.use_polymorphic_bookmarks
           "ON p.id = bookmarks.bookmarkable_id AND bookmarks.bookmarkable_type = 'Post'"
         else
           "ON p.id = bookmarks.post_id"
         end
-    <<~SQL
+      <<~SQL
         SELECT
         username,
         uploaded_avatar_id,

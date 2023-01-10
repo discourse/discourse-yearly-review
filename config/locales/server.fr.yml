@@ -14,7 +14,7 @@ fr:
     yearly_review_publish_category: "La catégorie dans laquelle la révision sera publiée."
     yearly_review_featured_badge: "Saisissez le nom complet du badge. Cet espace peut être laissé vide."
   yearly_review:
-    topic_title: "%{year} : l'année en cours de révision"
+    topic_title: "%{year} : l'année en statistiques"
     category_topics_title: "%{category} principaux sujets"
     title:
       users_section: "Meilleurs utilisateurs de %{year}"

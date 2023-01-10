@@ -5,3 +5,58 @@
 # https://translate.discourse.org/
 
 tr_TR:
+  site_settings:
+    yearly_review_enabled: "Yıllık incelemeyi etkinleştirin."
+    yearly_review_categories: "Konuları çekmek için genel kategoriler. Bu gruptaki en iyi 5 kategori seçilir. Boş bırakılırsa varsayılan olarak en iyi 5 genel kategori seçilir."
+    yearly_review_exclude_staff: "Personeli kullanıcı istatistiklerinden hariç tutun."
+    yearly_review_include_user_stats: "İnceleme konusunun ilk gönderisine kullanıcıyı tanımlayan istatistikler ekleyin."
+    yearly_review_include_private_categories: "Özel veya okuma kısıtlamalı kategorilerdeki kullanıcı etkinliklerini incelemeye dahil edin."
+    yearly_review_publish_category: "İncelemenin yayınlanacağı kategori."
+    yearly_review_featured_badge: "Tam rozet adını girin. Boş bırakılabilir."
+  yearly_review:
+    topic_title: "%{year}: Yılın Değerlendirmesi"
+    category_topics_title: "En İyi #%{category} Konu"
+    title:
+      users_section: "%{year}'in En İyi Kullanıcıları"
+      topics_created: "En Çok Konu"
+      replies_created: "En Çok Yanıt"
+      likes_given: "En Çok Beğeni Veren"
+      likes_received: "En Çok Beğeni Alan"
+      visits: "En Çok Ziyaret"
+      daily_visits: "Günlük Ziyaretler"
+      time_read: "En Çok Okuma Süresi"
+      most_replied_to: "En Çok Yanıtlanan"
+      featured_badge: "%{badge_name} Rozeti Verilen Kullanıcılar"
+    action:
+      topics_created: "Konular"
+      most_replied_to: "Yanıtlar"
+      replies_created: "Yanıtlar"
+      likes_given: "Beğeniler"
+      likes_received: "Beğeniler"
+      visits: "Ziyaret Edilen Gün"
+      time_read: "Okumakla Geçen Saat"
+    rank_type:
+      title:
+        most_liked: "En Çok Beğenilen"
+        most_replied_to: "En Çok Yanıt"
+        most_popular: "En Popüler"
+        most_bookmarked: "En Çok Yer İmi Eklenen"
+        most_read: "En Çok Okunan"
+      action_types:
+        most_popular: "Puan"
+        most_replied_to: "Yanıtlar"
+        most_liked: "Beğeniler"
+        most_bookmarked: "Yer imleri"
+        most_read: "Okumakla Geçen Saat"
+    user: "Kullanıcı"
+    users: "Kullanıcı"
+    days_visited: "Ziyaret Edilen Gün"
+    all_yearly_visits: "Tüm Yıllık Ziyaretler"
+    topics: "Konular"
+    topic: "Konu"
+    likes: "Beğeniler"
+    bookmarks: "Yer imleri"
+    score: "Puan"
+    replies: "Yanıtlar"
+    visits: "Ziyaretler"
+    more_badge_users: "Ve %{more} tane daha..."

@@ -15,9 +15,9 @@ tr_TR:
     yearly_review_featured_badge: "Tam rozet adını girin. Boş bırakılabilir."
   yearly_review:
     topic_title: "%{year}: Yılın Değerlendirmesi"
-    category_topics_title: "En İyi #%{category} Konu"
+    category_topics_title: "En İyi #%{category} Konuları"
     title:
-      users_section: "%{year}'in En İyi Kullanıcıları"
+      users_section: "%{year} Yılının En İyi Kullanıcıları"
       topics_created: "En Çok Konu"
       replies_created: "En Çok Yanıt"
       likes_given: "En Çok Beğeni Veren"

@@ -9,12 +9,12 @@ module YearlyReviewHelper
   end
 
   def user_link(username)
-    "<a class='mention' href='/u/#{username}'>@#{username}</a>"
+    "@#{username}"
   end
 
   def topic_link(title, slug, topic_id)
     link = "#{Discourse.base_url}/t/#{slug}/#{topic_id}"
-    "<a href='#{link}'>#{title}</a>"
+    "[#{title}](#{link})"
   end
 
   def class_from_key(key)

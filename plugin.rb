@@ -12,6 +12,7 @@ register_asset "stylesheets/yearly_review.scss"
 after_initialize do
   module ::YearlyReview
     PLUGIN_NAME = "yearly-review"
+    POST_CUSTOM_FIELD ||= "yearly_review"
 
     def self.current_year
       Time.now.year
@@ -77,5 +78,12 @@ after_initialize do
     doc
       .css("[data-review-topic-users] td table td:nth-child(2)")
       .each { |element| element["style"] = "padding-left: 4px;padding-bottom: 6px;" }
+  end
+
+  DiscourseEvent.on(:username_changed) do |old_username, new_username|
+    Post.joins(:_custom_fields).where("post_custom_fields.name = ?", YearlyReview::POST_CUSTOM_FIELD).each do |post|
+      post.raw = post.raw.gsub("/#{old_username}/#{YearlyReviewHelper::AVATAR_SIZE}/", "/#{new_username}/#{YearlyReviewHelper::AVATAR_SIZE}/")
+      post.save!
+    end
   end
 end

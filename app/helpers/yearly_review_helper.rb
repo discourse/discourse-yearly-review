@@ -5,7 +5,7 @@ module YearlyReviewHelper
 
   def avatar_image(username, uploaded_avatar_id)
     template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, "50")
-    "<img src='#{template}' class='avatar' height='25' width='25'/>"
+    "![avatar\\|25x25](#{template})"
   end
 
   def user_link(username)
@@ -51,5 +51,14 @@ module YearlyReviewHelper
 
   def format_number(number)
     number_to_human(number, units: { thousand: "k" }, format: "%n%u")
+  end
+
+  def table_row(*values)
+    "|#{values.join("|")}|"
+  end
+
+  def table_header(*labels)
+    headings = labels.map { |label| I18n.t(label) }
+    "|#{headings.join("|")}|"
   end
 end

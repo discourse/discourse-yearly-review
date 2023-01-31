@@ -1,13 +1,13 @@
 <div data-review-featured-topics="true">
 
-## <%= raw(category_link(@category_topics[:category_name])) %></h2>
+## <%= raw(category_link(@category_topics[:category_name])) %>
   <% @category_topics[:topics].each do |key, val| %>
-### <%= t("yearly_review.rank_type.title.#{key}") %></h3>
+### <%= t("yearly_review.rank_type.title.#{key}") %>
 
-|<%= t('yearly_review.user') %>|<%= t('yearly_review.topic') %>|<%= t("yearly_review.rank_type.action_types.#{key}") %>|
-|---|---|---:|
+<%= table_header('yearly_review.user', 'yearly_review.topic', "yearly_review.rank_type.action_types.#{key}") %>
+|---|---|---|
     <% val.each do |topic| %>
-|<%= raw(avatar_image(topic.username, topic.uploaded_avatar_id)) %>|<%= raw(topic_link(topic.title, topic.topic_slug, topic.id)) %>|<%= format_number(topic.action_count.round) %>|
+<%= table_row(avatar_image(topic.username, topic.uploaded_avatar_id), topic_link(topic.title, topic.topic_slug, topic.id), format_number(topic.action_count.round)) %>
     <% end %>
 
   <% end %>

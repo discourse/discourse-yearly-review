@@ -58,7 +58,7 @@ module YearlyReviewHelper
   end
 
   def table_header(*labels)
-    headings = labels.map { |label| I18n.t(label) }
+    headings = labels.map { |label| I18n.t("yearly_review.#{label}") }
     "|#{headings.join("|")}|"
   end
 end

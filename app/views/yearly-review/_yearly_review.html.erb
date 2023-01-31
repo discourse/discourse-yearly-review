@@ -8,7 +8,7 @@
 
 <div class="<%= class_from_key(obj[:key]) %>">
 
-|<%= t('yearly_review.user') %>|<%= t("yearly_review.action.#{obj[:key]}") %>|
+<%= table_header('yearly_review.user', "yearly_review.action.#{obj[:key]}") %>
 |---|---|
           <% obj[:users].each_with_index do |user, i| %>
 |<%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %> <%= raw(user_link(user.username)) %>|<%= format_number(user.action_count < 1 ? 1 : user.action_count.round) %>|
@@ -29,10 +29,10 @@
 
 ## <%= t("yearly_review.title.daily_visits") %>
 
-|<%= t("yearly_review.days_visited") %>|<%= t("yearly_review.users") %>|
+<%= table_header("days_visited", "users") %>
 |---|---|
       <% @daily_visits.each do |visit| %>
-|<%= table_row(format_number(visit.days), format_number(visit.users)) %>|
+<%= table_row(format_number(visit.days), format_number(visit.users)) %>
       <% end %>
 
   </div>

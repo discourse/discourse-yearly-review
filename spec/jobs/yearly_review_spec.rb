@@ -150,7 +150,7 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).second.raw
-        expect(raw).to include(Helper.table_header('yearly_review.user', 'yearly_review.topic', "yearly_review.rank_type.action_types.most_bookmarked"))
+        expect(raw).to include(Helper.table_header('user', 'topic', "rank_type.action_types.most_bookmarked"))
         expect(raw).to include(Helper.table_row(Helper.avatar_image(reviewed_topic.user.username, reviewed_topic.user.uploaded_avatar_id), Helper.topic_link(reviewed_topic.title, reviewed_topic.slug, reviewed_topic.id), 5))
       end
     end

@@ -45,7 +45,7 @@ module YearlyReviewHelper
   def user_visits_link
     if SiteSetting.enable_user_directory && !SiteSetting.hide_user_profiles_from_public
       url = "#{Discourse.base_url}/u?order=days_visited&period=yearly"
-      "<br><a href='#{url}'>#{t("yearly_review.all_yearly_visits")}</a>"
+      "[#{t("yearly_review.all_yearly_visits")}](#{url})"
     end
   end
 

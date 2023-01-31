@@ -8,7 +8,7 @@
 
 <div class="<%= class_from_key(obj[:key]) %>">
 
-<%= table_header('yearly_review.user', "yearly_review.action.#{obj[:key]}") %>
+<%= table_header('user', "action.#{obj[:key]}") %>
 |---|---|
           <% obj[:users].each_with_index do |user, i| %>
 |<%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %> <%= raw(user_link(user.username)) %>|<%= format_number(user.action_count < 1 ? 1 : user.action_count.round) %>|
@@ -17,7 +17,7 @@
 </div>
 
         <% if obj[:key] == 'visits' %>
-          <%= raw(user_visits_link) %>
+<%= raw(user_visits_link) %>
         <% end %>
       <% end %>
     <% end %>

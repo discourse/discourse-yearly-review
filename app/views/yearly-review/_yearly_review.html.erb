@@ -11,7 +11,7 @@
 <%= table_header('user', "action.#{obj[:key]}") %>
 |---|---|
           <% obj[:users].each_with_index do |user, i| %>
-|<%= raw(avatar_image(user.username, user.uploaded_avatar_id)) %> <%= raw(user_link(user.username)) %>|<%= format_number(user.action_count < 1 ? 1 : user.action_count.round) %>|
+<%= table_row(avatar_image(user.username, user.uploaded_avatar_id), "@#{user.username}", format_number(user.action_count < 1 ? 1 : user.action_count.round)) %>
           <% end %>
 
 </div>
@@ -39,17 +39,17 @@
 <% end %>
 
 <% if @featured_badge_users.any? %>
-  <div data-review-users="true">
+<div data-review-users="true">
 
 ## <%= t("yearly_review.title.featured_badge", badge_name: SiteSetting.yearly_review_featured_badge) %>
 
     <% @featured_badge_users.each do |user| %>
-      <span><%= raw(user_link(user.username)) %></span>
+@<%= user.username %>
     <% end %>
     <% if @featured_badge_users[0].more_users > 0 %>
       <% @badge = @featured_badge_users[0] %>
-      <div><%= raw(badge_link(@badge.name, @badge.id, format_number(@badge.more_users))) %></div>
+<%= raw(badge_link(@badge.name, @badge.id, format_number(@badge.more_users))) %>
     <% end %>
 
-  </div>
+</div>
 <% end %>

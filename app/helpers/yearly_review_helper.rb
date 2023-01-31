@@ -27,7 +27,7 @@ module YearlyReviewHelper
 
   def badge_link(name, id, more)
     url = "#{Discourse.base_url}/badges/#{id}/#{slug_from_name(name)}"
-    "<a class='more-badge-users' href='#{url}'>#{t("yearly_review.more_badge_users", more: more)}</a>"
+    "[#{t("yearly_review.more_badge_users", more: more)}](#{url})"
   end
 
   def category_link(name)
@@ -39,7 +39,7 @@ module YearlyReviewHelper
       url = "#{Discourse.base_url}/c/#{category.slug}/l/top"
     end
     link_text = t("yearly_review.category_topics_title", category: name)
-    "<a href='#{url}'>#{link_text}</a>"
+    "[#{link_text}](#{url})"
   end
 
   def user_visits_link

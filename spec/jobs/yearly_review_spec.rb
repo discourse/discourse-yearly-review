@@ -218,9 +218,8 @@ describe Jobs::YearlyReview do
 
     it "it should only display the first 100 users" do
       Jobs::YearlyReview.new.execute({})
-      topic = Topic.last
-      raw = Post.where(topic_id: topic.id).first.raw
-      expect(raw).to have_tag("a", text: /And 1 more/)
+      raw = Topic.last.first_post.raw
+      expect(raw).to include("[And 1 more...](")
     end
   end
 end

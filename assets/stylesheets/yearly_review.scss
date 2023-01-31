@@ -53,3 +53,7 @@
 [data-review-featured-topics="true"] table th:last-child {
   width: 30%;
 }
+
+[data-review-featured-topics="true"] table td:first-child img {
+  border-radius: 50%;
+}

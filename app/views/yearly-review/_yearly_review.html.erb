@@ -11,7 +11,7 @@
 <%= table_header('user', "action.#{obj[:key]}") %>
 |---|---|
           <% obj[:users].each_with_index do |user, i| %>
-<%= table_row(avatar_image(user.username, user.uploaded_avatar_id), "@#{user.username}", format_number(user.action_count < 1 ? 1 : user.action_count.round)) %>
+<%= table_row("#{avatar_image(user.username, user.uploaded_avatar_id)} @#{user.username}", format_number(user.action_count < 1 ? 1 : user.action_count.round)) %>
           <% end %>
 
 </div>

@@ -141,7 +141,7 @@ describe Jobs::YearlyReview do
         Fabricate(
           :bookmark,
           bookmarkable: reviewed_topic.posts[5],
-          user: topic_user, 
+          user: topic_user,
           created_at: 1.month.ago,
         )
       end
@@ -150,8 +150,19 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).second.raw
-        expect(raw).to include(Helper.table_header('user', 'topic', "rank_type.action_types.most_bookmarked"))
-        expect(raw).to include(Helper.table_row(Helper.avatar_image(reviewed_topic.user.username, reviewed_topic.user.uploaded_avatar_id), Helper.topic_link(reviewed_topic.title, reviewed_topic.slug, reviewed_topic.id), 5))
+        expect(raw).to include(
+          Helper.table_header("user", "topic", "rank_type.action_types.most_bookmarked"),
+        )
+        expect(raw).to include(
+          Helper.table_row(
+            Helper.avatar_image(
+              reviewed_topic.user.username,
+              reviewed_topic.user.uploaded_avatar_id,
+            ),
+            Helper.topic_link(reviewed_topic.title, reviewed_topic.slug, reviewed_topic.id),
+            5,
+          ),
+        )
       end
     end
 

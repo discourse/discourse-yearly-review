@@ -5,16 +5,16 @@ module YearlyReviewHelper
 
   def avatar_image(username, uploaded_avatar_id)
     template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, "50")
-    "<img src='#{template}' class='avatar' height='25' width='25'/>"
+    "![avatar\\|25x25](#{template})"
   end
 
   def user_link(username)
-    "<a class='mention' href='/u/#{username}'>@#{username}</a>"
+    "@#{username}"
   end
 
   def topic_link(title, slug, topic_id)
     link = "#{Discourse.base_url}/t/#{slug}/#{topic_id}"
-    "<a href='#{link}'>#{title}</a>"
+    "[#{title}](#{link})"
   end
 
   def class_from_key(key)
@@ -27,7 +27,7 @@ module YearlyReviewHelper
 
   def badge_link(name, id, more)
     url = "#{Discourse.base_url}/badges/#{id}/#{slug_from_name(name)}"
-    "<a class='more-badge-users' href='#{url}'>#{t("yearly_review.more_badge_users", more: more)}</a>"
+    "[#{t("yearly_review.more_badge_users", more: more)}](#{url})"
   end
 
   def category_link(name)
@@ -39,17 +39,26 @@ module YearlyReviewHelper
       url = "#{Discourse.base_url}/c/#{category.slug}/l/top"
     end
     link_text = t("yearly_review.category_topics_title", category: name)
-    "<a href='#{url}'>#{link_text}</a>"
+    "[#{link_text}](#{url})"
   end
 
   def user_visits_link
     if SiteSetting.enable_user_directory && !SiteSetting.hide_user_profiles_from_public
       url = "#{Discourse.base_url}/u?order=days_visited&period=yearly"
-      "<br><a href='#{url}'>#{t("yearly_review.all_yearly_visits")}</a>"
+      "[#{t("yearly_review.all_yearly_visits")}](#{url})"
     end
   end
 
   def format_number(number)
     number_to_human(number, units: { thousand: "k" }, format: "%n%u")
+  end
+
+  def table_row(*values)
+    "|#{values.join("|")}|"
+  end
+
+  def table_header(*labels)
+    headings = labels.map { |label| I18n.t("yearly_review.#{label}") }
+    "|#{headings.join("|")}|"
   end
 end

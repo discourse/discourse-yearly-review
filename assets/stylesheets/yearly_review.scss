@@ -8,8 +8,14 @@
   text-align: left;
 }
 
-[data-review-topic-users="true"] table th {
-  width: 50%;
+[data-review-topic-users="true"] table {
+  th {
+    width: 50%;
+  }
+
+  td:first-child img {
+    border-radius: 50%;
+  }
 }
 
 [data-review-topic-users="true"] table table tr {
@@ -46,4 +52,8 @@
 
 [data-review-featured-topics="true"] table th:last-child {
   width: 30%;
+}
+
+[data-review-featured-topics="true"] table td:first-child img {
+  border-radius: 50%;
 }

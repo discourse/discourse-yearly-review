@@ -3,6 +3,10 @@
 require "rails_helper"
 
 describe Jobs::YearlyReview do
+  class Helper
+    extend YearlyReviewHelper
+  end
+
   SiteSetting.yearly_review_enabled = true
   let(:category) { Fabricate(:category) }
   let(:top_review_user) { Fabricate(:user, username: "top_review_user") }
@@ -72,10 +76,9 @@ describe Jobs::YearlyReview do
 
       it "ranks topics created by users correctly" do
         Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).to have_tag("table.topics-created tr.user-row-0") { with_tag("td", text: /5/) }
-        expect(raw).to have_tag("table.topics-created tr.user-row-1") { with_tag("td", text: /1/) }
+        raw = Topic.last.first_post.raw
+        expect(raw).to have_tag("div.topics-created") { with_text(/\@top_review_user\|5/) }
+        expect(raw).to have_tag("div.topics-created") { with_text(/\@reviewed_user\|1/) }
       end
     end
 
@@ -94,10 +97,9 @@ describe Jobs::YearlyReview do
 
       it "ranks replies created by users correctly" do
         Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).to have_tag("table.replies-created tr.user-row-0") { with_tag("td", text: /5/) }
-        expect(raw).to have_tag("table.replies-created tr.user-row-1") { with_tag("td", text: /1/) }
+        raw = Topic.last.first_post.raw
+        expect(raw).to have_tag("div.replies-created") { with_text(/\@top_review_user\|5/) }
+        expect(raw).to have_tag("div.replies-created") { with_text(/\@reviewed_user\|1/) }
       end
     end
 
@@ -148,10 +150,19 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).second.raw
-        expect(raw).to have_tag("tr.topic-#{reviewed_topic.id}") {
-          with_tag("td", text: reviewed_topic.title)
-        }
-        expect(raw).to have_tag("tr.topic-#{reviewed_topic.id}") { with_tag("td", text: /5/) }
+        expect(raw).to include(
+          Helper.table_header("user", "topic", "rank_type.action_types.most_bookmarked"),
+        )
+        expect(raw).to include(
+          Helper.table_row(
+            Helper.avatar_image(
+              reviewed_topic.user.username,
+              reviewed_topic.user.uploaded_avatar_id,
+            ),
+            Helper.topic_link(reviewed_topic.title, reviewed_topic.slug, reviewed_topic.id),
+            5,
+          ),
+        )
       end
     end
 
@@ -189,23 +200,11 @@ describe Jobs::YearlyReview do
         Jobs::YearlyReview.new.execute({})
         topic = Topic.last
         raw = Post.where(topic_id: topic.id).first.raw
-        expect(raw).to have_tag("table.likes-given tr.user-row-0") { with_tag("td", text: /11/) }
-        expect(raw).to have_tag("table.likes-given tr.user-row-0") {
-          with_tag("td", text: /@top_review_user/)
-        }
-        expect(raw).to have_tag("table.likes-given tr.user-row-1") { with_tag("td", text: /10/) }
-        expect(raw).to have_tag("table.likes-given tr.user-row-1") {
-          with_tag("td", text: /@reviewed_user/)
-        }
+        expect(raw).to have_tag("div.likes-given") { with_text(/\@top_review_user\|11/) }
+        expect(raw).to have_tag("div.likes-given") { with_text(/\@reviewed_user\|10/) }
 
-        expect(raw).to have_tag("table.likes-received tr.user-row-0") { with_tag("td", text: /11/) }
-        expect(raw).to have_tag("table.likes-received tr.user-row-0") {
-          with_tag("td", text: /@reviewed_user/)
-        }
-        expect(raw).to have_tag("table.likes-received tr.user-row-1") { with_tag("td", text: /10/) }
-        expect(raw).to have_tag("table.likes-received tr.user-row-1") {
-          with_tag("td", text: /@top_review_user/)
-        }
+        expect(raw).to have_tag("div.likes-received") { with_text(/\@reviewed_user\|11/) }
+        expect(raw).to have_tag("div.likes-received") { with_text(/\@top_review_user\|10/) }
       end
     end
   end
@@ -230,9 +229,8 @@ describe Jobs::YearlyReview do
 
     it "it should only display the first 100 users" do
       Jobs::YearlyReview.new.execute({})
-      topic = Topic.last
-      raw = Post.where(topic_id: topic.id).first.raw
-      expect(raw).to have_tag("a", text: /And 1 more/)
+      raw = Topic.last.first_post.raw
+      expect(raw).to include("[And 1 more...](")
     end
   end
 end

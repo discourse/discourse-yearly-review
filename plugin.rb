@@ -81,9 +81,9 @@ after_initialize do
   end
 
   DiscourseEvent.on(:username_changed) do |old_username, new_username|
-    Post.joins(:_custom_fields).where("post_custom_fields.name = ?", YearlyReview::POST_CUSTOM_FIELD).find_each do |post|
-      post.raw = post.raw.gsub("/#{old_username}/#{YearlyReviewHelper::AVATAR_SIZE}/", "/#{new_username}/#{YearlyReviewHelper::AVATAR_SIZE}/")
-      post.save!
-    end
+    Post
+      .joins(:_custom_fields)
+      .where("post_custom_fields.name = ?", YearlyReview::POST_CUSTOM_FIELD)
+      .update_all("raw = replace(raw, '/#{old_username}/', '/#{new_username}/')")
   end
 end

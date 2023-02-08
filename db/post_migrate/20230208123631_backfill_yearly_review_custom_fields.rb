@@ -11,6 +11,7 @@ class BackfillYearlyReviewCustomFields < ActiveRecord::Migration[6.1]
         FROM posts
         INNER JOIN topics ON topics.id = posts.topic_id
         WHERE posts.user_id = :user_id AND topics.title = :title
+        ON CONFLICT (post_id, name) DO NOTHING
       SQL
         title: topic_title,
         user_id: Discourse::SYSTEM_USER_ID,

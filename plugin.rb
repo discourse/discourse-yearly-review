@@ -82,11 +82,11 @@ after_initialize do
 
   DiscourseEvent.on(:username_changed) do |old_username, new_username|
     yearly_review_posts =
-      Post.joins(:_custom_fields).where(
-        "post_custom_fields.name = ?",
-        YearlyReview::POST_CUSTOM_FIELD,
-      )
-    yearly_review_posts.update_all("raw = REPLACE(raw, '/#{old_username}/', '/#{new_username}/')")
-    yearly_review_posts.find_each { |post| post.rebake! }
+      Post
+        .joins(:_custom_fields)
+        .where("post_custom_fields.name = ?", YearlyReview::POST_CUSTOM_FIELD)
+        .update_all(
+          "raw = REPLACE(raw, '/#{old_username}/', '/#{new_username}/'), baked_version = NULL",
+        )
   end
 end

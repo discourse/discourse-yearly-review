@@ -105,6 +105,7 @@ describe Jobs::YearlyReview do
         raw = post.reload.raw
         expect(raw).to have_tag("div.topics-created") { with_text(/\@#{user.username}\|5/) }
         expect(raw).to have_tag("div.topics-created") { with_text(%r{/#{user.username}/50/}) }
+        expect(post.baked_version).to be_nil
       end
     end
 

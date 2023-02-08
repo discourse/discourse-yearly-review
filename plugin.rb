@@ -81,7 +81,6 @@ after_initialize do
   end
 
   DiscourseEvent.on(:username_changed) do |old_username, new_username|
-    yearly_review_posts =
       Post
         .joins(:_custom_fields)
         .where("post_custom_fields.name = ?", YearlyReview::POST_CUSTOM_FIELD)

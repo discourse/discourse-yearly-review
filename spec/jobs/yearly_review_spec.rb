@@ -84,7 +84,7 @@ describe Jobs::YearlyReview do
         expect(raw).to have_tag("div.topics-created") { with_text(/\@reviewed_user\|1/) }
       end
 
-      it "updates username correctly after anonymize the user" do
+      it "updates username correctly after anonymizing the user" do
         Jobs.run_immediately!
         UserActionManager.enable
         stub_image_size

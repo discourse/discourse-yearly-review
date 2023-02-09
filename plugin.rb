@@ -2,7 +2,7 @@
 
 # name: discourse-yearly-review
 # about: Creates an automated Year in Review summary topic
-# version: 0.1
+# version: 0.2
 # author: Simon Cossar
 # url: https://github.com/discourse/discourse-yearly-review
 

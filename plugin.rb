@@ -83,7 +83,11 @@ after_initialize do
   DiscourseEvent.on(:username_changed) do |old_username, new_username|
     Post
       .joins(:_custom_fields)
-      .where("post_custom_fields.name = ? AND posts.raw LIKE ?", YearlyReview::POST_CUSTOM_FIELD, "%/#{old_username}/%")
+      .where(
+        "post_custom_fields.name = ? AND posts.raw LIKE ?",
+        YearlyReview::POST_CUSTOM_FIELD,
+        "%/#{old_username}/%",
+      )
       .update_all(
         "raw = REPLACE(raw, '/#{old_username}/', '/#{new_username}/'), baked_version = NULL",
       )

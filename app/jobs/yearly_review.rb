@@ -37,6 +37,9 @@ module ::Jobs
           raw: raw,
           category: SiteSetting.yearly_review_publish_category,
           skip_validations: true,
+          custom_fields: {
+            ::YearlyReview::POST_CUSTOM_FIELD => review_year,
+          },
         }
 
         post = PostCreator.create!(Discourse.system_user, topic_opts)
@@ -80,7 +83,14 @@ module ::Jobs
           view.assign(category_topics: category_post_topics)
           raw = view.render partial: "yearly_review_category", layout: false
           unless raw.empty?
-            post_opts = { topic_id: topic_id, raw: raw, skip_validations: true }
+            post_opts = {
+              topic_id: topic_id,
+              raw: raw,
+              skip_validations: true,
+              custom_fields: {
+                ::YearlyReview::POST_CUSTOM_FIELD => review_start.year,
+              },
+            }
 
             PostCreator.create!(Discourse.system_user, post_opts)
           end

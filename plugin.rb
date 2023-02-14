@@ -2,7 +2,7 @@
 
 # name: discourse-yearly-review
 # about: Creates an automated Year in Review summary topic
-# version: 0.1
+# version: 0.2
 # author: Simon Cossar
 # url: https://github.com/discourse/discourse-yearly-review
 
@@ -12,6 +12,7 @@ register_asset "stylesheets/yearly_review.scss"
 after_initialize do
   module ::YearlyReview
     PLUGIN_NAME = "yearly-review"
+    POST_CUSTOM_FIELD ||= "yearly_review"
 
     def self.current_year
       Time.now.year
@@ -77,5 +78,18 @@ after_initialize do
     doc
       .css("[data-review-topic-users] td table td:nth-child(2)")
       .each { |element| element["style"] = "padding-left: 4px;padding-bottom: 6px;" }
+  end
+
+  DiscourseEvent.on(:username_changed) do |old_username, new_username|
+    Post
+      .joins(:_custom_fields)
+      .where(
+        "post_custom_fields.name = ? AND posts.raw LIKE ?",
+        YearlyReview::POST_CUSTOM_FIELD,
+        "%/#{old_username}/%",
+      )
+      .update_all(
+        "raw = REPLACE(raw, '/#{old_username}/', '/#{new_username}/'), baked_version = NULL",
+      )
   end
 end

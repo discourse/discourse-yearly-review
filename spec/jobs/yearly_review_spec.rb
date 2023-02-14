@@ -25,6 +25,9 @@ describe Jobs::YearlyReview do
         expect(topic.title).to eq(
           I18n.t("yearly_review.topic_title", year: ::YearlyReview.last_year),
         )
+        expect(topic.first_post.custom_fields).to eq(
+          YearlyReview::POST_CUSTOM_FIELD => ::YearlyReview.last_year.to_s,
+        )
       end
     end
 
@@ -79,6 +82,30 @@ describe Jobs::YearlyReview do
         raw = Topic.last.first_post.raw
         expect(raw).to have_tag("div.topics-created") { with_text(/\@top_review_user\|5/) }
         expect(raw).to have_tag("div.topics-created") { with_text(/\@reviewed_user\|1/) }
+      end
+
+      it "updates username correctly after anonymizing the user" do
+        Jobs.run_immediately!
+        UserActionManager.enable
+        stub_image_size
+
+        upload = Fabricate(:upload, user: top_review_user)
+        top_review_user.user_avatar =
+          UserAvatar.new(user_id: top_review_user.id, custom_upload_id: upload.id)
+        top_review_user.uploaded_avatar_id = upload.id
+        top_review_user.save!
+
+        Jobs::YearlyReview.new.execute({})
+        post = Topic.last.first_post
+        raw = post.raw
+        expect(raw).to have_tag("div.topics-created") { with_text(/\@top_review_user\|5/) }
+        expect(raw).to have_tag("div.topics-created") { with_text(%r{/top_review_user/50/}) }
+
+        user = UserAnonymizer.new(top_review_user, Discourse.system_user, {}).make_anonymous
+        raw = post.reload.raw
+        expect(raw).to have_tag("div.topics-created") { with_text(/\@#{user.username}\|5/) }
+        expect(raw).to have_tag("div.topics-created") { with_text(%r{/#{user.username}/50/}) }
+        expect(post.baked_version).to be_nil
       end
     end
 
@@ -198,8 +225,7 @@ describe Jobs::YearlyReview do
 
       it "should rank likes given and received correctly" do
         Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        raw = Post.where(topic_id: topic.id).first.raw
+        raw = Topic.last.first_post.raw
         expect(raw).to have_tag("div.likes-given") { with_text(/\@top_review_user\|11/) }
         expect(raw).to have_tag("div.likes-given") { with_text(/\@reviewed_user\|10/) }
 

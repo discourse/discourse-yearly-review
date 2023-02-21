@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 hu:
+  yearly_review:
+    action:
+      topics_created: "Témák"
+      most_replied_to: "Válaszok"
+      replies_created: "Válaszok"
+      likes_given: "Kapott kedvelések"
+      likes_received: "Kapott kedvelések"
+      visits: "Látogatott nap"
+    rank_type:
+      title:
+        most_liked: "Legtöbbet kedvelt"
+      action_types:
+        most_popular: "Pontszám"
+        most_replied_to: "Válaszok"
+        most_liked: "Kapott kedvelések"
+        most_bookmarked: "Könyvjelzők"
+    user: "Felhasználó"
+    users: "Felhasználók"
+    days_visited: "Látogatott nap"
+    topics: "Témák"
+    topic: "Témák"
+    likes: "Kapott kedvelések"
+    bookmarks: "Könyvjelzők"
+    score: "Pontszám"
+    replies: "Válaszok"
+    visits: "Látogatás"
+    more_badge_users: "És még további %{more}..."

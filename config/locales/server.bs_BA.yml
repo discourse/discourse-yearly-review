@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 bs_BA:
+  yearly_review:
+    action:
+      topics_created: "Topics"
+      most_replied_to: "Odgovori"
+      replies_created: "Odgovori"
+      likes_given: "Lajkovi"
+      likes_received: "Lajkovi"
+      visits: "Dani posjete"
+    rank_type:
+      title:
+        most_liked: "Najviše sviđanja"
+      action_types:
+        most_popular: "bodovi"
+        most_replied_to: "Odgovori"
+        most_liked: "Lajkovi"
+        most_bookmarked: "Zabilješke"
+    user: "Korisnik"
+    users: "Users"
+    days_visited: "Dani posjete"
+    topics: "Topics"
+    topic: "Topic"
+    likes: "Lajkovi"
+    bookmarks: "Zabilješke"
+    score: "bodovi"
+    replies: "Odgovori"
+    visits: "Visits"
+    more_badge_users: "I %{more} vIše..."

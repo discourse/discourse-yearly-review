@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 hr:
+  yearly_review:
+    action:
+      topics_created: "Tema"
+      most_replied_to: "Odgovori"
+      replies_created: "Odgovori"
+      likes_given: "Like-ova"
+      likes_received: "Like-ova"
+      visits: "Dana posjećeno"
+    rank_type:
+      title:
+        most_liked: "Najviše se sviđa"
+      action_types:
+        most_popular: "Ocjena"
+        most_replied_to: "Odgovori"
+        most_liked: "Like-ova"
+        most_bookmarked: "Zabilješke"
+    user: "¸Korisnik"
+    users: "Korisnika"
+    days_visited: "Dana posjećeno"
+    topics: "Tema"
+    topic: "Teme"
+    likes: "Like-ova"
+    bookmarks: "Zabilješke"
+    score: "Ocjena"
+    replies: "Odgovori"
+    visits: "Posjeta"
+    more_badge_users: "I %{more} vIše..."

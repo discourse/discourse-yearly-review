@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 cs:
+  yearly_review:
+    action:
+      topics_created: "Témata"
+      most_replied_to: "Odpovědi"
+      replies_created: "Odpovědi"
+      likes_given: "Nová 'líbí se'"
+      likes_received: "Nová 'líbí se'"
+      visits: "Přítomen dnů"
+    rank_type:
+      title:
+        most_liked: "Nejoblíbenější"
+      action_types:
+        most_popular: "Skóre"
+        most_replied_to: "Odpovědi"
+        most_liked: "Nová 'líbí se'"
+        most_bookmarked: "Záložky"
+    user: "Uživatel"
+    users: "Účastníci"
+    days_visited: "Přítomen dnů"
+    topics: "Témata"
+    topic: "Témata"
+    likes: "Nová 'líbí se'"
+    bookmarks: "Záložky"
+    score: "Skóre"
+    replies: "Odpovědi"
+    visits: "Návštěv"

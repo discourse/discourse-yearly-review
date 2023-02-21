@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 hy:
+  yearly_review:
+    action:
+      topics_created: "Թեմա"
+      most_replied_to: "Պատասխաններ"
+      replies_created: "Պատասխաններ"
+      likes_given: "Հավանում"
+      likes_received: "Հավանում"
+      visits: "Այցելության Օր"
+    rank_type:
+      title:
+        most_liked: "Ամենաշատ Հավանած"
+      action_types:
+        most_popular: "Քանակ"
+        most_replied_to: "Պատասխաններ"
+        most_liked: "Հավանում"
+        most_bookmarked: "Էջանշաններ"
+    user: "Օգտատեր"
+    users: "Օգտատեր"
+    days_visited: "Այցելության Օր"
+    topics: "Թեմա"
+    topic: "Թեմա"
+    likes: "Հավանում"
+    bookmarks: "Էջանշաններ"
+    score: "Քանակ"
+    replies: "Պատասխաններ"
+    visits: "Այցելություններ"

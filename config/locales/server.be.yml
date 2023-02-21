@@ -5,3 +5,27 @@
 # https://translate.discourse.org/
 
 be:
+  yearly_review:
+    action:
+      topics_created: "тэмы"
+      most_replied_to: "Адказы"
+      replies_created: "Адказы"
+      likes_given: "сімпатыі"
+      likes_received: "сімпатыі"
+      visits: "дзён наведанае"
+    rank_type:
+      action_types:
+        most_popular: "кошт"
+        most_replied_to: "Адказы"
+        most_liked: "сімпатыі"
+        most_bookmarked: "закладкі"
+    user: "карыстальнік"
+    users: "карыстальнікаў"
+    days_visited: "дзён наведанае"
+    topics: "тэмы"
+    topic: "тэма"
+    likes: "сімпатыі"
+    bookmarks: "закладкі"
+    score: "кошт"
+    replies: "Адказы"
+    visits: "наведванне"

@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 et:
+  yearly_review:
+    action:
+      topics_created: "Teemasid"
+      most_replied_to: "Vastused"
+      replies_created: "Vastused"
+      likes_given: "Meeldimisi antud"
+      likes_received: "Meeldimisi antud"
+      visits: "Päevi külastatud"
+    rank_type:
+      title:
+        most_liked: "Enim meeldinud"
+      action_types:
+        most_popular: "Skoor"
+        most_replied_to: "Vastused"
+        most_liked: "Meeldimisi antud"
+        most_bookmarked: "Järjehoidjat"
+    user: "Kasutaja"
+    users: "Kasutajad"
+    days_visited: "Päevi külastatud"
+    topics: "Teemasid"
+    topic: "Teema"
+    likes: "Meeldimisi antud"
+    bookmarks: "Järjehoidjat"
+    score: "Skoor"
+    replies: "Vastused"
+    visits: "Külastusi"

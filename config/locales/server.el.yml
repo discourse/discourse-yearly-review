@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 el:
+  yearly_review:
+    action:
+      topics_created: "Θέματα"
+      most_replied_to: "Απαντήσεις"
+      replies_created: "Απαντήσεις"
+      likes_given: "Μου αρέσει"
+      likes_received: "Μου αρέσει"
+      visits: "Μέρες Επίσκεψης"
+    rank_type:
+      title:
+        most_liked: "Περισσότερα \"Μου Αρέσει\""
+      action_types:
+        most_popular: "Βαθμολογία"
+        most_replied_to: "Απαντήσεις"
+        most_liked: "Μου αρέσει"
+        most_bookmarked: "Σελιδοδείκτες"
+    user: "Όνομα Χρήστη"
+    users: "Χρήστες"
+    days_visited: "Μέρες Επίσκεψης"
+    topics: "Θέματα"
+    topic: "Νήμα"
+    likes: "Μου αρέσει"
+    bookmarks: "Σελιδοδείκτες"
+    score: "Βαθμολογία"
+    replies: "Απαντήσεις"
+    visits: "Επισκέψεις"
+    more_badge_users: "Και %{more} ακόμη..."

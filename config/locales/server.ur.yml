@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 ur:
+  yearly_review:
+    action:
+      topics_created: "ٹاپکس"
+      most_replied_to: "جوابات"
+      replies_created: "جوابات"
+      likes_given: "لائیکس دیے گئے"
+      likes_received: "لائیکس دیے گئے"
+      visits: "دورہ کیے گئے دن"
+    rank_type:
+      title:
+        most_liked: "سب سے زیادہ لائک کیا گیا"
+      action_types:
+        most_popular: "اسکور"
+        most_replied_to: "جوابات"
+        most_liked: "لائیکس دیے گئے"
+        most_bookmarked: "بُک مارکس"
+    user: "صارف"
+    users: "صارفین"
+    days_visited: "دورہ کیے گئے دن"
+    topics: "ٹاپکس"
+    topic: "ٹاپک"
+    likes: "لائیکس دیے گئے"
+    bookmarks: "بُک مارکس"
+    score: "اسکور"
+    replies: "جوابات"
+    visits: "زائرین کی تعداد"

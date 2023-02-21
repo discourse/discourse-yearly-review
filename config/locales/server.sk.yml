@@ -5,3 +5,27 @@
 # https://translate.discourse.org/
 
 sk:
+  yearly_review:
+    action:
+      topics_created: "Témy"
+      most_replied_to: "Odpovede"
+      replies_created: "Odpovede"
+      likes_given: "Rozdaných 'páči sa mi'"
+      likes_received: "Rozdaných 'páči sa mi'"
+      visits: "Dní na stránke"
+    rank_type:
+      title:
+        most_liked: "Najviac sa páčia"
+      action_types:
+        most_replied_to: "Odpovede"
+        most_liked: "Rozdaných 'páči sa mi'"
+        most_bookmarked: "Záložky"
+    user: "Používateľ"
+    users: "Používatelia"
+    days_visited: "Dní na stránke"
+    topics: "Témy"
+    topic: "Témy"
+    likes: "Rozdaných 'páči sa mi'"
+    bookmarks: "Záložky"
+    replies: "Odpovede"
+    visits: "Návštev"

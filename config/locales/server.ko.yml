@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 ko:
+  yearly_review:
+    action:
+      topics_created: "글"
+      most_replied_to: "댓글"
+      replies_created: "댓글"
+      likes_given: "좋아요 수"
+      likes_received: "좋아요 수"
+      visits: "방문 일수"
+    rank_type:
+      title:
+        most_liked: "가장 좋아함"
+      action_types:
+        most_popular: "점수"
+        most_replied_to: "댓글"
+        most_liked: "좋아요 수"
+        most_bookmarked: "북마크"
+    user: "사용자"
+    users: "사용자들"
+    days_visited: "방문 일수"
+    topics: "글"
+    topic: "토픽"
+    likes: "좋아요 수"
+    bookmarks: "북마크"
+    score: "점수"
+    replies: "댓글"
+    visits: "방문"
+    more_badge_users: "그리고 %{more} 더..."

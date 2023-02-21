@@ -5,3 +5,25 @@
 # https://translate.discourse.org/
 
 te:
+  yearly_review:
+    action:
+      topics_created: "విషయాలు"
+      most_replied_to: "జవాబులు"
+      replies_created: "జవాబులు"
+      likes_given: "ఇచ్చిన ఇష్టాలు "
+      likes_received: "ఇచ్చిన ఇష్టాలు "
+      visits: "దర్శించిన రోజులు"
+    rank_type:
+      action_types:
+        most_replied_to: "జవాబులు"
+        most_liked: "ఇచ్చిన ఇష్టాలు "
+        most_bookmarked: "పేజీకలు"
+    user: "వాడుకరి"
+    users: "సభ్యులు"
+    days_visited: "దర్శించిన రోజులు"
+    topics: "విషయాలు"
+    topic: "విషయం"
+    likes: "ఇచ్చిన ఇష్టాలు "
+    bookmarks: "పేజీకలు"
+    replies: "జవాబులు"
+    visits: "సందర్శనాలు"

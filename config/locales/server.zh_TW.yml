@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 zh_TW:
+  yearly_review:
+    action:
+      topics_created: "討論話題"
+      most_replied_to: "回覆"
+      replies_created: "回覆"
+      likes_given: "新的讚"
+      likes_received: "新的讚"
+      visits: "到訪天數"
+    rank_type:
+      title:
+        most_liked: "最多讚"
+      action_types:
+        most_popular: "分數"
+        most_replied_to: "回覆"
+        most_liked: "新的讚"
+        most_bookmarked: "書籤"
+    user: "使用者"
+    users: "使用者數量"
+    days_visited: "到訪天數"
+    topics: "討論話題"
+    topic: "話題"
+    likes: "新的讚"
+    bookmarks: "書籤"
+    score: "分數"
+    replies: "回覆"
+    visits: "造訪"

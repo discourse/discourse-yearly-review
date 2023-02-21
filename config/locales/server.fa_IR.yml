@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 fa_IR:
+  yearly_review:
+    action:
+      topics_created: "موضوعات"
+      most_replied_to: "پاسخ‌ها"
+      replies_created: "پاسخ‌ها"
+      likes_given: "پسندیده‌ها"
+      likes_received: "پسندیده‌ها"
+      visits: "روز های بازدید شده"
+    rank_type:
+      title:
+        most_liked: "بیشترین پسندیده شده"
+      action_types:
+        most_popular: "امتیاز"
+        most_replied_to: "پاسخ‌ها"
+        most_liked: "پسندیده‌ها"
+        most_bookmarked: "نشانک‌ها"
+    user: "کاربر"
+    users: "کاربران"
+    days_visited: "روز های بازدید شده"
+    topics: "موضوعات"
+    topic: "موضوعات"
+    likes: "پسندیده‌ها"
+    bookmarks: "نشانک‌ها"
+    score: "امتیاز"
+    replies: "پاسخ‌ها"
+    visits: "بازدیدها"

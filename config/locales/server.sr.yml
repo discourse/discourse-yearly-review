@@ -5,3 +5,27 @@
 # https://translate.discourse.org/
 
 sr:
+  yearly_review:
+    action:
+      topics_created: "Teme"
+      most_replied_to: "Odgovori"
+      replies_created: "Odgovori"
+      likes_given: "Lajkova"
+      likes_received: "Lajkova"
+      visits: "Dana posećeno"
+    rank_type:
+      title:
+        most_liked: "Najviše sviđanja"
+      action_types:
+        most_replied_to: "Odgovori"
+        most_liked: "Lajkova"
+        most_bookmarked: "Markiraj"
+    user: "Korisnik"
+    users: "Korisnici"
+    days_visited: "Dana posećeno"
+    topics: "Teme"
+    topic: "Tema"
+    likes: "Lajkova"
+    bookmarks: "Markiraj"
+    replies: "Odgovori"
+    visits: "Poseta"

@@ -5,3 +5,27 @@
 # https://translate.discourse.org/
 
 sw:
+  yearly_review:
+    action:
+      topics_created: "Mada"
+      most_replied_to: "Majibu"
+      replies_created: "Majibu"
+      likes_given: "Upendo Uliotolewa"
+      likes_received: "Upendo Uliotolewa"
+      visits: "Siku Iliyotembelewa"
+    rank_type:
+      title:
+        most_liked: "Iliyopendwa Zaidi"
+      action_types:
+        most_replied_to: "Majibu"
+        most_liked: "Upendo Uliotolewa"
+        most_bookmarked: "Mialamisho"
+    user: "Mtumiaji"
+    users: "Watumiaji"
+    days_visited: "Siku Iliyotembelewa"
+    topics: "Mada"
+    topic: "Mada"
+    likes: "Upendo Uliotolewa"
+    bookmarks: "Mialamisho"
+    replies: "Majibu"
+    visits: "Waliotembelea"

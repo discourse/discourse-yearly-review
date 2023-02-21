@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 ro:
+  yearly_review:
+    action:
+      topics_created: "Discuții"
+      most_replied_to: "Răspunsuri"
+      replies_created: "Răspunsuri"
+      likes_given: "Aprecieri date"
+      likes_received: "Aprecieri date"
+      visits: "Zile de vizită"
+    rank_type:
+      title:
+        most_liked: "Cele mai apreciate"
+      action_types:
+        most_popular: "Scor"
+        most_replied_to: "Răspunsuri"
+        most_liked: "Aprecieri date"
+        most_bookmarked: "Semne de carte"
+    user: "Utilizator"
+    users: "Utilizatori"
+    days_visited: "Zile de vizită"
+    topics: "Discuții"
+    topic: "Discuție"
+    likes: "Aprecieri date"
+    bookmarks: "Semne de carte"
+    score: "Scor"
+    replies: "Răspunsuri"
+    visits: "Vizite"

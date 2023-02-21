@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 uk:
+  yearly_review:
+    action:
+      topics_created: "Теми"
+      most_replied_to: "Відповіді"
+      replies_created: "Відповіді"
+      likes_given: "Вподобані"
+      likes_received: "Вподобані"
+      visits: "Днів відвідувань"
+    rank_type:
+      title:
+        most_liked: "Найбільше подобається"
+      action_types:
+        most_popular: "Бал"
+        most_replied_to: "Відповіді"
+        most_liked: "Вподобані"
+        most_bookmarked: "Закладки"
+    user: "Користувач"
+    users: "Користувачі"
+    days_visited: "Днів відвідувань"
+    topics: "Теми"
+    topic: "Тема"
+    likes: "Вподобані"
+    bookmarks: "Закладки"
+    score: "Бал"
+    replies: "Відповіді"
+    visits: "Відвідини"
+    more_badge_users: "І бІльше %{more}..."

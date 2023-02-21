@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 id:
+  yearly_review:
+    action:
+      topics_created: "Topik-topik"
+      most_replied_to: "balasan"
+      replies_created: "balasan"
+      likes_given: "Likes Diberikan"
+      likes_received: "Likes Diberikan"
+      visits: "Hari Berkunjung"
+    rank_type:
+      title:
+        most_liked: "Paling Disukai"
+      action_types:
+        most_popular: "Skor"
+        most_replied_to: "balasan"
+        most_liked: "Likes Diberikan"
+        most_bookmarked: "Markah"
+    user: "Pengguna"
+    users: "Pengguna"
+    days_visited: "Hari Berkunjung"
+    topics: "Topik-topik"
+    topic: "Topik"
+    likes: "Likes Diberikan"
+    bookmarks: "Markah"
+    score: "Skor"
+    replies: "balasan"
+    visits: "mengunjungi"

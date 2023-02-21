@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 th:
+  yearly_review:
+    action:
+      topics_created: "หัวข้อ"
+      most_replied_to: "ตอบ"
+      replies_created: "ตอบ"
+      likes_given: "ถูกใจ"
+      likes_received: "ถูกใจ"
+      visits: "วันที่เข้าชม"
+    rank_type:
+      title:
+        most_liked: "ถูกใจมากที่สุด"
+      action_types:
+        most_popular: "คะแนน"
+        most_replied_to: "ตอบ"
+        most_liked: "ถูกใจ"
+        most_bookmarked: "บุ๊คมาร์ค"
+    user: "ชื่อผู้ใช้"
+    users: "ผู้ใช้"
+    days_visited: "วันที่เข้าชม"
+    topics: "หัวข้อ"
+    topic: "กระทู้"
+    likes: "ถูกใจ"
+    bookmarks: "บุ๊คมาร์ค"
+    score: "คะแนน"
+    replies: "ตอบ"
+    visits: "เยี่ยมชม"

@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 lv:
+  yearly_review:
+    action:
+      topics_created: "Tēmas"
+      most_replied_to: "Atbildes"
+      replies_created: "Atbildes"
+      likes_given: "Patīk"
+      likes_received: "Patīk"
+      visits: "Dienas, kurās apmeklēja"
+    rank_type:
+      title:
+        most_liked: "Visvairāk atzinību"
+      action_types:
+        most_popular: "Rezultāts"
+        most_replied_to: "Atbildes"
+        most_liked: "Patīk"
+        most_bookmarked: "Grāmatzīmes"
+    user: "Lietotājs"
+    users: "Lietotāji"
+    days_visited: "Dienas, kurās apmeklēja"
+    topics: "Tēmas"
+    topic: "Tēmas"
+    likes: "Patīk"
+    bookmarks: "Grāmatzīmes"
+    score: "Rezultāts"
+    replies: "Atbildes"
+    visits: "Apmeklējumi"

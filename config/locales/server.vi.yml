@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 vi:
+  yearly_review:
+    action:
+      topics_created: "Chủ đề"
+      most_replied_to: "Trả lời"
+      replies_created: "Trả lời"
+      likes_given: "Lượt Thích"
+      likes_received: "Lượt Thích"
+      visits: "Số ngày đã thăm"
+    rank_type:
+      title:
+        most_liked: "Thích nhiều nhất"
+      action_types:
+        most_popular: "Điểm số"
+        most_replied_to: "Trả lời"
+        most_liked: "Lượt Thích"
+        most_bookmarked: "Các đánh dấu"
+    user: "Thành viên"
+    users: "Tài khoản"
+    days_visited: "Số ngày đã thăm"
+    topics: "Chủ đề"
+    topic: "Chủ đề"
+    likes: "Lượt Thích"
+    bookmarks: "Các đánh dấu"
+    score: "Điểm số"
+    replies: "Trả lời"
+    visits: "Lượt xem"
+    more_badge_users: "Và %{more} nữa..."

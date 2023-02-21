@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 da:
+  yearly_review:
+    action:
+      topics_created: "Emner"
+      most_replied_to: "Svar"
+      replies_created: "Svar"
+      likes_given: "Syntes godt om"
+      likes_received: "Syntes godt om"
+      visits: "Besøgsdage"
+    rank_type:
+      title:
+        most_liked: "Flest 'Synes godt om' andre"
+      action_types:
+        most_popular: "Score"
+        most_replied_to: "Svar"
+        most_liked: "Syntes godt om"
+        most_bookmarked: "Bogmærker"
+    user: "bruger"
+    users: "Deltagere"
+    days_visited: "Besøgsdage"
+    topics: "Emner"
+    topic: "Emne"
+    likes: "Syntes godt om"
+    bookmarks: "Bogmærker"
+    score: "Score"
+    replies: "Svar"
+    visits: "Besøg"
+    more_badge_users: "Og %{more} mere..."

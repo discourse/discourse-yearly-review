@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 nb_NO:
+  yearly_review:
+    action:
+      topics_created: "Emner"
+      most_replied_to: "Svar"
+      replies_created: "Svar"
+      likes_given: "Likes tildelt"
+      likes_received: "Likes tildelt"
+      visits: "Dager besøkt"
+    rank_type:
+      title:
+        most_liked: "Mest Likt"
+      action_types:
+        most_popular: "Poeng"
+        most_replied_to: "Svar"
+        most_liked: "Likes tildelt"
+        most_bookmarked: "Bokmerker"
+    user: "Bruker"
+    users: "Deltakere"
+    days_visited: "Dager besøkt"
+    topics: "Emner"
+    topic: "Emne"
+    likes: "Likes tildelt"
+    bookmarks: "Bokmerker"
+    score: "Poeng"
+    replies: "Svar"
+    visits: "Besøk"

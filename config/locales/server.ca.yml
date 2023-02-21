@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 ca:
+  yearly_review:
+    action:
+      topics_created: "Temes"
+      most_replied_to: "Respostes"
+      replies_created: "Respostes"
+      likes_given: "'M'agrada'"
+      likes_received: "'M'agrada'"
+      visits: "Dies visitats"
+    rank_type:
+      title:
+        most_liked: "Ha tingut més 'm'agrada'"
+      action_types:
+        most_popular: "Puntuació"
+        most_replied_to: "Respostes"
+        most_liked: "'M'agrada'"
+        most_bookmarked: "Preferits"
+    user: "Usuari"
+    users: "Usuaris"
+    days_visited: "Dies visitats"
+    topics: "Temes"
+    topic: "Tema"
+    likes: "'M'agrada'"
+    bookmarks: "Preferits"
+    score: "Puntuació"
+    replies: "Respostes"
+    visits: "Visites"
+    more_badge_users: "I %{more} més..."

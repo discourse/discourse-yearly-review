@@ -5,3 +5,30 @@
 # https://translate.discourse.org/
 
 lt:
+  yearly_review:
+    action:
+      topics_created: "Temos"
+      most_replied_to: "Atsakymai"
+      replies_created: "Atsakymai"
+      likes_given: "Patikimai"
+      likes_received: "Patikimai"
+      visits: "Apsilankymo dienos"
+    rank_type:
+      title:
+        most_liked: "Labiausiai Mėgstamos"
+      action_types:
+        most_popular: "Rezultatas"
+        most_replied_to: "Atsakymai"
+        most_liked: "Patikimai"
+        most_bookmarked: "Žymės"
+    user: "Vartotojas"
+    users: "Vartotojai"
+    days_visited: "Apsilankymo dienos"
+    topics: "Temos"
+    topic: "Tema"
+    likes: "Patikimai"
+    bookmarks: "Žymės"
+    score: "Rezultatas"
+    replies: "Atsakymai"
+    visits: "Apsilankymai"
+    more_badge_users: "Ir %{more} daugiau..."

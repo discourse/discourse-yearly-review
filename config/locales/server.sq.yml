@@ -5,3 +5,27 @@
 # https://translate.discourse.org/
 
 sq:
+  yearly_review:
+    action:
+      topics_created: "Topics"
+      most_replied_to: "Përgjigjet"
+      replies_created: "Përgjigjet"
+      likes_given: "Pëlqimet"
+      likes_received: "Pëlqimet"
+      visits: "Ditë vizituar"
+    rank_type:
+      title:
+        most_liked: "Më të pëlqyer"
+      action_types:
+        most_replied_to: "Përgjigjet"
+        most_liked: "Pëlqimet"
+        most_bookmarked: "Të preferuarat"
+    user: "Përdorues"
+    users: "Përdoruesit"
+    days_visited: "Ditë vizituar"
+    topics: "Topics"
+    topic: "Temë"
+    likes: "Pëlqimet"
+    bookmarks: "Të preferuarat"
+    replies: "Përgjigjet"
+    visits: "Vizita"

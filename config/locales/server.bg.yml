@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 bg:
+  yearly_review:
+    action:
+      topics_created: "Теми"
+      most_replied_to: "Отговори"
+      replies_created: "Отговори"
+      likes_given: "Дадени харесвания"
+      likes_received: "Дадени харесвания"
+      visits: "Дни Посетена"
+    rank_type:
+      title:
+        most_liked: "Най-харесвани"
+      action_types:
+        most_popular: "Точки"
+        most_replied_to: "Отговори"
+        most_liked: "Дадени харесвания"
+        most_bookmarked: "Отметки"
+    user: "Потребител "
+    users: "Потребители"
+    days_visited: "Дни Посетена"
+    topics: "Теми"
+    topic: "Тема"
+    likes: "Дадени харесвания"
+    bookmarks: "Отметки"
+    score: "Точки"
+    replies: "Отговори"
+    visits: "Посещения "

@@ -5,3 +5,29 @@
 # https://translate.discourse.org/
 
 gl:
+  yearly_review:
+    action:
+      topics_created: "Temas"
+      most_replied_to: "Réplicas"
+      replies_created: "Réplicas"
+      likes_given: "Gústame"
+      likes_received: "Gústame"
+      visits: "Días desde visita"
+    rank_type:
+      title:
+        most_liked: "Con máis gústames"
+      action_types:
+        most_popular: "Puntuación"
+        most_replied_to: "Réplicas"
+        most_liked: "Gústame"
+        most_bookmarked: "Marcadores"
+    user: "Usuario"
+    users: "Usuarios"
+    days_visited: "Días desde visita"
+    topics: "Temas"
+    topic: "Tema"
+    likes: "Gústame"
+    bookmarks: "Marcadores"
+    score: "Puntuación"
+    replies: "Réplicas"
+    visits: "Visitas"

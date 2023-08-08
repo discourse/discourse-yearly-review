@@ -9,11 +9,12 @@ pl_PL:
     yearly_review_enabled: "Włącz przegląd roczny."
     yearly_review_categories: "Kategorie publiczne, z których można pobierać tematy. Zostanie wybranych 5 najlepszych kategorii z tej grupy. Jeśli pozostawisz puste, domyślnie zostanie wyświetlonych 5 najlepszych publicznych kategorii."
     yearly_review_exclude_staff: "Wyłączenie personelu ze statystyk użytkowników."
-    yearly_review_include_private_categories: "Uwzględnij w przeglądzie aktywność użytkowników z kategorii prywatnych lub ograniczonych do odczytu."
+    yearly_review_include_user_stats: "Dodaj statystyki identyfikujące użytkownika do pierwszego posta tematu recenzji."
+    yearly_review_include_private_categories: "Uwzględnij w przeglądzie aktywność użytkowników z kategorii prywatnych lub z ograniczonym dostępem do odczytu."
     yearly_review_publish_category: "Kategoria, w której zostanie opublikowany przegląd roczny."
     yearly_review_featured_badge: "Wprowadź pełną nazwę odznaki. Można pozostawić puste."
   yearly_review:
-    topic_title: "%{year}: Przegląd roku"
+    topic_title: "%{year}: Podsumowanie roku"
     category_topics_title: "Top #%{category} tematów"
     title:
       users_section: "Najlepsi użytkownicy %{year}"
@@ -23,6 +24,8 @@ pl_PL:
       likes_received: "Najwięcej danych polubień"
       visits: "Najwięcej odwiedzin"
       daily_visits: "Dzienne odwiedziny"
+      time_read: "Najwięcej czasu czytania"
+      most_replied_to: "Najwięcej odpowiedzi do"
       featured_badge: "Użytkownicy, którym przyznano odznakę %{badge_name}"
     action:
       topics_created: "Tematy"
@@ -48,6 +51,7 @@ pl_PL:
     user: "Użytkownik"
     users: "Użytkownicy"
     days_visited: "Dni odwiedzin"
+    all_yearly_visits: "Wszystkie roczne wizyty"
     topics: "Tematy"
     topic: "Temat"
     likes: "Polubienia"

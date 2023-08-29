@@ -19,13 +19,13 @@ zh_CN:
     title:
       users_section: "%{year} 的热门用户"
       topics_created: "最多话题"
-      replies_created: "发布最多回复"
+      replies_created: "回复最多"
       likes_given: "给出最多赞"
       likes_received: "收到最多赞"
       visits: "最常访问"
       daily_visits: "每日访问"
       time_read: "最长阅读时间"
-      most_replied_to: "最多被回复"
+      most_replied_to: "收到回复最多"
       featured_badge: "被授予%{badge_name}徽章的用户"
     action:
       topics_created: "话题"
@@ -34,7 +34,7 @@ zh_CN:
       likes_given: "赞"
       likes_received: "赞"
       visits: "访问天数"
-      time_read: "阅读时间（小时）"
+      time_read: "阅读小时数"
     rank_type:
       title:
         most_liked: "最多赞"
@@ -47,7 +47,7 @@ zh_CN:
         most_replied_to: "回复"
         most_liked: "赞"
         most_bookmarked: "书签"
-        most_read: "阅读时间（小时）"
+        most_read: "阅读小时数"
     user: "用户"
     users: "用户"
     days_visited: "访问天数"

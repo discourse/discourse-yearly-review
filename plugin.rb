@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 # name: discourse-yearly-review
-# about: Creates an automated Year in Review summary topic
+# about: Creates a topic that summarizes the previous year’s forum activity.
+# meta_topic_id: 105713
 # version: 0.2
 # author: Simon Cossar
 # url: https://github.com/discourse/discourse-yearly-review

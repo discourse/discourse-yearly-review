@@ -60,11 +60,6 @@ describe Jobs::YearlyReview do
         @yearly_review_topic = Topic.last
       end
 
-      it "doesn't publish the review topic again if it already exists with the same title" do
-        TopicCustomField.where(topic_id: @yearly_review_topic.id).destroy_all
-        expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }
-      end
-
       it "doesn't publish the review topic again if it already exists with the custom field and a different title" do
         @yearly_review_topic.update!(title: "This is a test for yearly review")
         expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }

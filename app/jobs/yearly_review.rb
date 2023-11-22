@@ -19,7 +19,7 @@ module ::Jobs
       if !args[:force]
         return if !SiteSetting.yearly_review_enabled
         return unless now.month == 1 && now.day <= 31
-        return if review_topic_exists?(title, review_year)
+        return if review_topic_exists?(review_year)
       end
 
       view = ActionView::Base.with_view_paths(ActionController::Base.view_paths)
@@ -624,33 +624,11 @@ module ::Jobs
       SQL
     end
 
-    # Title matching is for legacy purposes only, the custom field existence
-    # is the new way to check if a review topic has been created.
-    def review_topic_exists?(title, review_year)
-      DB
-        .query_single(
-          <<~SQL,
-          SELECT CASE WHEN EXISTS (
-            SELECT 1
-            FROM topics
-            WHERE title = :title AND user_id = :system_user_id AND deleted_at IS NULL
-          ) THEN 1 WHEN EXISTS (
-            SELECT 1
-            FROM topics
-            INNER JOIN topic_custom_fields ON topic_custom_fields.topic_id = topics.id
-            WHERE topic_custom_fields.name = :custom_field_name AND
-              topic_custom_fields.value = :review_year AND
-              topics.deleted_at IS NULL AND
-              user_id = :system_user_id
-          ) THEN 1 ELSE 0 END
-        SQL
-          title: title,
-          system_user_id: Discourse.system_user.id,
-          custom_field_name: ::YearlyReview::POST_CUSTOM_FIELD,
-          review_year: review_year.to_s,
-        )
-        .first
-        .positive?
+    def review_topic_exists?(review_year)
+      TopicCustomField
+        .find_by(name: ::YearlyReview::POST_CUSTOM_FIELD, value: review_year.to_s)
+        &.topic
+        .present?
     end
   end
 end

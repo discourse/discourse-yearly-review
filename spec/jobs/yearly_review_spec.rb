@@ -7,10 +7,12 @@ describe Jobs::YearlyReview do
     extend YearlyReviewHelper
   end
 
-  SiteSetting.yearly_review_enabled = true
+  before { SiteSetting.yearly_review_enabled = true }
+
   let(:category) { Fabricate(:category) }
   let(:top_review_user) { Fabricate(:user, username: "top_review_user") }
   let(:reviewed_user) { Fabricate(:user, username: "reviewed_user") }
+
   describe "publishing the topic" do
     describe "on January 1st" do
       before do
@@ -28,6 +30,9 @@ describe Jobs::YearlyReview do
         expect(topic.first_post.custom_fields).to eq(
           YearlyReview::POST_CUSTOM_FIELD => ::YearlyReview.last_year.to_s,
         )
+        expect(topic.custom_fields).to eq(
+          YearlyReview::POST_CUSTOM_FIELD => ::YearlyReview.last_year.to_s,
+        )
       end
     end
 
@@ -42,25 +47,22 @@ describe Jobs::YearlyReview do
       end
 
       it "doesn't publish a review topic" do
-        Jobs::YearlyReview.new.execute({})
-        topic = Topic.last
-        expect(topic.title).to eq("A topic from #{::YearlyReview.last_year}")
+        expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }
       end
     end
 
     describe "after the review has been published" do
       before do
         SiteSetting.yearly_review_publish_category = category.id
-        freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-05")
+        freeze_time DateTime.parse("#{::YearlyReview.current_year}-01-01")
         Fabricate(:topic, created_at: 1.month.ago)
         Jobs::YearlyReview.new.execute({})
-        Fabricate(:topic, title: "The last topic published")
-        Jobs::YearlyReview.new.execute({})
+        @yearly_review_topic = Topic.last
       end
 
-      it "doesn't publish the review topic twice" do
-        topic = Topic.last
-        expect(topic.title).to eq("The last topic published")
+      it "doesn't publish the review topic again if it already exists with the custom field and a different title" do
+        @yearly_review_topic.update!(title: "This is a test for yearly review")
+        expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }
       end
     end
   end
@@ -136,7 +138,6 @@ describe Jobs::YearlyReview do
 
       before do
         SiteSetting.yearly_review_publish_category = category.id
-        SiteSetting.use_polymorphic_bookmarks = true
         10.times do
           Fabricate(:post, topic: reviewed_topic, created_at: 1.month.ago, user: top_review_user)
         end
@@ -238,6 +239,7 @@ describe Jobs::YearlyReview do
   describe "featured badge" do
     let(:admin) { Fabricate(:user, admin: true) }
     let(:badge) { Fabricate(:badge) }
+
     before do
       SiteSetting.yearly_review_featured_badge = badge.name
       SiteSetting.yearly_review_publish_category = category.id

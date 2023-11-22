@@ -16,10 +16,10 @@ module ::Jobs
       review_end = review_start.end_of_year
       title = I18n.t("yearly_review.topic_title", year: review_year)
 
-      unless args[:force]
-        return unless SiteSetting.yearly_review_enabled
+      if !args[:force]
+        return if !SiteSetting.yearly_review_enabled
         return unless now.month == 1 && now.day <= 31
-        return if Topic.where(user: Discourse.system_user, title: title).exists?
+        return if review_topic_exists?(review_year)
       end
 
       view = ActionView::Base.with_view_paths(ActionController::Base.view_paths)
@@ -30,11 +30,11 @@ module ::Jobs
         end
       end
 
-      raw = create_raw_topic view, review_year, review_start, review_end
-      unless raw.empty?
+      raw_topic_html = render_raw_topic_view(view, review_year, review_start, review_end)
+      if raw_topic_html.present?
         topic_opts = {
           title: title,
-          raw: raw,
+          raw: raw_topic_html,
           category: SiteSetting.yearly_review_publish_category,
           skip_validations: true,
           custom_fields: {
@@ -50,7 +50,7 @@ module ::Jobs
       end
     end
 
-    def create_raw_topic(view, review_year, review_start, review_end)
+    def render_raw_topic_view(view, review_year, review_start, review_end)
       review_featured_badge = SiteSetting.yearly_review_featured_badge
       include_user_stats = SiteSetting.yearly_review_include_user_stats
 
@@ -81,11 +81,11 @@ module ::Jobs
         category_post_topics = category_post_topics category_id, review_start, review_end
         if category_post_topics[:topics]
           view.assign(category_topics: category_post_topics)
-          raw = view.render partial: "yearly_review_category", layout: false
-          unless raw.empty?
+          raw_html = view.render partial: "yearly_review_category", layout: false
+          if raw_html.present?
             post_opts = {
               topic_id: topic_id,
-              raw: raw,
+              raw: raw_html,
               skip_validations: true,
               custom_fields: {
                 ::YearlyReview::POST_CUSTOM_FIELD => review_start.year,
@@ -113,6 +113,7 @@ module ::Jobs
       category_topics[:most_replied_to] = most_replied_to if most_replied_to.any?
       category_topics[:most_popular] = most_popular if most_popular.any?
       category_topics[:most_bookmarked] = most_bookmarked if most_bookmarked.any?
+
       if category_topics.any?
         category_name = Category.find(cat_id).name
         data[:category_name] = category_name
@@ -124,6 +125,7 @@ module ::Jobs
 
     def review_categories_from_settings
       read_restricted = SiteSetting.yearly_review_include_private_categories
+
       if SiteSetting.yearly_review_categories.blank?
         Category.where(read_restricted: false).order("topics_year DESC")[0, 5].pluck(:id)
       else
@@ -620,6 +622,13 @@ module ::Jobs
         ORDER BY action_count DESC
         LIMIT :limit
       SQL
+    end
+
+    def review_topic_exists?(review_year)
+      TopicCustomField
+        .find_by(name: ::YearlyReview::POST_CUSTOM_FIELD, value: review_year.to_s)
+        &.topic
+        .present?
     end
   end
 end

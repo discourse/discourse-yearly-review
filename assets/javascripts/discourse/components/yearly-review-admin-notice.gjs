@@ -10,7 +10,7 @@ export function janNextYear() {
   return new Date(new Date().getFullYear() + 1, 0, 1);
 }
 
-export default class extends Component {
+export default class YearlyReviewAdminNotice extends Component {
   @service siteSettings;
 
   get toBeCreatedDate() {

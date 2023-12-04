@@ -1,11 +1,11 @@
 en:
   site_settings:
-    yearly_review_enabled: "Enable the yearly review."
-    yearly_review_categories: "Public categories to pull topics from. The top 5 categories from this group will be selected. If left blank will default to the top 5 public categories."
-    yearly_review_exclude_staff: "Exclude Staff from user stats."
-    yearly_review_include_user_stats: "Add user-identifying stats to the first post of the review topic."
-    yearly_review_include_private_categories: "Include user activity from private or read-restricted categories in the review."
-    yearly_review_publish_category: "The category the review will be published in."
+    yearly_review_enabled: "Enable the yearly review. On January 1st, a topic will be automatically created summarizing the previous year's forum activity."
+    yearly_review_categories: "Public categories to summarize. One post with stats will be created for each of the top 5 categories in this list. Leave blank to use the top 5 public categories."
+    yearly_review_exclude_staff: "Exclude Staff from member stats."
+    yearly_review_include_user_stats: "Add member-identifying stats."
+    yearly_review_include_private_categories: "Include member activity from private or read-restricted categories in the review."
+    yearly_review_publish_category: "Category the review will be published in. It is highly recommended to specify the staff or other private category so you can view the topic before making it public."
     yearly_review_featured_badge: "Enter the full badge name. Can be left blank."
   yearly_review:
     topic_title: "%{year}: The Year in Review"

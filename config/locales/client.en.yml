@@ -1,0 +1,5 @@
+en:
+  js:
+    yearly_review:
+      admin_notice: "The Yearly Review topic will be created soon on %{to_be_created_date}. Please <a href='%{settings_url}'>review the settings now</a> and be sure to set the yearly review publish category to the staff or other private category so you can view it before making it public, and maybe add a celebratory note! :partying_face: <a target='_blank' rel='noopener noreferrer' href='https://meta.discourse.org/t/discourse-yearly-review/105713'>More details…</a>"
+

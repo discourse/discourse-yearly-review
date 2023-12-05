@@ -6,12 +6,6 @@
 
 es:
   site_settings:
-    yearly_review_enabled: "Habilitar la revisión anual."
-    yearly_review_categories: "Categorías públicas de las que extraer temas. Se seleccionarán las 5 principales categorías de este grupo. Si se deja en blanco, se seleccionarán por defecto las 5 principales categorías públicas."
-    yearly_review_exclude_staff: "Excluir al personal de las estadísticas de los usuarios."
-    yearly_review_include_user_stats: "Añadir estadísticas de identificación de usuario al primer mensaje del tema de revisión."
-    yearly_review_include_private_categories: "Incluir en la revisión la actividad de los usuarios de las categorías privadas o de lectura restringida."
-    yearly_review_publish_category: "La categoría en la que se publicará la revisión."
     yearly_review_featured_badge: "Introduce el nombre completo de la insignia. Se puede dejar en blanco."
   yearly_review:
     topic_title: "%{year}: Resumen del año"

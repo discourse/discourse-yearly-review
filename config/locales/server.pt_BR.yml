@@ -6,12 +6,6 @@
 
 pt_BR:
   site_settings:
-    yearly_review_enabled: "Ative a revisão anual."
-    yearly_review_categories: "Categorias públicas para receber tópicos. As cinco melhores categorias deste grupo serão selecionadas. Se estiver em branco, as cinco melhores categorias públicas serão definidas como padrão."
-    yearly_review_exclude_staff: "Tirar equipe das estatísticas do(a) usuário(a)."
-    yearly_review_include_user_stats: "Adicionar estatísticas de identificação de usuário(a) à primeira postagem do tópico de revisão."
-    yearly_review_include_private_categories: "Inclua atividade de usuário(a) das categorias privada ou restrita à leitura na revisão."
-    yearly_review_publish_category: "A categoria em que a revisão será publicada."
     yearly_review_featured_badge: "Insira o nome completo do emblema. Não pode ser deixado em branco."
   yearly_review:
     topic_title: "%{year}: ano da revisão"

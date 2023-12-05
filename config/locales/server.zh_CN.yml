@@ -6,12 +6,6 @@
 
 zh_CN:
   site_settings:
-    yearly_review_enabled: "启用年度回顾。"
-    yearly_review_categories: "要从中提取话题的公开类别。将从此群组中选出前 5 个类别。如果留空将默认为前 5 个公开类别。"
-    yearly_review_exclude_staff: "从用户统计数据中排除管理人员"
-    yearly_review_include_user_stats: "将用户识别统计信息添加到回顾话题的第一个帖子中。"
-    yearly_review_include_private_categories: "在回顾中包括来自不公开或阅读受限类别的用户活动。"
-    yearly_review_publish_category: "回顾将在其中发布的类别。"
     yearly_review_featured_badge: "输入完整的徽章名称。可以留空。"
   yearly_review:
     topic_title: "%{year} 年度回顾"

@@ -6,12 +6,6 @@
 
 sl:
   site_settings:
-    yearly_review_enabled: "Omogoči letni pregled."
-    yearly_review_categories: "Javne kategorije, iz katerih lahko črpate teme. Iz te skupine bo izbranih pet najboljših kategorij. Če polje ostane prazno, bo privzeto prikazanih pet najboljših javnih kategorij."
-    yearly_review_exclude_staff: "Izključi osebje iz statistike uporabnikov."
-    yearly_review_include_user_stats: "V prvo objavo teme pregleda dodajte statistične podatke, ki omogočajo identifikacijo uporabnika."
-    yearly_review_include_private_categories: "V pregled vključite dejavnost uporabnikov iz zasebnih kategorij ali kategorij z omejenim branjem."
-    yearly_review_publish_category: "Kategorija, v kateri bo objavljen pregled."
     yearly_review_featured_badge: "Vnesite polno ime značke. Lahko ostane prazno."
   yearly_review:
     topic_title: "%{year}: Letni pregled"

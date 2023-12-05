@@ -6,12 +6,6 @@
 
 nl:
   site_settings:
-    yearly_review_enabled: "Schakel de jaarlijkse beoordeling in."
-    yearly_review_categories: "Openbare categorieën om topics uit te halen. De top 5 categorieën uit deze groep worden geselecteerd. Als dit leeg wordt gelaten, worden standaard de top 5 openbare categorieën weergegeven."
-    yearly_review_exclude_staff: "Medewerkers uitsluiten van gebruikersstatistieken."
-    yearly_review_include_user_stats: "Voeg gebruikersidentificatiestatistieken toe aan het eerste bericht van het beoordelingstopic."
-    yearly_review_include_private_categories: "Neem gebruikersactiviteit van privécategorieën of categorieën met leesbeperkingen op in de beoordeling."
-    yearly_review_publish_category: "De categorie waarin de beoordeling wordt gepubliceerd."
     yearly_review_featured_badge: "Voer de volledige badgenaam in. Mag leeg worden gelaten."
   yearly_review:
     topic_title: "%{year}: het jaaroverzicht"

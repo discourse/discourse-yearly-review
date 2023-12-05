@@ -6,12 +6,6 @@
 
 fr:
   site_settings:
-    yearly_review_enabled: "Activer la révision annuelle."
-    yearly_review_categories: "Catégories publiques à partir desquelles extraire les sujets. Les 5 meilleures catégories de ce groupe seront sélectionnées. Si ce paramètre est laissé vide, les 5 premières catégories publiques seront sélectionnées par défaut."
-    yearly_review_exclude_staff: "Exclure le personnel des statistiques des utilisateurs."
-    yearly_review_include_user_stats: "Ajouter les statistiques d'identification des utilisateurs au premier message du sujet de révision."
-    yearly_review_include_private_categories: "Inclure l'activité de l'utilisateur à partir de catégories privées ou en lecture restreintes dans la révision."
-    yearly_review_publish_category: "La catégorie dans laquelle la révision sera publiée."
     yearly_review_featured_badge: "Saisissez le nom complet du badge. Cet espace peut être laissé vide."
   yearly_review:
     topic_title: "%{year} : bilan de l'année"

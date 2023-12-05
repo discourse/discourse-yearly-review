@@ -6,12 +6,6 @@
 
 fi:
   site_settings:
-    yearly_review_enabled: "Ota vuosikatsaus käyttöön."
-    yearly_review_categories: "Julkiset alueet, joista haetaan ketjuja. Tämän ryhmän viisi parasta aluetta valitaan. Jos tämä jätetään tyhjäksi, oletus on viisi suosituinta julkista aluetta."
-    yearly_review_exclude_staff: "Jätä henkilökunta pois käyttäjätilastoista."
-    yearly_review_include_user_stats: "Lisää käyttäjätunnistustilastot katsausketjun ensimmäiseen viestiin."
-    yearly_review_include_private_categories: "Sisällytä katsaukseen käyttäjien toiminta yksityisillä tai lukurajoitetuilla alueilla."
-    yearly_review_publish_category: "Alue, jossa katsaus julkaistaan."
     yearly_review_featured_badge: "Anna kunniamerkin koko nimi. Voidaan jättää tyhjäksi."
   yearly_review:
     topic_title: "%{year}: vuosikatsaus"

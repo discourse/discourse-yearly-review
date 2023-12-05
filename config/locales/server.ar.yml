@@ -6,12 +6,6 @@
 
 ar:
   site_settings:
-    yearly_review_enabled: "تفعيل المراجعة السنوية"
-    yearly_review_categories: "الفئات العامة لسحب الموضوعات منها. سيتم تحديد أبرز 5 فئات من هذه المجموعة. في حال ترك هذا الإعداد فارغًا، سيتم تحديد أبرز 5 فئات عامة بشكلٍ افتراضي."
-    yearly_review_exclude_staff: "استثناء فريق العمل من إحصاءات المستخدمين"
-    yearly_review_include_user_stats: "إضافة الإحصاءات المحدِّدة للمستخدمين إلى أول منشور في موضوع المراجعة"
-    yearly_review_include_private_categories: "تضمين نشاط المستخدم من الفئات الخاصة أو المقيَّدة قراءتها في المراجعة"
-    yearly_review_publish_category: "الفئة التي سيتم نشر المراجعة فيها"
     yearly_review_featured_badge: "أدخل اسم الشارة بالكامل. يمكن تركه فارغًا."
   yearly_review:
     topic_title: "%{year}: العام قيد المراجعة"

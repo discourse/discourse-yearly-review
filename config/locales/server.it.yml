@@ -6,12 +6,6 @@
 
 it:
   site_settings:
-    yearly_review_enabled: "Abilita revisione annuale."
-    yearly_review_categories: "Categorie pubbliche da cui estrarre argomenti. Verranno selezionate le prime 5 categorie di questo gruppo. Se l'opzione è lasciata vuota, verranno automaticamente visualizzate le prime 5 categorie pubbliche."
-    yearly_review_exclude_staff: "Escludi staff dalle statistiche utente."
-    yearly_review_include_user_stats: "Aggiungi le statistiche di identificazione degli utenti al primo messaggio dell'argomento della revisione."
-    yearly_review_include_private_categories: "Includi nella revisione l'attività degli utenti di categorie private o con limitazioni di lettura."
-    yearly_review_publish_category: "La categoria in cui verrà pubblicata la revisione."
     yearly_review_featured_badge: "Inserisci il nome completo del distintivo. Può essere lasciato vuoto."
   yearly_review:
     topic_title: "%{year}: L'anno della revisione"

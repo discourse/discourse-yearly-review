@@ -6,12 +6,6 @@
 
 ja:
   site_settings:
-    yearly_review_enabled: "年次レビューを有効にします。"
-    yearly_review_categories: "トピックをプルする公開カテゴリ。このグループの上位 5 つのカテゴリが選択されます。空白のままにすると、デフォルトで上位 5 つの公開カテゴリが選択されます。"
-    yearly_review_exclude_staff: "ユーザー統計からスタッフを除外します。"
-    yearly_review_include_user_stats: "レビュートピックの最初の投稿にユーザーを特定する統計を追加します。"
-    yearly_review_include_private_categories: "レビューに非公開のカテゴリまたは読み取り制限のあるカテゴリのユーザーアクティビティを含めます。"
-    yearly_review_publish_category: "レビューが公開されるカテゴリ。"
     yearly_review_featured_badge: "バッジのフルネームを入力します。空白にすることができます。"
   yearly_review:
     topic_title: "%{year} 年を振り返る"

@@ -6,12 +6,6 @@
 
 sv:
   site_settings:
-    yearly_review_enabled: "Aktivera den årliga granskningen."
-    yearly_review_categories: "Offentliga kategorier att dra ämnen från. De 5 översta kategorierna från den här gruppen väljs. Om detta lämnas tomt blir standardvalet de 5 översta offentliga kategorierna."
-    yearly_review_exclude_staff: "Uteslut personal från användarstatistik."
-    yearly_review_include_user_stats: "Lägg till användaridentifierande statistik till det första inlägget i granskningsämnet."
-    yearly_review_include_private_categories: "Omfatta användaraktivitet från privata eller läsbegränsade kategorier i granskningen."
-    yearly_review_publish_category: "Kategorin som granskningen kommer att publiceras i."
     yearly_review_featured_badge: "Ange utmärkelsens hela namn. Kan lämnas tomt."
   yearly_review:
     topic_title: "%{year}: En granskning av året"

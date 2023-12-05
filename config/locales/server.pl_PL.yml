@@ -6,12 +6,6 @@
 
 pl_PL:
   site_settings:
-    yearly_review_enabled: "Włącz przegląd roczny."
-    yearly_review_categories: "Kategorie publiczne, z których można pobierać tematy. Zostanie wybranych 5 najlepszych kategorii z tej grupy. Jeśli pozostawisz puste, domyślnie zostanie wyświetlonych 5 najlepszych publicznych kategorii."
-    yearly_review_exclude_staff: "Wyłączenie personelu ze statystyk użytkowników."
-    yearly_review_include_user_stats: "Dodaj statystyki identyfikujące użytkownika do pierwszego posta tematu recenzji."
-    yearly_review_include_private_categories: "Uwzględnij w przeglądzie aktywność użytkowników z kategorii prywatnych lub z ograniczonym dostępem do odczytu."
-    yearly_review_publish_category: "Kategoria, w której zostanie opublikowany przegląd roczny."
     yearly_review_featured_badge: "Wprowadź pełną nazwę odznaki. Można pozostawić puste."
   yearly_review:
     topic_title: "%{year}: Podsumowanie roku"

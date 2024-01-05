@@ -625,10 +625,13 @@ module ::Jobs
     end
 
     def review_topic_exists?(review_year)
-      TopicCustomField
-        .find_by(name: ::YearlyReview::POST_CUSTOM_FIELD, value: review_year.to_s)
-        &.topic
-        .present?
+      TopicCustomField.joins(:topic).exists?(
+        name: ::YearlyReview::POST_CUSTOM_FIELD,
+        value: review_year.to_s,
+        topic: {
+          deleted_at: nil,
+        },
+      )
     end
   end
 end

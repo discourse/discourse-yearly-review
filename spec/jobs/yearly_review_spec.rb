@@ -64,6 +64,17 @@ describe Jobs::YearlyReview do
         @yearly_review_topic.update!(title: "This is a test for yearly review")
         expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }
       end
+
+      it "doesn't publish the review topic again if it already exists and a previous version was deleted" do
+        @yearly_review_topic.trash!
+        expect { Jobs::YearlyReview.new.execute({}) }.to change { Topic.count }
+        expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }
+      end
+
+      it "doesn't publish the review topic again if it already exists and has been moved to another category" do
+        @yearly_review_topic.update!(category: Fabricate(:category))
+        expect { Jobs::YearlyReview.new.execute({}) }.not_to change { Topic.count }
+      end
     end
   end
 

@@ -6,6 +6,12 @@
 
 fi:
   site_settings:
+    yearly_review_enabled: "Ota vuosikatsaus käyttöön. Tammikuun 1. päivänä luodaan automaattisesti ketju, joka sisältää yhteenvedon edellisen vuoden foorumitoiminnasta."
+    yearly_review_categories: "Yleiset alueet, joista yhteenveto tehdään. Yksi tilastot sisältävä viesti luodaan jokaiselle tämän luettelon viidelle suosituimmalle alueelle. Jätä tyhjäksi käyttääksesi viittä suosituinta julkista aluetta."
+    yearly_review_exclude_staff: "Jätä henkilökunta pois jäsentilastoista."
+    yearly_review_include_user_stats: "Lisää tilastoja, joista jäsenet ovat tunnistettavissa."
+    yearly_review_include_private_categories: "Sisällytä katsaukseen jäsenten toiminta yksityisillä tai lukurajoitetuilla alueilla."
+    yearly_review_publish_category: "Alue, jolla katsausjulkaistaan. On erittäin suositeltavaa määrittää henkilökunnan alue tai muu yksityinen alue, jotta voit tarkastella aihetta ennen sen julkistamista."
     yearly_review_featured_badge: "Anna kunniamerkin koko nimi. Voidaan jättää tyhjäksi."
   yearly_review:
     topic_title: "%{year}: vuosikatsaus"

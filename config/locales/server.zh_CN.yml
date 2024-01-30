@@ -6,6 +6,12 @@
 
 zh_CN:
   site_settings:
+    yearly_review_enabled: "启用年度回顾。1 月 1 日，将自动创建一个话题，总结去年的论坛活动。"
+    yearly_review_categories: "要总结的公开类别。将为此列表中前 5 个类别中的每个类别创建一篇包含统计信息的帖子。留空则会使用前 5 个公开类别。"
+    yearly_review_exclude_staff: "从成员统计中排除管理人员。"
+    yearly_review_include_user_stats: "添加成员识别统计信息。"
+    yearly_review_include_private_categories: "在回顾中包括不公开或阅读限制类别的成员活动。"
+    yearly_review_publish_category: "回顾将被发布到的类别。强烈建议指定管理人员或其他不公开类别，以便您可以在公开之前查看话题。"
     yearly_review_featured_badge: "输入完整的徽章名称。可以留空。"
   yearly_review:
     topic_title: "%{year} 年度回顾"

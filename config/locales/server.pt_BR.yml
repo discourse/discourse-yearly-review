@@ -6,6 +6,12 @@
 
 pt_BR:
   site_settings:
+    yearly_review_enabled: "Ative a revisão anual. No dia 1º de janeiro, será criado automaticamente um tópico para resumir a atividade do fórum no ano anterior."
+    yearly_review_categories: "Categorias públicas para resumir. Será criada uma postagem com estatísticas para cada uma das cinco melhores categorias desta lista. Deixe vazio para usar as cinco melhores categorias públicas."
+    yearly_review_exclude_staff: "Excluir Equipe das estatísticas dos membros."
+    yearly_review_include_user_stats: "Adicionar estatísticas para identificar os membros."
+    yearly_review_include_private_categories: "Inclua atividade de membro da categoria privada ou restrita à leitura na revisão."
+    yearly_review_publish_category: "A categoria na qual a revisão será publicada. É altamente recomendável especificar a equipe ou outra categoria privada para poder revisar o tópico antes de torná-lo público."
     yearly_review_featured_badge: "Insira o nome completo do emblema. Não pode ser deixado em branco."
   yearly_review:
     topic_title: "%{year}: ano da revisão"

@@ -6,6 +6,12 @@
 
 tr_TR:
   site_settings:
+    yearly_review_enabled: "Yıllık incelemeyi etkinleştirin. 1 Ocak'ta, bir önceki yılın forum aktivitesini özetleyen bir konu otomatik olarak oluşturulacaktır."
+    yearly_review_categories: "Özetlenecek herkese açık kategoriler. Bu listedeki ilk 5 kategorinin her biri için istatistikleri içeren bir gönderi oluşturulacaktır. En iyi 5 herkese açık kategoriyi kullanmak için boş bırakın."
+    yearly_review_exclude_staff: "Personeli üye istatistiklerinden hariç tutun."
+    yearly_review_include_user_stats: "Üye tanımlayıcı istatistikler ekleyin."
+    yearly_review_include_private_categories: "Özel veya okuma kısıtlamalı kategorilerdeki üye aktivitesini incelemeye dahil edin."
+    yearly_review_publish_category: "İncelemenin yayınlanacağı kategori. Herkese açık hâle getirmeden önce konuyu görüntüleyebilmeniz için personel veya diğer özel kategoriyi belirtmeniz şiddetle tavsiye edilir."
     yearly_review_featured_badge: "Tam rozet adını girin. Boş bırakılabilir."
   yearly_review:
     topic_title: "%{year}: Yılın Değerlendirmesi"

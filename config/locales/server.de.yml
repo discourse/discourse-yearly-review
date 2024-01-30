@@ -6,6 +6,12 @@
 
 de:
   site_settings:
+    yearly_review_enabled: "Aktiviere den Jahresrückblick. Am 1. Januar wird automatisch ein Thema erstellt, in dem die Forumsaktivitäten des vergangenen Jahres zusammengefasst werden."
+    yearly_review_categories: "Öffentliche Kategorien zum Zusammenfassen. Für jede der Top-5-Kategorien in dieser Liste wird ein Beitrag mit Statistiken erstellt. Lass das Feld leer, um die Top 5 der öffentlichen Kategorien zu verwenden."
+    yearly_review_exclude_staff: "Schließe das Team aus der Mitgliederstatistik aus."
+    yearly_review_include_user_stats: "Füge Statistiken zur Identifizierung der Mitglieder hinzu."
+    yearly_review_include_private_categories: "Beziehe Mitgliederaktivitäten aus privaten oder lesebeschränkten Kategorien in den Rückblick ein."
+    yearly_review_publish_category: "Kategorie, in welcher der Rückblick veröffentlicht werden soll. Es wird dringend empfohlen, die Kategorie Team oder eine andere private Kategorie anzugeben, damit du das Thema vor der Veröffentlichung sehen kannst."
     yearly_review_featured_badge: "Gib den vollständigen Namen des Abzeichens ein. Kann leer gelassen werden."
   yearly_review:
     topic_title: "%{year}: das Jahr im Rückblick"

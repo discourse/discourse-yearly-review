@@ -6,6 +6,12 @@
 
 pl_PL:
   site_settings:
+    yearly_review_enabled: "Włącz przegląd roczny. 1 stycznia zostanie automatycznie utworzony temat podsumowujący aktywność na forum w poprzednim roku."
+    yearly_review_categories: "Publiczne kategorie do podsumowania. Jeden post ze statystykami zostanie utworzony dla każdej z 5 najlepszych kategorii z tej listy. Pozostaw puste, aby użyć 5 najlepszych kategorii publicznych."
+    yearly_review_exclude_staff: "Wyklucz personel ze statystyk członków."
+    yearly_review_include_user_stats: "Dodaj statystyki identyfikujące członków."
+    yearly_review_include_private_categories: "Uwzględnij w przeglądzie aktywność użytkowników z kategorii prywatnych lub z ograniczonym dostępem."
+    yearly_review_publish_category: "Kategoria, w której recenzja zostanie opublikowana. Zaleca się określenie kategorii personelu lub innej kategorii prywatnej, abyś mógł wyświetlić temat przed jego upublicznieniem."
     yearly_review_featured_badge: "Wprowadź pełną nazwę odznaki. Można pozostawić puste."
   yearly_review:
     topic_title: "%{year}: Podsumowanie roku"

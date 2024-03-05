@@ -63,4 +63,8 @@ module YearlyReviewHelper
     headings = labels.map { |label| I18n.t("yearly_review.#{label}") }
     "|#{headings.join("|")}|"
   end
+
+  def compiled_method_container
+    self.class
+  end
 end

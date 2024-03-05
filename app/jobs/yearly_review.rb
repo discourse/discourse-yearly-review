@@ -23,12 +23,7 @@ module ::Jobs
       end
 
       view = ActionView::Base.with_view_paths(ActionController::Base.view_paths)
-      view.class_eval do
-        include YearlyReviewHelper
-        def compiled_method_container
-          self.class
-        end
-      end
+      view.singleton_class.include(YearlyReviewHelper)
 
       raw_topic_html = render_raw_topic_view(view, review_year, review_start, review_end)
       if raw_topic_html.present?

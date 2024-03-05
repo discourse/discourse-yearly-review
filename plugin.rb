@@ -29,9 +29,7 @@ after_initialize do
                                                __FILE__,
                                              )
 
-  ["../../discourse-yearly-review/app/jobs/yearly_review.rb"].each do |path|
-    load File.expand_path(path, __FILE__)
-  end
+  require_relative "app/jobs/yearly_review"
 
   require_dependency "email/styles"
   Email::Styles.register_plugin_style do |doc|
@@ -81,7 +79,7 @@ after_initialize do
       .each { |element| element["style"] = "padding-left: 4px;padding-bottom: 6px;" }
   end
 
-  DiscourseEvent.on(:username_changed) do |old_username, new_username|
+  on(:username_changed) do |old_username, new_username|
     Post
       .joins(:_custom_fields)
       .where(

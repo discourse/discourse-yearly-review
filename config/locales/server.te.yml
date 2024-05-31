@@ -14,7 +14,10 @@ te:
       likes_received: "ఇచ్చిన ఇష్టాలు "
       visits: "దర్శించిన రోజులు"
     rank_type:
+      title:
+        most_liked: "ఎక్కువగా ఇష్టపడింది"
       action_types:
+        most_popular: "స్కోర్"
         most_replied_to: "జవాబులు"
         most_liked: "ఇచ్చిన ఇష్టాలు "
         most_bookmarked: "పేజీకలు"
@@ -25,5 +28,6 @@ te:
     topic: "విషయం"
     likes: "ఇచ్చిన ఇష్టాలు "
     bookmarks: "పేజీకలు"
+    score: "స్కోర్"
     replies: "జవాబులు"
     visits: "సందర్శనాలు"

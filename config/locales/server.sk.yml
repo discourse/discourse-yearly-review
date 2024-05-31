@@ -17,6 +17,7 @@ sk:
       title:
         most_liked: "Najviac sa páčia"
       action_types:
+        most_popular: "Skóre"
         most_replied_to: "Odpovede"
         most_liked: "Rozdaných 'páči sa mi'"
         most_bookmarked: "Záložky"
@@ -27,5 +28,7 @@ sk:
     topic: "Témy"
     likes: "Rozdaných 'páči sa mi'"
     bookmarks: "Záložky"
+    score: "Skóre"
     replies: "Odpovede"
     visits: "Návštev"
+    more_badge_users: "A %{more} ďAlšie..."

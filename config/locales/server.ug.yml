@@ -1,0 +1,34 @@
+# WARNING: Never edit this file.
+# It will be overwritten when translations are pulled from Crowdin.
+#
+# To work with us on translations, join this project:
+# https://translate.discourse.org/
+
+ug:
+  yearly_review:
+    action:
+      topics_created: "تېما"
+      most_replied_to: "جاۋاب"
+      replies_created: "جاۋاب"
+      likes_given: "ياقتۇرۇش"
+      likes_received: "ياقتۇرۇش"
+      visits: "زىيارەت كۈن سانى"
+    rank_type:
+      title:
+        most_liked: "كۆپ ياقتۇرغان"
+      action_types:
+        most_popular: "نومۇر"
+        most_replied_to: "جاۋاب"
+        most_liked: "ياقتۇرۇش"
+        most_bookmarked: "خەتكۈچ"
+    user: "ئىشلەتكۈچى"
+    users: "ئىشلەتكۈچى"
+    days_visited: "زىيارەت كۈن سانى"
+    topics: "تېما"
+    topic: "تېما"
+    likes: "ياقتۇرۇش"
+    bookmarks: "خەتكۈچ"
+    score: "نومۇر"
+    replies: "جاۋاب"
+    visits: "زىيارەت"
+    more_badge_users: "ۋە باشقا %{more}..."

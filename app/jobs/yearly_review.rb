@@ -201,18 +201,18 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
         #{"AND c.read_restricted = false" unless read_restricted}
         AND t.user_id > 0
-        AND t.created_at >= '#{start_date}'
-        AND t.created_at <= '#{end_date}'
+        AND t.created_at >= :start_date
+        AND t.created_at <= :end_date
         AND t.deleted_at IS NULL
         GROUP BY t.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def most_replies(start_date, end_date, exclude_staff, read_restricted)
@@ -230,13 +230,13 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
         #{"AND c.read_restricted = false" unless read_restricted}
         AND p.user_id > 0
         AND p.post_number > 1
         AND p.post_type = 1
-        AND p.created_at >= '#{start_date}'
-        AND p.created_at <= '#{end_date}'
+        AND p.created_at >= :start_date
+        AND p.created_at <= :end_date
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
         GROUP BY p.user_id, u.username, u.uploaded_avatar_id
@@ -244,7 +244,7 @@ module ::Jobs
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def daily_visits(start_date, end_date)
@@ -254,8 +254,8 @@ module ::Jobs
       user_id,
       COUNT(user_id) AS days_visited_count
       FROM user_visits uv
-      WHERE uv.visited_at >= '#{start_date}'
-      AND uv.visited_at <= '#{end_date}'
+      WHERE uv.visited_at >= :start_date
+      AND uv.visited_at <= :end_date
       GROUP BY user_id
       )
       SELECT
@@ -267,7 +267,7 @@ module ::Jobs
       LIMIT 10
       SQL
 
-      DB.query(sql)
+      DB.query(sql, start_date:, end_date:)
     end
 
     def most_visits(start_date, end_date, exclude_staff)
@@ -281,15 +281,15 @@ module ::Jobs
         JOIN users u
         ON u.id = uv.user_id
         WHERE u.id > 0
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND uv.visited_at >= '#{start_date}'
-        AND uv.visited_at <= '#{end_date}'
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
+        AND uv.visited_at >= :start_date
+        AND uv.visited_at <= :end_date
         GROUP BY uv.user_id, u.username, u.uploaded_avatar_id
         ORDER BY action_count DESC
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def most_time_read(start_date, end_date, exclude_staff, read_restricted)
@@ -307,11 +307,11 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
         #{"AND c.read_restricted = false" unless read_restricted}
         AND u.id > 0
-        AND t.created_at >= '#{start_date}'
-        AND t.created_at <= '#{end_date}'
+        AND t.created_at >= :start_date
+        AND t.created_at <= :end_date
         AND t.deleted_at IS NULL
         AND tu.total_msecs_viewed > (1000 * 60)
         GROUP BY u.id, username, uploaded_avatar_id
@@ -319,7 +319,7 @@ module ::Jobs
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def most_likes_given(start_date, end_date, exclude_staff, read_restricted)
@@ -337,11 +337,11 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
         #{"AND c.read_restricted = false" unless read_restricted}
         AND u.id > 0
-        AND ua.created_at >= '#{start_date}'
-        AND ua.created_at <= '#{end_date}'
+        AND ua.created_at >= :start_date
+        AND ua.created_at <= :end_date
         AND ua.action_type = 2
         AND t.deleted_at IS NULL
         GROUP BY ua.acting_user_id, u.username, u.uploaded_avatar_id
@@ -349,7 +349,7 @@ module ::Jobs
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def most_likes_received(start_date, end_date, exclude_staff, read_restricted)
@@ -366,11 +366,11 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
         #{"AND c.read_restricted = false" unless read_restricted}
         AND u.id > 0
-        AND ua.created_at >= '#{start_date}'
-        AND ua.created_at <= '#{end_date}'
+        AND ua.created_at >= :start_date
+        AND ua.created_at <= :end_date
         AND ua.action_type = 2
         AND t.deleted_at IS NULL
         GROUP BY u.username, u.uploaded_avatar_id
@@ -378,7 +378,7 @@ module ::Jobs
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def most_replied_to(start_date, end_date, exclude_staff, read_restricted)
@@ -395,10 +395,10 @@ module ::Jobs
         JOIN categories c
         ON c.id = t.category_id
         WHERE t.archetype = 'regular'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
         #{"AND c.read_restricted = false" unless read_restricted}
-        AND p.created_at >= '#{start_date}'
-        AND p.created_at <= '#{end_date}'
+        AND p.created_at >= :start_date
+        AND p.created_at <= :end_date
         AND p.reply_count > 0
         AND t.deleted_at IS NULL
         AND p.deleted_at IS NULL
@@ -409,11 +409,10 @@ module ::Jobs
         LIMIT #{MAX_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(sql, exclude_staff:, start_date:, end_date:)
     end
 
     def featured_badge_users(badge_name, start_date, end_date)
-      exclude_staff = SiteSetting.yearly_review_exclude_staff
       sql = <<~SQL
         SELECT DISTINCT ON(u.id)
         u.id AS user_id,
@@ -427,15 +426,21 @@ module ::Jobs
         ON ub.badge_id = b.id
         JOIN users u
         ON u.id = ub.user_id
-        WHERE b.name = '#{badge_name}'
-        AND ((#{!exclude_staff}) OR (u.admin = false AND u.moderator = false))
-        AND ub.granted_at BETWEEN '#{start_date}' AND '#{end_date}'
+        WHERE b.name = :badge_name
+        AND ((NOT :exclude_staff) OR (u.admin = false AND u.moderator = false))
+        AND ub.granted_at BETWEEN :start_date AND :end_date
         AND u.id > 0
         ORDER BY u.id
         LIMIT #{MAX_BADGE_USERS}
       SQL
 
-      DB.query(sql)
+      DB.query(
+        sql,
+        exclude_staff: SiteSetting.yearly_review_exclude_staff,
+        badge_name:,
+        start_date:,
+        end_date:,
+      )
     end
 
     def most_read_topic_sql

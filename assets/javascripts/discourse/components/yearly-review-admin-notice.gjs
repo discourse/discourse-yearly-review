@@ -1,9 +1,8 @@
 import Component from "@glimmer/component";
 import { htmlSafe } from "@ember/template";
 import replaceEmoji from "discourse/helpers/replace-emoji";
-import i18n from "discourse-common/helpers/i18n";
-import getURL from "discourse-common/lib/get-url";
-import I18n from "discourse-i18n";
+import getURL from "discourse/lib/get-url";
+import { i18n } from "discourse-i18n";
 
 export function janNextYear() {
   return new Date(new Date().getFullYear() + 1, 0, 1);
@@ -11,7 +10,7 @@ export function janNextYear() {
 
 export default class YearlyReviewAdminNotice extends Component {
   get toBeCreatedDate() {
-    return moment(janNextYear()).format(I18n.t("dates.full_with_year_no_time"));
+    return moment(janNextYear()).format(i18n("dates.full_with_year_no_time"));
   }
 
   get settingsUrl() {

@@ -1,10 +1,4 @@
-# WARNING: Never edit this file.
-# It will be overwritten when translations are pulled from Crowdin.
-#
-# To work with us on translations, join this project:
-# https://translate.discourse.org/
-
-zh_CN:
+zh-CN:
   site_settings:
     yearly_review_enabled: "启用年度回顾。1 月 1 日，将自动创建一个话题，总结去年的论坛活动。"
     yearly_review_categories: "要总结的公开类别。将为此列表中前 5 个类别中的每个类别创建一篇包含统计信息的帖子。留空则会使用前 5 个公开类别。"

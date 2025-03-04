@@ -1,9 +1,3 @@
-# WARNING: Never edit this file.
-# It will be overwritten when translations are pulled from Crowdin.
-#
-# To work with us on translations, join this project:
-# https://translate.discourse.org/
-
 ru:
   site_settings:
     yearly_review_enabled: "Включить ежегодный обзор. Тогда 1 января будет автоматически создана тема с подведением итогов работы форума за предыдущий год."

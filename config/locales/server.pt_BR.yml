@@ -1,10 +1,4 @@
-# WARNING: Never edit this file.
-# It will be overwritten when translations are pulled from Crowdin.
-#
-# To work with us on translations, join this project:
-# https://translate.discourse.org/
-
-pt_BR:
+pt:
   site_settings:
     yearly_review_enabled: "Ative a revisão anual. No dia 1º de janeiro, será criado automaticamente um tópico para resumir a atividade do fórum no ano anterior."
     yearly_review_categories: "Categorias públicas para resumir. Será criada uma postagem com estatísticas para cada uma das cinco melhores categorias desta lista. Deixe vazio para usar as cinco melhores categorias públicas."

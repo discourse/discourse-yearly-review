@@ -1,9 +1,3 @@
-# WARNING: Never edit this file.
-# It will be overwritten when translations are pulled from Crowdin.
-#
-# To work with us on translations, join this project:
-# https://translate.discourse.org/
-
 it:
   site_settings:
     yearly_review_enabled: "Abilita la revisione annuale. Il 1° gennaio verrà creato automaticamente un argomento che riassume l'attività del forum dell'anno precedente."

@@ -1,10 +1,4 @@
-# WARNING: Never edit this file.
-# It will be overwritten when translations are pulled from Crowdin.
-#
-# To work with us on translations, join this project:
-# https://translate.discourse.org/
-
-pl_PL:
+pl:
   site_settings:
     yearly_review_enabled: "Włącz przegląd roczny. 1 stycznia zostanie automatycznie utworzony temat podsumowujący aktywność na forum w poprzednim roku."
     yearly_review_categories: "Publiczne kategorie do podsumowania. Jeden post ze statystykami zostanie utworzony dla każdej z 5 najlepszych kategorii z tej listy. Pozostaw puste, aby użyć 5 najlepszych kategorii publicznych."

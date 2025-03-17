@@ -3,7 +3,7 @@
 module YearlyReviewHelper
   include ActionView::Helpers::NumberHelper
 
-  AVATAR_SIZE ||= "50"
+  AVATAR_SIZE = "50"
 
   def avatar_image(username, uploaded_avatar_id)
     template = User.avatar_template(username, uploaded_avatar_id).gsub(/{size}/, AVATAR_SIZE)

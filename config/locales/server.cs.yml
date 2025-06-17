@@ -5,7 +5,28 @@
 # https://translate.discourse.org/
 
 cs:
+  site_settings:
+    yearly_review_enabled: "Povolte roční přehled. 1. ledna bude automaticky vytvořeno téma shrnující aktivitu na fóru za předchozí rok."
+    yearly_review_categories: "Veřejné kategorie ke shrnutí. Pro každou z nejlepších 5 kategorií v tomto seznamu bude vytvořen jeden příspěvek se statistikami. Chcete-li použít 5 nejlepších veřejných kategorií, ponechte prázdné."
+    yearly_review_exclude_staff: "Vyloučit redakci ze statistik členů."
+    yearly_review_include_user_stats: "Přidat statistiky identifikující členy."
+    yearly_review_include_private_categories: "Zahrnout do přehledu aktivity členů ze soukromých kategorií nebo kategorií s omezeným přístupem ke čtení."
+    yearly_review_publish_category: "Kategorie, ve které bude přehled zveřejněn. Důrazně doporučujeme specifikovat kategorii redakce nebo jinou soukromou kategorii, abyste si téma mohli před zveřejněním prohlédnout."
+    yearly_review_featured_badge: "Zadejte celý název odznaku. Může zůstat prázdné."
   yearly_review:
+    topic_title: "%{year}: Ohlédnutí za rokem"
+    category_topics_title: "Nejlepší témata z #%{category}"
+    title:
+      users_section: "Nejlepší uživatelé uživatele roku %{year}"
+      topics_created: "Nejvíce témat"
+      replies_created: "Nejvíce odpovědí"
+      likes_given: "Nejvíce udělených lajků"
+      likes_received: "Nejvíce obdržených lajků"
+      visits: "Nejvíce návštěv"
+      daily_visits: "Denní návštěvy"
+      time_read: "Nejvíce času čtení"
+      most_replied_to: "Nejvíce odpovědí"
+      featured_badge: "Uživatelé, kterým byl udělen odznak %{badge_name}"
     action:
       topics_created: "Témata"
       most_replied_to: "Odpovědi"
@@ -13,17 +34,24 @@ cs:
       likes_given: "Nová 'líbí se'"
       likes_received: "Nová 'líbí se'"
       visits: "Přítomen dnů"
+      time_read: "Hodin čtení"
     rank_type:
       title:
         most_liked: "Nejoblíbenější"
+        most_replied_to: "Nejvíce odpovědí"
+        most_popular: "Nejpopulárnější"
+        most_bookmarked: "Nejvíce přidáno do záložek"
+        most_read: "Nejčtenější"
       action_types:
         most_popular: "Skóre"
         most_replied_to: "Odpovědi"
         most_liked: "Nová 'líbí se'"
         most_bookmarked: "Záložky"
+        most_read: "Hodin čtení"
     user: "Uživatel"
     users: "Účastníci"
     days_visited: "Přítomen dnů"
+    all_yearly_visits: "Celkem návštěv za rok"
     topics: "Témata"
     topic: "Témata"
     likes: "Nová 'líbí se'"
@@ -31,3 +59,4 @@ cs:
     score: "Skóre"
     replies: "Odpovědi"
     visits: "Návštěv"
+    more_badge_users: "A %{more} více..."

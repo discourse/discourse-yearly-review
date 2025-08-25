@@ -584,12 +584,6 @@ module ::Jobs
     end
 
     def most_bookmarked_topic_sql
-      post_bookmark_join_sql =
-        if SiteSetting.use_polymorphic_bookmarks
-          "ON p.id = bookmarks.bookmarkable_id AND bookmarks.bookmarkable_type = 'Post'"
-        else
-          "ON p.id = bookmarks.post_id"
-        end
       <<~SQL
         SELECT
         username,
@@ -604,8 +598,8 @@ module ::Jobs
         COUNT(*) AS action_count,
         'bookmarks' AS action
         FROM bookmarks
-        JOIN posts p
-        #{post_bookmark_join_sql}
+        JOIN posts p ON
+        p.id = bookmarks.bookmarkable_id AND bookmarks.bookmarkable_type = 'Post'
         JOIN topics t
         ON t.id = p.topic_id
         JOIN categories c

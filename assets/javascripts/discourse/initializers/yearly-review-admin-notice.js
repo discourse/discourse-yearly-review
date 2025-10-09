@@ -4,7 +4,7 @@ import YearlyReviewAdminNotice from "discourse/plugins/discourse-yearly-review/d
 export default {
   name: "yearly-review-admin-notice",
   initialize(container) {
-    withPluginApi("1.18.0", (api) => {
+    withPluginApi((api) => {
       const siteSettings = container.lookup("service:site-settings");
 
       if (!siteSettings.yearly_review_enabled) {

@@ -1,5 +1,5 @@
 import Component from "@glimmer/component";
-import { htmlSafe } from "@ember/template";
+import { trustHTML } from "@ember/template";
 import replaceEmoji from "discourse/helpers/replace-emoji";
 import getURL from "discourse/lib/get-url";
 import { i18n } from "discourse-i18n";
@@ -22,7 +22,7 @@ export default class YearlyReviewAdminNotice extends Component {
   <template>
     <div class="yearly-review-admin-notice alert alert-info">
       {{replaceEmoji
-        (htmlSafe
+        (trustHTML
           (i18n
             "yearly_review.admin_notice"
             to_be_created_date=this.toBeCreatedDate

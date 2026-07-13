@@ -1,5 +1,7 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import YearlyReviewAdminNotice from "discourse/plugins/discourse-yearly-review/discourse/components/yearly-review-admin-notice";
+import YearlyReviewAdminNotice, {
+  LegacyDashboardYearlyReviewAdminNotice,
+} from "discourse/plugins/discourse-yearly-review/discourse/components/yearly-review-admin-notice";
 
 export default {
   name: "yearly-review-admin-notice",
@@ -14,7 +16,14 @@ export default {
       // Only show this in December of the current year (getMonth is 0-based).
       const now = new Date();
       if (now.getMonth() === 11) {
-        api.renderInOutlet("admin-dashboard-top", YearlyReviewAdminNotice);
+        api.renderInOutlet(
+          "admin-dashboard-top",
+          LegacyDashboardYearlyReviewAdminNotice
+        );
+        api.renderInOutlet(
+          "admin-dashboard-after-header",
+          YearlyReviewAdminNotice
+        );
       }
     });
   },

@@ -9,6 +9,10 @@ export function janNextYear() {
 }
 
 export default class YearlyReviewAdminNotice extends Component {
+  static shouldRender(args) {
+    return Boolean(args.isNewDashboard);
+  }
+
   get toBeCreatedDate() {
     return moment(janNextYear()).format(i18n("dates.full_with_year_no_time"));
   }
@@ -32,4 +36,10 @@ export default class YearlyReviewAdminNotice extends Component {
       }}
     </div>
   </template>
+}
+
+export class LegacyDashboardYearlyReviewAdminNotice extends YearlyReviewAdminNotice {
+  static shouldRender() {
+    return true;
+  }
 }

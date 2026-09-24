@@ -80,15 +80,18 @@ after_initialize do
   end
 
   on(:username_changed) do |old_username, new_username|
+    old_username_lowercase = old_username.downcase
+    new_username_lowercase = new_username.downcase
+
     Post
       .joins(:_custom_fields)
       .where(
         "post_custom_fields.name = ? AND posts.raw LIKE ?",
         YearlyReview::POST_CUSTOM_FIELD,
-        "%/#{old_username}/%",
+        "%/#{old_username_lowercase}/%",
       )
       .update_all(
-        "raw = REPLACE(posts.raw, '/#{old_username}/', '/#{new_username}/'), baked_version = NULL",
+        "raw = REPLACE(posts.raw, '/#{old_username_lowercase}/', '/#{new_username_lowercase}/'), baked_version = NULL",
       )
   end
 end

@@ -95,6 +95,39 @@ describe Jobs::YearlyReview do
         expect(raw).to have_tag("div.topics-created") { with_text(/\@reviewed_user\|1/) }
       end
 
+      it "updates lowercase avatar URLs after anonymizing a user with a mixed case username" do
+        Jobs.run_immediately!
+        UserActionManager.enable
+        stub_image_size
+
+        mixed_case_user = Fabricate(:user, username: "MixedCaseUser")
+        old_avatar_path = "/#{mixed_case_user.username.downcase}/50/"
+        upload = Fabricate(:upload, user: mixed_case_user)
+        mixed_case_user.user_avatar =
+          UserAvatar.new(user_id: mixed_case_user.id, custom_upload_id: upload.id)
+        mixed_case_user.uploaded_avatar_id = upload.id
+        mixed_case_user.save!
+        Fabricate(:topic, user: mixed_case_user, created_at: 1.month.ago)
+
+        Jobs::YearlyReview.new.execute({})
+        post = Topic.last.first_post
+        raw = post.raw
+        expect(raw).to have_tag("div.topics-created") { with_text(/\@MixedCaseUser\|1/) }
+        expect(raw).to have_tag("div.topics-created") do
+          with_text(/#{Regexp.escape(old_avatar_path)}/)
+        end
+
+        user = UserAnonymizer.new(mixed_case_user, Discourse.system_user, {}).make_anonymous
+        new_avatar_path = "/#{user.username.downcase}/50/"
+        raw = post.reload.raw
+        expect(raw).to have_tag("div.topics-created") { with_text(/\@#{user.username}\|1/) }
+        expect(raw).to have_tag("div.topics-created") do
+          with_text(/#{Regexp.escape(new_avatar_path)}/)
+        end
+        expect(raw).not_to include(old_avatar_path)
+        expect(post.baked_version).to be_nil
+      end
+
       it "updates username correctly after anonymizing the user" do
         Jobs.run_immediately!
         UserActionManager.enable

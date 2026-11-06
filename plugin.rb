@@ -88,7 +88,7 @@ after_initialize do
         "%/#{old_username}/%",
       )
       .update_all(
-        "raw = REPLACE(raw, '/#{old_username}/', '/#{new_username}/'), baked_version = NULL",
+        "raw = REPLACE(posts.raw, '/#{old_username}/', '/#{new_username}/'), baked_version = NULL",
       )
   end
 end
